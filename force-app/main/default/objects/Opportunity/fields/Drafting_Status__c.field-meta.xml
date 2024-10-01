@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Drafting_Status__c</fullName>
+    <label>Drafting Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ready to Start</fullName>
+                <default>true</default>
+                <label>Ready to Start</label>
+            </value>
+            <value>
+                <fullName>Work in Progress</fullName>
+                <default>false</default>
+                <label>Work in Progress</label>
+            </value>
+            <value>
+                <fullName>Waiting on Client</fullName>
+                <default>false</default>
+                <label>Waiting on Client</label>
+            </value>
+            <value>
+                <fullName>Ready for Signatures</fullName>
+                <default>false</default>
+                <label>Ready for Signatures</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

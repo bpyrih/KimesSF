@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>New Contractor</fullName>
+        <default>false</default>
+        <label>New Contractor</label>
+    </customValue>
+    <customValue>
+        <fullName>Contractor</fullName>
+        <default>false</default>
+        <label>Contractor</label>
+    </customValue>
+    <customValue>
+        <fullName>Owner Builder</fullName>
+        <default>false</default>
+        <label>Owner Builder</label>
+    </customValue>
+    <masterLabel>Client Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

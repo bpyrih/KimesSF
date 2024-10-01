@@ -29,8 +29,84 @@
         <name>LightningComponentBundle</name>
     </types>
     <types>
-        <members>*</members>
-        <name>StaticResource</name>
+        <members>Case.Request_Type__c</members>
+        <members>Case.Client_Billing_Info__c</members>
+        <members>Case.Client_Type__c</members>
+        <members>Case.Converted_Lead__c</members>
+        <members>Case.Delivery_Method__c</members>
+        <members>Case.Flood_Zone__c</members>
+        <members>Case.Lot_Number__c</members>
+        <members>Case.Opportunity__c</members>
+        <members>Case.Project_Address__c</members>
+        <members>Case.Property_Owner__c</members>
+        <members>Case.Receive_Date__c</members>
+        
+        <members>Lead.Request_Type__c</members>
+        <members>Lead.Client_Billing_Info__c</members>
+        <members>Lead.Client_Type__c</members>
+        <members>Lead.Delivery_Method__c</members>
+        <members>Lead.Flood_Zone__c</members>
+        <members>Lead.Lot_Number__c</members>
+        <members>Lead.Project_Address__c</members>
+        <members>Lead.Property_Owner__c</members>
+        <members>Lead.Receive_Date__c</members>
+
+        <members>Work_File__c.Opportunity__c</members>
+        <members>Work_File__c.Status__c</members>
+
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Account</members>
+        <members>Contact</members>
+        <members>Case</members>
+        <members>Lead</members>
+        <members>Opportunity</members>
+        <members>Quote</members>
+        <members>Product2</members>
+        <members>Task</members>
+        <members>Work_File__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Account-Account Layout</members>
+        <members>Contact-Contact Layout</members>
+        <members>Case-Case Layout</members>
+        <members>Lead-Lead Layout</members>
+        <members>Opportunity-ANSI Layout</members>
+        <members>Opportunity-Commercial Engineering Layout  </members>
+        <members>Opportunity-Residential Engineering Layout</members>
+        <members>Quote-Quote Layout</members>
+        <members>Product2-Product Layout</members>
+        <members>Task-Task Layout</members>
+        <members>Work_File__c-Work File Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Request_Type</members>
+        <members>Client_Type</members>
+        <members>Delivery_Method</members>
+        <name>GlobalValueSet</name>
+    </types>
+    <types>
+        <members>Kimes_Engineering</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Kimes_Engineering_UtilityBar</members>
+        <members>Kimes_Engineering_Case_Record_Page</members>
+        <members>Kimes_Engineering_Lead_Record_Page</members>
+        <members>Kimes_Engineering_Opportunity_Record_Page</members>
+        <members>Kimes_Engineering_Quote_Record_Page</members>
+        <members>Kimes_Engineering_Work_File_Record_Page</members>
+        <name>FlexiPage</name>
+    </types>
+
+     <types>
+        <members>Admin</members>
+        <members>Standard</members>
+        <members>Standard Kimes</members>
+        <name>Profile</name>
     </types>
     <version>61.0</version>
 </Package>
