@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>CaseDAO</members>
+        <members>ConversionController</members>
+        <members>ConversionService</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -25,7 +27,8 @@
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
-        <members>*</members>
+        <members>caseConversion</members>
+        <members>caseConvesionToOpp</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -43,7 +46,8 @@
         <members>Case.Project_Address__c</members>
         <members>Case.Property_Owner__c</members>
         <members>Case.Receive_Date__c</members>
-        
+        <members>Case.LeadConversionAllow__c</members>
+
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
         <members>Lead.Client_Type__c</members>
@@ -53,6 +57,7 @@
         <members>Lead.Project_Address__c</members>
         <members>Lead.Property_Owner__c</members>
         <members>Lead.Receive_Date__c</members>
+        <members>Lead.Converted_Case__c</members>
 
         <members>Opportunity.Receive_Date__c</members>
         <members>Opportunity.Flood_Zone__c</members>
@@ -90,6 +95,11 @@
         <members>Task-Task Layout</members>
         <members>Work_File__c-Work File Layout</members>
         <name>Layout</name>
+    </types>
+    <types>
+        <members>Case.Convert_to_Lead</members>
+        <members>Case.Convert_to_Opportunity</members>
+        <name>QuickAction</name>
     </types>
     <types>
         <members>Request_Type</members>
