@@ -29,6 +29,9 @@
         <name>LightningComponentBundle</name>
     </types>
     <types>
+        <members>Contact.Client_Billing_Info__c</members>
+        <members>Contact.Client_Type__c</members>
+
         <members>Case.Request_Type__c</members>
         <members>Case.Client_Billing_Info__c</members>
         <members>Case.Client_Type__c</members>
@@ -50,6 +53,12 @@
         <members>Lead.Project_Address__c</members>
         <members>Lead.Property_Owner__c</members>
         <members>Lead.Receive_Date__c</members>
+
+        <members>Opportunity.Receive_Date__c</members>
+        <members>Opportunity.Flood_Zone__c</members>
+        <members>Opportunity.Lot_Number__c</members>
+        <members>Opportunity.Project_Address__c</members>
+        <members>Opportunity.Property_Owner__c</members>
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
@@ -99,6 +108,7 @@
         <members>Kimes_Engineering_Opportunity_Record_Page</members>
         <members>Kimes_Engineering_Quote_Record_Page</members>
         <members>Kimes_Engineering_Work_File_Record_Page</members>
+        <members>Kimes_Engineering_Contact_Record_Page</members>
         <name>FlexiPage</name>
     </types>
 
