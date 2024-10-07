@@ -10,6 +10,11 @@
         <default>false</default>
         <label>Hard Copy</label>
     </customValue>
+    <customValue>
+        <fullName>Digital Separate</fullName>
+        <default>false</default>
+        <label>Digital Separate</label>
+    </customValue>
     <masterLabel>Delivery Method</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

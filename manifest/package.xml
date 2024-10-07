@@ -47,6 +47,7 @@
         <members>Case.Property_Owner__c</members>
         <members>Case.Receive_Date__c</members>
         <members>Case.LeadConversionAllow__c</members>
+        <members>Case.Building_Department__c</members>
 
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
@@ -80,6 +81,7 @@
         <members>Product2</members>
         <members>Task</members>
         <members>Work_File__c</members>
+        <members>Building_Department__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -94,6 +96,7 @@
         <members>Product2-Product Layout</members>
         <members>Task-Task Layout</members>
         <members>Work_File__c-Work File Layout</members>
+        <members>Building_Department__c-Building Department Layout</members>
         <name>Layout</name>
     </types>
     <types>
