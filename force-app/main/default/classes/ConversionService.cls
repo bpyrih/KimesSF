@@ -1,39 +1,32 @@
 public class ConversionService {
-    private static final Map<String, String> CASE_PRIORITY_TO_LEAD_RATING = new Map<String, String> {
-        'High' => 'Hot',
-        'Medium' => 'Warm',
-        'Low' => 'Cold'
+    private static final String COMPLETED_STATUS = 'Completed';
+    private static final ConversionMappingsMetadataService convMappingMetadataService = new ConversionMappingsMetadataService();
+    private static final SObjectUtility OPPORTUNITY_UTILITY = new SObjectUtility('Opportunity');
+
+    private static final Map<String, String> REQUEST_TYPE_TO_OPPORTUNITY_RT = new Map<String, String> {
+        null => OPPORTUNITY_UTILITY.devNameToIdMap.get('ANSI'),
+        'ANSI + Standards' => OPPORTUNITY_UTILITY.devNameToIdMap.get('ANSI'),
+        'Residential Drafting' => OPPORTUNITY_UTILITY.devNameToIdMap.get('Residential_Drafting'),
+        'Commercial Drafting' => OPPORTUNITY_UTILITY.devNameToIdMap.get('Commercial_Engineering'),
+        'Engineering Tasks' => OPPORTUNITY_UTILITY.devNameToIdMap.get('ANSI')
     };
 
-    private static final String COMPLETED_STATUS = 'Completed';
-
     public Lead convertCaseToLead(Id caseId) {
-        Case caseToConvert = new CaseDAO().getCaseById(caseId);
-        Lead convertedLead = new Lead(
-            FirstName = '',
-            LastName = caseToConvert.SuppliedName,
-            Company = caseToConvert.SuppliedCompany,
-            Phone = caseToConvert.SuppliedPhone,
-            Email = caseToConvert.SuppliedEmail,
-            Rating = CASE_PRIORITY_TO_LEAD_RATING.get(caseToConvert.Priority),
-            Request_Type__c = caseToConvert.Request_Type__c,
-            Client_Billing_Info__c = caseToConvert.Client_Billing_Info__c,
-            Client_Type__c = caseToConvert.Client_Type__c,
-            Lot_Number__c = caseToConvert.Lot_Number__c,
-            Delivery_Method__c = caseToConvert.Delivery_Method__c,
-            Flood_Zone__c = caseToConvert.Flood_Zone__c,
-            Project_Address__c = caseToConvert.Project_Address__c,
-            Property_Owner__c = caseToConvert.Property_Owner__c,
-            Receive_Date__c = caseToConvert.Receive_Date__c,
-            Converted_Case__c = caseId
-        );
-
+        Case caseToConvert = new CaseDAO().getCaseById(caseId, convMappingMetadataService.getSourceFields());
+        Lead convertedLead = new Lead();
+        for(Conversion_Mapping__mdt mapping : convMappingMetadataService.conversionMappings) {
+            ConversionMappingsMetadataService.FieldConvertType convertType = ConversionMappingsMetadataService.FieldConvertType.valueOF(mapping.Field_Convert_Type__c);
+            Object mapValue;
+            if (convertType == ConversionMappingsMetadataService.FieldConvertType.STANDARD) {
+                mapValue = caseToConvert.get(mapping.Source_Field__c);
+            } else if (convertType == ConversionMappingsMetadataService.FieldConvertType.FORMULA) {
+                mapValue = getValueByFormula(mapping.Formula__c, caseToConvert);
+            } else if (convertType == ConversionMappingsMetadataService.FieldConvertType.CONSTANT) {
+                mapValue = mapping.Source_Field__c;
+            }
+            convertedLead.put(mapping.Destination_Field__c, mapValue);
+        }
         return convertedLead;
-    }
-
-    public void markCaseAsConverted(Id caseId, Id leadId, Id opportunityId) {
-        Case updateCase = new Case(Id = caseId, Converted_Lead__c = leadId, Status = COMPLETED_STATUS, Opportunity__c = opportunityId);
-        update updateCase;
     }
 
     public Lead convertCaseToLead(Id caseId, Boolean isInsert) {
@@ -41,12 +34,32 @@ public class ConversionService {
         if(isInsert) {
             insert convertedLead;
         }
+        this.assignFilesFromRecordToRecord(caseId, convertedLead.Id);
         return convertedLead;
     }
 
+    private Object getValueByFormula(String formula, SObject record) {
+        FormulaEval.FormulaInstance ff = System.Formula.builder()
+            .withReturnType(FormulaEval.FormulaReturnType.STRING)
+            .withType(Case.SObjectType)
+            .withFormula(formula)
+            .build();
+        
+        return ff.evaluate(record);
+    }
+
+    public void markCaseAsConverted(Id caseId, Id leadId, Id opportunityId) {
+        Case updateCase = new Case(Id = caseId, Converted_Lead__c = leadId, Status = COMPLETED_STATUS, Opportunity__c = opportunityId);
+        update updateCase;
+    }
+
     public Id convertLeadToOpportunity(Id leadId) {
+        Lead leadToConvert = new LeadDAO().getLeadById(leadId);
+        Contact convertContact = new ContactDAO().getContactByEmail(leadToConvert.Email);
         Database.LeadConvert lc = new Database.LeadConvert();
         lc.setLeadId(leadId);
+        lc.setContactId(convertContact?.Id);
+        lc.setAccountId(convertContact?.AccountId);
 
         LeadStatus convertStatus = [SELECT Id, ApiName FROM LeadStatus WHERE IsConverted=true LIMIT 1];
         lc.setConvertedStatus(convertStatus.ApiName);
@@ -54,6 +67,27 @@ public class ConversionService {
         Database.LeadConvertResult lcr = Database.convertLead(lc);
         System.assert(lcr.isSuccess());
 
+        update new Opportunity(
+            Id = lcr.getOpportunityId(), 
+            RecordTypeId = REQUEST_TYPE_TO_OPPORTUNITY_RT.get(leadToConvert.Request_Type__c)   
+        );
+
         return lcr.getOpportunityId();
+    }
+
+    private void assignFilesFromRecordToRecord(Id sourceId, Id targetId) {
+        List<ContentDocumentLink> files = new List<ContentDocumentLink>();
+        
+        List<ContentDocumentLink> sourceFiles = [SELECT ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :sourceId];
+        for (ContentDocumentLink file : sourceFiles) {
+            files.add(new ContentDocumentLink(
+                ContentDocumentId = file.ContentDocumentId,
+                LinkedEntityId = targetId,
+                ShareType = 'V',
+                Visibility = 'AllUsers'
+            ));
+        }
+
+        insert files;
     }
 }

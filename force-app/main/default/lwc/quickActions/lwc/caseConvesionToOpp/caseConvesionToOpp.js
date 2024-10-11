@@ -6,7 +6,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import convertCaseToOpportunity from "@salesforce/apex/ConversionController.convertCaseToOpportunity";
 
 const SUCCESS_MESSAGE = 'Case converted to Opportunity successfully!';
-const ERROR_MESSAGE = 'Case could not be converted to Opportunity. Web Email/Name/Company fields are required!';
+const ERROR_MESSAGE = 'Case could not be converted to Opportunity. Missed fields on Case: "Web Name","Web Company"!';
 
 export default class CaseConversion extends NavigationMixin(LightningElement) {
     @api

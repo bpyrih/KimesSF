@@ -6,7 +6,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import convertCaseToLead from "@salesforce/apex/ConversionController.convertCaseToLead";
 
 const SUCCESS_MESSAGE = 'Case converted to lead successfully!';
-const ERROR_MESSAGE = 'Case could not be converted to lead. Web Email/Name/Company fields are required!';
+const ERROR_MESSAGE = 'Case could not be converted to lead. Missed fields on Case: "Web Name","Web Company"!';
 
 export default class CaseConversion extends NavigationMixin(LightningElement) {
     @api

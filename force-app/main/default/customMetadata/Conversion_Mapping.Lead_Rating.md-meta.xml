@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Lead Rating</label>
+    <protected>false</protected>
+    <values>
+        <field>Destination_Field__c</field>
+        <value xsi:type="xsd:string">Rating</value>
+    </values>
+    <values>
+        <field>Field_Convert_Type__c</field>
+        <value xsi:type="xsd:string">Formula</value>
+    </values>
+    <values>
+        <field>Formula__c</field>
+        <value xsi:type="xsd:string">If(Text(Priority) == &apos;High&apos;, &apos;Hot&apos;, 
+If(Text(Priority) == &apos;Medium&apos;, &apos;Warm&apos;, 
+If(Text(Priority) == &apos;Low&apos;, &apos;Cold&apos;, &apos;&apos; )))</value>
+    </values>
+    <values>
+        <field>Source_Field__c</field>
+        <value xsi:type="xsd:string">Priority</value>
+    </values>
+</CustomMetadata>
