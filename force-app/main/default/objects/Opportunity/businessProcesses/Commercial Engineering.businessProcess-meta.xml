@@ -19,35 +19,11 @@
         <default>false</default>
     </values>
     <values>
-        <fullName>Closed Lost</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Closed Won</fullName>
-        <default>false</default>
-    </values>
-    <values>
         <fullName>Create Quote</fullName>
         <default>false</default>
     </values>
     <values>
         <fullName>Engineer Approval</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Needs Analysis</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Negotiation</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Proposal</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Qualification</fullName>
         <default>false</default>
     </values>
     <values>

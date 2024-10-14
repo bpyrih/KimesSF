@@ -16,6 +16,10 @@
     <objectMapping>
         <inputObject>Lead</inputObject>
         <mappingFields>
+            <inputField>Building_Department__c</inputField>
+            <outputField>Building_Department__c</outputField>
+        </mappingFields>
+        <mappingFields>
             <inputField>Flood_Zone__c</inputField>
             <outputField>Flood_Zone__c</outputField>
         </mappingFields>

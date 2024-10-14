@@ -6,8 +6,5 @@
     <fields>AccountId</fields>
     <fields>Amount</fields>
     <fields>OwnerId</fields>
-    <fields>Assigned_Technician__c</fields>
-    <fields>Request_Quote__c</fields>
-    <fields>Down_Payment_Required__c</fields>
     <label>New Awesome Compact Layout</label>
 </CompactLayout>

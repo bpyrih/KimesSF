@@ -61,7 +61,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Project_Address__c</field>
+                <field>Building_Department__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -71,7 +71,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Request_Quote__c</field>
+                <field>Project_Name__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Project_Description__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Project_Address__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -155,11 +163,6 @@
             <field>StageName</field>
             <posX>2</posX>
             <posY>0</posY>
-        </summaryLayoutItems>
-        <summaryLayoutItems>
-            <field>Request_Quote__c</field>
-            <posX>2</posX>
-            <posY>1</posY>
         </summaryLayoutItems>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
     </summaryLayout>

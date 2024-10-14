@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>2 to 4 weeks</fullName>
+        <default>false</default>
+        <label>2 to 4 weeks</label>
+    </customValue>
+    <customValue>
+        <fullName>3 to 5 weeks</fullName>
+        <default>false</default>
+        <label>3 to 5 weeks</label>
+    </customValue>
+    <customValue>
+        <fullName>4 to 6 weeks</fullName>
+        <default>false</default>
+        <label>4 to 6 weeks</label>
+    </customValue>
+    <customValue>
+        <fullName>6 to 8 weeks</fullName>
+        <default>false</default>
+        <label>6 to 8 weeks</label>
+    </customValue>
+    <customValue>
+        <fullName>8 to 10 weeks</fullName>
+        <default>false</default>
+        <label>8 to 10 weeks</label>
+    </customValue>
+    <customValue>
+        <fullName>Expedited</fullName>
+        <default>false</default>
+        <label>Expedited</label>
+    </customValue>
+    <masterLabel>Estimated Timeframe</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

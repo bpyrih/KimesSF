@@ -25,6 +25,33 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Estimated_Timeframe__c</picklist>
+        <values>
+            <fullName>2 to 4 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3 to 5 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4 to 6 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6 to 8 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8 to 10 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Expedited</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>ForecastCategoryName</picklist>
         <values>
             <fullName>Best Case</fullName>
@@ -114,6 +141,25 @@
         </values>
         <values>
             <fullName>Price</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Payment_schedule_field__c</picklist>
+        <values>
+            <fullName>100%25 due at the final draft</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>100%25 due prior to delivery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50%25 due on commencement%2E 50%25 due prior to delivery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50%25 due on the first draft 50%25 due upon delivery</fullName>
             <default>false</default>
         </values>
     </picklistValues>

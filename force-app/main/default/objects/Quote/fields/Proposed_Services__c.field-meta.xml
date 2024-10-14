@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Proposed_Services__c</fullName>
+    <externalId>false</externalId>
+    <formula>&apos;PROPOSED SERVICES &apos; &amp; (IF(Opportunity.RecordType.DeveloperName == &apos;Residential_Drafting&apos;, &apos;RESIDENTIAL AQUATICS&apos;, IF(Opportunity.RecordType.DeveloperName == &apos;Commercial_Engineering&apos;, &apos;COMMERCIAL AQUATICS&apos;, &apos;&apos;)))</formula>
+    <label>Proposed Services</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -2,8 +2,12 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>CaseDAO</members>
+        <members>ContactDAO</members>
+        <members>LeadDAO</members>
         <members>ConversionController</members>
         <members>ConversionService</members>
+        <members>SObjectUtility</members>
+        <members>ConversionMappingsMetadataService</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -21,6 +25,12 @@
     <types>
         <members>*</members>
         <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>Contact_Account_Auto_Set</members>
+        <members>New_Contractor_Set</members>
+        <members>Opportunity_Pre_Proposal</members>
+        <name>Flow</name>
     </types>
     <types>
         <members>*</members>
@@ -44,6 +54,8 @@
         <members>Case.Lot_Number__c</members>
         <members>Case.Opportunity__c</members>
         <members>Case.Project_Address__c</members>
+        <members>Case.Project_Name__c</members>
+        <members>Case.Project_Description__c</members>
         <members>Case.Property_Owner__c</members>
         <members>Case.Receive_Date__c</members>
         <members>Case.LeadConversionAllow__c</members>
@@ -56,19 +68,37 @@
         <members>Lead.Flood_Zone__c</members>
         <members>Lead.Lot_Number__c</members>
         <members>Lead.Project_Address__c</members>
+        <members>Lead.Project_Name__c</members>
+        <members>Lead.Project_Description__c</members>
         <members>Lead.Property_Owner__c</members>
         <members>Lead.Receive_Date__c</members>
         <members>Lead.Converted_Case__c</members>
+        <members>Lead.Building_Department__c</members>
 
         <members>Opportunity.Receive_Date__c</members>
         <members>Opportunity.Flood_Zone__c</members>
         <members>Opportunity.Lot_Number__c</members>
         <members>Opportunity.Project_Address__c</members>
+        <members>Opportunity.Project_Name__c</members>
+        <members>Opportunity.Project_Description__c</members>
         <members>Opportunity.Property_Owner__c</members>
+        <members>Opportunity.Estimated_Timeframe__c</members>
+        <members>Opportunity.Payment_schedule_field__c</members>
+        <members>Opportunity.Building_Department__c</members>
+        <members>Opportunity.Pre_Proposal_Quote__c</members>
+        <members>Opportunity.Pre_Proposal_Required__c</members>
+
+        <members>Quote.Estimated_Timeframe__c</members>
+        <members>Quote.Proposed_Services__c</members>
+        <members>Quote.Timeframe_Text__c</members>
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
 
+        <members>Conversion_Mapping__mdt.Destination_Field__c</members>
+        <members>Conversion_Mapping__mdt.Source_Field__c</members>
+        <members>Conversion_Mapping__mdt.Field_Convert_Type__c</members>
+        <members>Conversion_Mapping__mdt.Formula__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -82,6 +112,7 @@
         <members>Task</members>
         <members>Work_File__c</members>
         <members>Building_Department__c</members>
+        <members>Conversion_Mapping__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -93,10 +124,12 @@
         <members>Opportunity-Commercial Engineering Layout  </members>
         <members>Opportunity-Residential Engineering Layout</members>
         <members>Quote-Quote Layout</members>
+        <members>Quote-Pre Proposal Layout</members>
         <members>Product2-Product Layout</members>
         <members>Task-Task Layout</members>
         <members>Work_File__c-Work File Layout</members>
         <members>Building_Department__c-Building Department Layout</members>
+        <members>Conversion_Mapping__mdt-Conversion Mapping Layout</members>
         <name>Layout</name>
     </types>
     <types>
@@ -108,6 +141,7 @@
         <members>Request_Type</members>
         <members>Client_Type</members>
         <members>Delivery_Method</members>
+        <members>Estimated_Timeframe</members>
         <name>GlobalValueSet</name>
     </types>
     <types>
@@ -124,8 +158,22 @@
         <members>Kimes_Engineering_Contact_Record_Page</members>
         <name>FlexiPage</name>
     </types>
-
-     <types>
+    <types>
+        <members>*</members>
+        <name>LeadConvertSettings</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>Accountant</members>
+        <members>Draft</members>
+        <members>Engineering</members>
+        <members>Intake</members>
+        <name>Queue</name>
+    </types>
+    <types>
         <members>Admin</members>
         <members>Standard</members>
         <members>Standard Kimes</members>
