@@ -32,7 +32,9 @@ public class ConversionService {
     public Lead convertCaseToLead(Id caseId, Boolean isInsert) {
         Lead convertedLead = this.convertCaseToLead(caseId);
         if(isInsert) {
-            insert convertedLead;
+            Database.DMLOptions dml = new Database.DMLOptions();
+            dml.DuplicateRuleHeader.AllowSave = true;
+            Database.SaveResult sr2 = Database.insert(convertedLead, dml);
         }
         this.assignFilesFromRecordToRecord(caseId, convertedLead.Id);
         return convertedLead;

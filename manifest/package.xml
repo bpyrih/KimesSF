@@ -30,6 +30,7 @@
         <members>Contact_Account_Auto_Set</members>
         <members>New_Contractor_Set</members>
         <members>Opportunity_Pre_Proposal</members>
+        <members>Converted Opportunity Project Address Update</members>
         <name>Flow</name>
     </types>
     <types>
@@ -60,6 +61,10 @@
         <members>Case.Receive_Date__c</members>
         <members>Case.LeadConversionAllow__c</members>
         <members>Case.Building_Department__c</members>
+        <members>Case.PPP__c</members>
+        <members>Case.Hard_Copy_Number__c</members>
+        <members>Case.Project_Address1__c</members>
+        <members>Case.Project_Address_Formula__c</members>
 
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
@@ -74,6 +79,10 @@
         <members>Lead.Receive_Date__c</members>
         <members>Lead.Converted_Case__c</members>
         <members>Lead.Building_Department__c</members>
+        <members>Lead.PPP__c</members>
+        <members>Lead.Hard_Copy_Number__c</members>
+        <members>Lead.Project_Address1__c</members>
+        <members>Lead.Project_Address_Formula__c</members>
 
         <members>Opportunity.Receive_Date__c</members>
         <members>Opportunity.Flood_Zone__c</members>
@@ -87,6 +96,11 @@
         <members>Opportunity.Building_Department__c</members>
         <members>Opportunity.Pre_Proposal_Quote__c</members>
         <members>Opportunity.Pre_Proposal_Required__c</members>
+        <members>Opportunity.PPP__c</members>
+        <members>Opportunity.Hard_Copy_Number__c</members>
+        <members>Opportunity.Project_Address1__c</members>
+        <members>Opportunity.Project_Address_Formula__c</members>
+        <members>Opportunity.Delivery_Method__c</members>
 
         <members>Quote.Estimated_Timeframe__c</members>
         <members>Quote.Proposed_Services__c</members>

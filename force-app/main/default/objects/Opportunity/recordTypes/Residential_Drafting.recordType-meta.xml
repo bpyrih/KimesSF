@@ -6,6 +6,21 @@
     <compactLayoutAssignment>New_Awesome_Companct_Layout</compactLayoutAssignment>
     <label>Residential Engineering</label>
     <picklistValues>
+        <picklist>Delivery_Method__c</picklist>
+        <values>
+            <fullName>Digital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Digital Separate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hard Copy</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Drafting_Status__c</picklist>
         <values>
             <fullName>Ready for Signatures</fullName>

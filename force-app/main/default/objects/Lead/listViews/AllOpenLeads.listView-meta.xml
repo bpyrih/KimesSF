@@ -3,13 +3,11 @@
     <fullName>AllOpenLeads</fullName>
     <columns>FULL_NAME</columns>
     <columns>LEAD.COMPANY</columns>
+    <columns>Project_Address_Formula__c</columns>
     <columns>LEAD.TITLE</columns>
-    <columns>LEAD.STATE</columns>
     <columns>LEAD.PHONE</columns>
     <columns>LEAD.EMAIL</columns>
     <columns>LEAD.STATUS</columns>
-    <columns>CORE.USERS.FIRST_NAME</columns>
-    <columns>CORE.USERS.LAST_NAME</columns>
     <columns>LEAD.CREATED_DATE</columns>
     <filterScope>Everything</filterScope>
     <filters>

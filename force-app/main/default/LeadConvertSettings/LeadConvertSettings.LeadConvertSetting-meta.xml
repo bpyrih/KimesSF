@@ -20,12 +20,24 @@
             <outputField>Building_Department__c</outputField>
         </mappingFields>
         <mappingFields>
+            <inputField>Delivery_Method__c</inputField>
+            <outputField>Delivery_Method__c</outputField>
+        </mappingFields>
+        <mappingFields>
             <inputField>Flood_Zone__c</inputField>
             <outputField>Flood_Zone__c</outputField>
         </mappingFields>
         <mappingFields>
+            <inputField>Hard_Copy_Number__c</inputField>
+            <outputField>Hard_Copy_Number__c</outputField>
+        </mappingFields>
+        <mappingFields>
             <inputField>Lot_Number__c</inputField>
             <outputField>Lot_Number__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>PPP__c</inputField>
+            <outputField>PPP__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Project_Address__c</inputField>
