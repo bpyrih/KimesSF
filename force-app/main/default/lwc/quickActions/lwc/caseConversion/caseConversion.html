@@ -1,3 +1,5 @@
 <template>
-    {recordId}
+    <div lwc:if={recordId} class="spinnerClass">
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </div>
 </template>
