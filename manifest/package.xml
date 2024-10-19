@@ -177,6 +177,14 @@
         <name>LeadConvertSettings</name>
     </types>
     <types>
+        <members>Lead.Duplicate_Lead</members>
+        <name>DuplicateRule</name>
+    </types>
+    <types>
+        <members>Lead.Lead_Match</members>
+        <name>MatchingRule</name>
+    </types>
+    <types>
         <members>*</members>
         <name>CustomMetadata</name>
     </types>
