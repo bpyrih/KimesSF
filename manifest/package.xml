@@ -40,6 +40,7 @@
     <types>
         <members>caseConversion</members>
         <members>caseConvesionToOpp</members>
+        <members>lwcUtils</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
