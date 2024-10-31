@@ -35,12 +35,14 @@ export default class CaseConversion extends NavigationMixin(LightningElement) {
     }
 
     navigateToConvertedLead(leadId) {
-        this[NavigationMixin.Navigate]({
+        this[NavigationMixin.GenerateUrl]({
             type: 'standard__recordPage',
             attributes: {
                 recordId: leadId,
                 actionName: 'view'
             }
+        }).then((url) => {
+            window.location.replace(url);
         });
     }
 

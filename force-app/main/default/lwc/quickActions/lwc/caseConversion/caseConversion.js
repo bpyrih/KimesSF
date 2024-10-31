@@ -4,6 +4,7 @@ import { CloseActionScreenEvent } from "lightning/actions";
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import PPOJECT_ADDRESS_FORMULA_FIELD from "@salesforce/schema/Case.Project_Address_Formula__c";
+import PPOJECT_ADDRESS_VALID_FIELD from "@salesforce/schema/Case.ProjectAddressValid__c";
 import PROJECT_NAME_FIELD from "@salesforce/schema/Case.Project_Name__c";
 import WEB_COMPANY_FORMULA_FIELD from "@salesforce/schema/Case.SuppliedCompany";
 import WEB_NAME_FIELD from "@salesforce/schema/Case.SuppliedName";
@@ -13,7 +14,12 @@ import convertCaseToLead from "@salesforce/apex/ConversionController.convertCase
 
 import { constantUtils } from 'c/lwcUtils';
 
-const FIELDS = [PPOJECT_ADDRESS_FORMULA_FIELD, PROJECT_NAME_FIELD, WEB_COMPANY_FORMULA_FIELD, WEB_NAME_FIELD, WEB_EMAIL_FIELD];
+const FIELDS = [
+    PPOJECT_ADDRESS_FORMULA_FIELD, PROJECT_NAME_FIELD, 
+    WEB_COMPANY_FORMULA_FIELD, WEB_NAME_FIELD, WEB_EMAIL_FIELD,
+    PPOJECT_ADDRESS_VALID_FIELD
+];
+
 const WEB_FIELDS = [WEB_COMPANY_FORMULA_FIELD, WEB_NAME_FIELD, WEB_EMAIL_FIELD];
 
 const FIELDS_LABELS = {
@@ -35,7 +41,7 @@ export default class CaseConversion extends NavigationMixin(LightningElement) {
             this.showError(constantUtils.CASE_CONVERSION_MESSAGES.FATAL_ERROR_MESSAGE);
             this.dispatchEvent(new CloseActionScreenEvent());
         } else if (data) {
-            if (getFieldValue(data, PPOJECT_ADDRESS_FORMULA_FIELD) === null && getFieldValue(data, PROJECT_NAME_FIELD) === null) {
+            if (!getFieldValue(data, PPOJECT_ADDRESS_VALID_FIELD) && getFieldValue(data, PROJECT_NAME_FIELD) === null) {
                 this.showError(constantUtils.CASE_CONVERSION_MESSAGES.PROJECT_DATA_MISSED_ERROR_MESSAGE);
                 this.dispatchEvent(new CloseActionScreenEvent());
             } else if (WEB_FIELDS.find(field => getFieldValue(data, field) === null)) {
@@ -70,12 +76,14 @@ export default class CaseConversion extends NavigationMixin(LightningElement) {
     }
 
     navigateToConvertedLead(leadId) {
-        this[NavigationMixin.Navigate]({
+        this[NavigationMixin.GenerateUrl]({
             type: 'standard__recordPage',
             attributes: {
                 recordId: leadId,
                 actionName: 'view'
             }
+        }).then((url) => {
+            window.location.replace(url);
         });
     }
 
