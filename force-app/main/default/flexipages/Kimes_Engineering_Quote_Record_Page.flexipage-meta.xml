@@ -69,6 +69,12 @@
                 <identifier>force_relatedListContainer</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>dfsle:Status</componentName>
+                <identifier>dfsle_Status</identifier>
+            </componentInstance>
+        </itemInstances>
         <mode>Replace</mode>
         <name>relatedListTabContent</name>
         <type>Facet</type>

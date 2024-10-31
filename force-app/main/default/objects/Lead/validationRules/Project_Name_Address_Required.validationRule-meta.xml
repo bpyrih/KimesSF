@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Name_Address_Required</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISBLANK(Project_Name__c) &amp;&amp; 
+(
+ISBLANK(Project_Address1__City__s) || ISBLANK(TEXT(Project_Address1__StateCode__s)) ||
+ISBLANK(Project_Address1__Street__s)
+)</errorConditionFormula>
+    <errorMessage>&quot;Project Name&quot; or &quot;Project Address&quot; should be populate!</errorMessage>
+</ValidationRule>
