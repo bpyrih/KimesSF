@@ -3,8 +3,7 @@
     <fullName>Project_Description__c</fullName>
     <label>Project Description</label>
     <length>4096</length>
-    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <type>LongTextArea</type>
-    <visibleLines>6</visibleLines>
+    <visibleLines>3</visibleLines>
 </CustomField>

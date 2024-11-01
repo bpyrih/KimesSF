@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>OpenSlackRecordChannel</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -183,9 +182,25 @@
         <relatedList>RelatedContentNoteList</relatedList>
     </relatedLists>
     <relatedLists>
+        <relatedList>RelatedFileList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>ContactName</fields>
+        <fields>Role</fields>
+        <fields>ContactTitle</fields>
+        <fields>IsPrimary</fields>
+        <fields>ContactPhone</fields>
+        <fields>ContactEmail</fields>
+        <fields>ContactAccountName</fields>
+        <relatedList>RelatedContactRoleList</relatedList>
+    </relatedLists>
+    <relatedLists>
         <fields>NAME</fields>
         <fields>Status__c</fields>
         <relatedList>Work_File__c.Opportunity__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>

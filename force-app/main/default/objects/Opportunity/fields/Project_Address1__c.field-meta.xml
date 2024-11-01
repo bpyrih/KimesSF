@@ -3,5 +3,6 @@
     <fullName>Project_Address1__c</fullName>
     <label>Project Address</label>
     <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
     <type>Address</type>
 </CustomField>
