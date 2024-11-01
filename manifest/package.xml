@@ -167,6 +167,10 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>Building_Department__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
         <members>Kimes_Engineering_UtilityBar</members>
         <members>Kimes_Engineering_Case_Record_Page</members>
         <members>Kimes_Engineering_Lead_Record_Page</members>
