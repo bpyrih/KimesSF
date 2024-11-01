@@ -31,6 +31,9 @@
                         <valueListItems>
                             <value>Global.NewEvent</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>ChangeOwnerOne</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>SendWithDocuSign</customButtons>
-    <excludeButtons>CreateContract</excludeButtons>
-    <excludeButtons>CreateOrder</excludeButtons>
-    <excludeButtons>OpenSlackRecordChannel</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
@@ -55,6 +52,14 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Estimated_Timeframe__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Project_Name__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Project_Description__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>

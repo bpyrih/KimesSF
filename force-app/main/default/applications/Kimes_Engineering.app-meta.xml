@@ -129,6 +129,7 @@
     <tabs>standard-Contact</tabs>
     <tabs>standard-Product2</tabs>
     <tabs>standard-Task</tabs>
+    <tabs>Building_Department__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Kimes_Engineering_UtilityBar</utilityBar>
 </CustomApplication>

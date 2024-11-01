@@ -3,10 +3,20 @@
     <fullName>Building_Department__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <label>Building Department</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.IsClosed</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
     <referenceTo>Building_Department__c</referenceTo>
     <relationshipLabel>Opportunities</relationshipLabel>
     <relationshipName>Opportunities</relationshipName>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
     <type>Lookup</type>
 </CustomField>
