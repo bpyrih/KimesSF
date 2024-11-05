@@ -4,43 +4,31 @@
     <description>Steps for residential drafting</description>
     <isActive>true</isActive>
     <values>
-        <fullName>Assign Technician</fullName>
+        <fullName>Accounting</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Billing</fullName>
+        <fullName>Client Review</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Closed</fullName>
+        <fullName>Closed Lost</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Create Quote</fullName>
+        <fullName>Closed Won</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Down Payment Pending</fullName>
+        <fullName>Draft</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Engineer Approval</fullName>
+        <fullName>Engineer Review</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Scope of Work</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Send Quote</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Submit Draft to Client</fullName>
-        <default>false</default>
-    </values>
-    <values>
-        <fullName>Technician Review</fullName>
+        <fullName>Quote</fullName>
         <default>false</default>
     </values>
 </BusinessProcess>

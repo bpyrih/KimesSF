@@ -3,14 +3,12 @@
     <fullName>AllOpportunities</fullName>
     <columns>Project_Address_Formula__c</columns>
     <columns>OPPORTUNITY.NAME</columns>
-    <columns>ACCOUNT.NAME</columns>
     <columns>OPPORTUNITY.AMOUNT</columns>
-    <columns>OPPORTUNITY.CLOSE_DATE</columns>
     <columns>OPPORTUNITY.STAGE_NAME</columns>
-    <columns>OPPORTUNITY.PROBABILITY</columns>
     <columns>OPPORTUNITY.TYPE</columns>
-    <columns>OPPORTUNITY.LEAD_SOURCE</columns>
     <columns>CORE.USERS.FULL_NAME</columns>
+    <columns>OPPORTUNITY.RECORDTYPE</columns>
+    <columns>ACCOUNT.NAME</columns>
     <filterScope>Everything</filterScope>
     <label>All Opportunities</label>
 </ListView>

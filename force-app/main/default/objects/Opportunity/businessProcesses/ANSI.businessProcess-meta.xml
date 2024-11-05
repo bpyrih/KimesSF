@@ -4,23 +4,31 @@
     <description>Standard ANSI process</description>
     <isActive>true</isActive>
     <values>
-        <fullName>Billing</fullName>
+        <fullName>Accounting</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Closed</fullName>
+        <fullName>Client Review</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Engineer Approval</fullName>
+        <fullName>Closed Lost</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Scope of Work</fullName>
+        <fullName>Closed Won</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Technician Review</fullName>
+        <fullName>Draft</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Engineer Review</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Quote</fullName>
         <default>false</default>
     </values>
 </BusinessProcess>
