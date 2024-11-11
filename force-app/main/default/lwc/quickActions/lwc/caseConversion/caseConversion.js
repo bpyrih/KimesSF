@@ -70,7 +70,7 @@ export default class CaseConversion extends NavigationMixin(LightningElement) {
         })
         .catch((error) => {
             console.log(error);
-            this.showError(ERROR_MESSAGE);
+            this.showError(constantUtils.CASE_CONVERSION_MESSAGES.FATAL_ERROR_MESSAGE);
             this.dispatchEvent(new CloseActionScreenEvent());
         });
     }
