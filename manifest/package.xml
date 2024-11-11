@@ -167,6 +167,7 @@
         <members>Client_Type</members>
         <members>Delivery_Method</members>
         <members>Estimated_Timeframe</members>
+        <members>Task_Templates</members>
         <name>GlobalValueSet</name>
     </types>
     <types>
