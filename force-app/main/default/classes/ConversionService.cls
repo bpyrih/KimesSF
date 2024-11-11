@@ -1,5 +1,5 @@
 public class ConversionService {
-    private static final String COMPLETED_STATUS = 'Completed';
+    private static final String COMPLETED_STATUS = 'Closed';
     private static final ConversionMappingsMetadataService convMappingMetadataService = new ConversionMappingsMetadataService();
     private static final SObjectUtility OPPORTUNITY_UTILITY = new SObjectUtility('Opportunity');
 

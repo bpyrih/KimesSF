@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <apiVersion>62.0</apiVersion>
+    <assignments>
+        <name>Add_Temp_Task</name>
+        <label>Add Temp Task</label>
+        <locationX>264</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>Opportunity_Tasks</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Temp_Task</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Task_Loop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Create_New_Task</name>
+        <label>Create New Task</label>
+        <locationX>264</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>Temp_Task.Opportunity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Temp_Task.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Task_Loop.Subject</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Temp_Task</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>CCCL_TEMPLATE</name>
+        <choiceText>CCCL REQUEST</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>CCCL REQUEST</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>FULL_PLAN_SET</name>
+        <choiceText>FULL PLAN SET</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>FULL PLAN SET</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>SPEC_TEMPLATE</name>
+        <choiceText>SPEC TEMPLATE</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>SPEC TEMPLATE</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>X537_DOVER_DR_S</name>
+        <choiceText>537 DOVER DR S</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>537 DOVER DR S</stringValue>
+        </value>
+    </choices>
+    <dynamicChoiceSets>
+        <name>Tasks_Template</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Template_Name__c</picklistField>
+        <picklistObject>Task</picklistObject>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <interviewLabel>Create Tasks {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Create Tasks</label>
+    <loops>
+        <name>Task_Loop</name>
+        <label>Task Loop</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <collectionReference>Template_Tasks</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Create_New_Task</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_Tasks</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Tasks</name>
+        <label>Create Tasks</label>
+        <locationX>176</locationX>
+        <locationY>758</locationY>
+        <inputReference>Opportunity_Tasks</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Template_Tasks</name>
+        <label>Get Template Tasks</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Task_Loop</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Template_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Template_Type</elementReference>
+            </value>
+        </filters>
+        <object>Task</object>
+        <outputReference>Template_Tasks</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Subject</queriedFields>
+        <queriedFields>Opportunity__c</queriedFields>
+    </recordLookups>
+    <screens>
+        <name>Template_Choice_Screen</name>
+        <label>Template Choice Screen</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Template_Tasks</targetReference>
+        </connector>
+        <fields>
+            <name>Template_Type</name>
+            <choiceReferences>Tasks_Template</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Template Type</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Template_Choice_Screen</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Opportunity_Tasks</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Temp_Task</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <name>Template_Tasks</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Task</objectType>
+    </variables>
+</Flow>

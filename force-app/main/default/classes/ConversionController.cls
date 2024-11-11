@@ -3,13 +3,13 @@ public class ConversionController {
 
     @AuraEnabled
     public static Id convertCaseToLead(Id caseId) {
-        // try {
+        try {
             Id leadId = conversionService.convertCaseToLead(caseId, true).Id;
             conversionService.markCaseAsConverted(caseId, leadId, null);
             return leadId;
-    //     } catch (Exception e) {
-    //         throw new AuraHandledException(e.getMessage());
-    //     }
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
     }
 
     @AuraEnabled
