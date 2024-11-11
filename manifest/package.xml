@@ -112,6 +112,10 @@
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
+        
+        <members>Activity.IsTemplateActivity__c</members>
+        <members>Activity.Opportunity__c</members>
+        <members>Activity.Template_Name__cs</members>
 
         <members>Conversion_Mapping__mdt.Destination_Field__c</members>
         <members>Conversion_Mapping__mdt.Source_Field__c</members>
@@ -131,6 +135,7 @@
         <members>Work_File__c</members>
         <members>Building_Department__c</members>
         <members>Conversion_Mapping__mdt</members>
+        <members>Activity</members>
         <name>CustomObject</name>
     </types>
     <types>
