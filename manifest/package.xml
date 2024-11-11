@@ -31,6 +31,7 @@
         <members>New_Contractor_Set</members>
         <members>Opportunity_Pre_Proposal</members>
         <members>Converted_Opportunity_Project_Address_Update</members>
+        <members>Create_Tasks</members>
         <name>Flow</name>
     </types>
     <types>
@@ -113,6 +114,10 @@
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
 
+        <members>Activity.IsTemplateActivity__c</members>
+        <members>Activity.Opportunity__c</members>
+        <members>Activity.Template_Name__c</members>
+
         <members>Conversion_Mapping__mdt.Destination_Field__c</members>
         <members>Conversion_Mapping__mdt.Source_Field__c</members>
         <members>Conversion_Mapping__mdt.Field_Convert_Type__c</members>
@@ -131,6 +136,7 @@
         <members>Work_File__c</members>
         <members>Building_Department__c</members>
         <members>Conversion_Mapping__mdt</members>
+        <members>Activity</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -153,6 +159,7 @@
     <types>
         <members>Case.Convert_to_Lead</members>
         <members>Case.Convert_to_Opportunity</members>
+        <members>Opportunity.Create_Sub_Tasks</members>
         <name>QuickAction</name>
     </types>
     <types>
@@ -198,6 +205,7 @@
     </types>
     <types>
         <members>OpportunityStage</members>
+        <members>CaseStatus</members>
         <name>StandardValueSet</name>
     </types>
     <types>
