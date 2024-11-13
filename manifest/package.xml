@@ -8,6 +8,9 @@
         <members>ConversionService</members>
         <members>SObjectUtility</members>
         <members>ConversionMappingsMetadataService</members>
+
+        <members>ProjectTaskTriggerHandler</members>
+        <members>ProjectTaskTriggerService</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -23,7 +26,7 @@
         <name>ApexTestSuite</name>
     </types>
     <types>
-        <members>*</members>
+        <members>ProjectTask</members>
         <name>ApexTrigger</name>
     </types>
     <types>
