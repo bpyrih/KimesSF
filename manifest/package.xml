@@ -122,6 +122,16 @@
         <members>Conversion_Mapping__mdt.Source_Field__c</members>
         <members>Conversion_Mapping__mdt.Field_Convert_Type__c</members>
         <members>Conversion_Mapping__mdt.Formula__c</members>
+
+        <members>Project_Task__c.Status__c</members>
+        <members>Project_Task__c.Assigned_To__c</members>
+        <members>Project_Task__c.IsClosed__c</members>
+        <members>Project_Task__c.Comments__c</members>
+        <members>Project_Task__c.Due_Date__c</members>
+        <members>Project_Task__c.Opportunity__c</members>
+        <members>Project_Task__c.Priority__c</members>
+        <members>Project_Task__c.Status__c</members>
+        <members>Project_Task__c.Template_Name__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -137,6 +147,7 @@
         <members>Building_Department__c</members>
         <members>Conversion_Mapping__mdt</members>
         <members>Activity</members>
+        <members>Project_Task__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -154,6 +165,7 @@
         <members>Work_File__c-Work File Layout</members>
         <members>Building_Department__c-Building Department Layout</members>
         <members>Conversion_Mapping__mdt-Conversion Mapping Layout</members>
+        <members>Project_Task__c-Project Task Layout</members>
         <name>Layout</name>
     </types>
     <types>
@@ -176,6 +188,7 @@
     </types>
     <types>
         <members>Building_Department__c</members>
+        <members>Project_Task__c</members>
         <name>CustomTab</name>
     </types>
     <types>
@@ -187,6 +200,10 @@
         <members>Kimes_Engineering_Work_File_Record_Page</members>
         <members>Kimes_Engineering_Contact_Record_Page</members>
         <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Project_Task__c</members>
+        <name>SharingRules</name>
     </types>
     <types>
         <members>*</members>
