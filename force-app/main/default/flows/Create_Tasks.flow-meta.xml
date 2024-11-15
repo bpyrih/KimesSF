@@ -23,17 +23,17 @@
         <locationX>264</locationX>
         <locationY>458</locationY>
         <assignmentItems>
+            <assignToReference>Temp_Task.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Task_Loop.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
             <assignToReference>Temp_Task.Opportunity__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>recordId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Temp_Task.Subject</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Task_Loop.Subject</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -48,41 +48,17 @@
             <stringValue>CCCL REQUEST</stringValue>
         </value>
     </choices>
-    <choices>
-        <name>FULL_PLAN_SET</name>
-        <choiceText>FULL PLAN SET</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>FULL PLAN SET</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>SPEC_TEMPLATE</name>
-        <choiceText>SPEC TEMPLATE</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>SPEC TEMPLATE</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>X537_DOVER_DR_S</name>
-        <choiceText>537 DOVER DR S</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>537 DOVER DR S</stringValue>
-        </value>
-    </choices>
     <dynamicChoiceSets>
-        <name>Tasks_Template</name>
+        <name>Task_Templates</name>
         <dataType>Picklist</dataType>
         <displayField xsi:nil="true"/>
         <object xsi:nil="true"/>
         <picklistField>Template_Name__c</picklistField>
-        <picklistObject>Task</picklistObject>
+        <picklistObject>Project_Task__c</picklistObject>
     </dynamicChoiceSets>
     <environments>Default</environments>
     <interviewLabel>Create Tasks {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Create Tasks</label>
+    <label>Create Project Template Tasks</label>
     <loops>
         <name>Task_Loop</name>
         <label>Task Loop</label>
@@ -140,11 +116,10 @@
                 <elementReference>Template_Type</elementReference>
             </value>
         </filters>
-        <object>Task</object>
+        <object>Project_Task__c</object>
         <outputReference>Template_Tasks</outputReference>
         <queriedFields>Id</queriedFields>
-        <queriedFields>Subject</queriedFields>
-        <queriedFields>Opportunity__c</queriedFields>
+        <queriedFields>Name</queriedFields>
     </recordLookups>
     <screens>
         <name>Template_Choice_Screen</name>
@@ -159,7 +134,7 @@
         </connector>
         <fields>
             <name>Template_Type</name>
-            <choiceReferences>Tasks_Template</choiceReferences>
+            <choiceReferences>Task_Templates</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Template Type</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -183,7 +158,7 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>Task</objectType>
+        <objectType>Project_Task__c</objectType>
     </variables>
     <variables>
         <name>recordId</name>
@@ -198,7 +173,7 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>Task</objectType>
+        <objectType>Project_Task__c</objectType>
     </variables>
     <variables>
         <name>Template_Tasks</name>
@@ -206,6 +181,6 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>Task</objectType>
+        <objectType>Project_Task__c</objectType>
     </variables>
 </Flow>

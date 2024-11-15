@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Template_Task</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Template Task</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+        <criteriaItems>
+            <field>Template_Name__c</field>
+            <operation>equals</operation>
+            <value>CCCL TEMPLATE,SPEC TEMPLATE,537 DOVER DR S,FULL PLAN SET</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+</SharingRules>

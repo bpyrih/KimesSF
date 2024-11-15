@@ -230,18 +230,14 @@
         <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
-        <excludeButtons>NewEvent</excludeButtons>
-        <fields>TASK.SUBJECT</fields>
-        <fields>TASK.STATUS</fields>
-        <fields>TASK.PRIORITY</fields>
-        <fields>TASK.DUE_DATE</fields>
-        <fields>TASK.CLOSED</fields>
-        <fields>CORE.USERS.FULL_NAME</fields>
-        <quickActions>Task.Defer</quickActions>
-        <quickActions>Task.UpdatePriority</quickActions>
-        <quickActions>Task.UpdateStatus</quickActions>
-        <quickActions>Task.EditDescription</quickActions>
-        <relatedList>Activity.Opportunity__c</relatedList>
+        <fields>MemberName</fields>
+        <fields>OppAccessLevel</fields>
+        <fields>TeamMemberRole</fields>
+        <relatedList>RelatedOpportunitySalesTeam</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Project_Task__c.Opportunity__c</relatedList>
     </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
