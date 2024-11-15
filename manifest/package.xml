@@ -32,6 +32,9 @@
         <members>Opportunity_Pre_Proposal</members>
         <members>Converted_Opportunity_Project_Address_Update</members>
         <members>Create_Tasks</members>
+        <members>Lead_Search_Address_Update</members>
+        <members>Case_Search_Address_Update</members>
+        <members>Opportunity_Quick_Fields_Updates</members>
         <name>Flow</name>
     </types>
     <types>
