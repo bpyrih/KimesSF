@@ -110,6 +110,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Project_Name__c</field>
+            <value>
+                <elementReference>$Record.Project_Name__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>RecordTypeId</field>
             <value>
                 <elementReference>Get_Pre_Proposal_RT.Id</elementReference>
