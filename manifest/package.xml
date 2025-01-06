@@ -160,6 +160,8 @@
         <members>Project_Task__c</members>
         <members>Document_Sign_Config__c</members>
         <members>Document_Sign_Element__c</members>
+        <members>Org_Variable__mdt</members>
+        <members>ContentVersion</members>
         <name>CustomObject</name>
     </types>
     <types>
