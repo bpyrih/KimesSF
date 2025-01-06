@@ -510,6 +510,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContentVersion.File_Sign_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Conversion_Mapping__mdt.Formula__c</field>
         <readable>false</readable>
     </fieldPermissions>
