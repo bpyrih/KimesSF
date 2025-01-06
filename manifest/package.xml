@@ -207,6 +207,7 @@
         <members>Building_Department__c</members>
         <members>Project_Task__c</members>
         <members>Document_Sign_Config__c</members>
+        <members>Work_File__c</members>
         <name>CustomTab</name>
     </types>
     <types>
