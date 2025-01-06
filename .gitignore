@@ -1,4 +1,9 @@
 .sfdx
 .sf
+*.jks
+*.key
+*.p12
+*.pem
 config
 Org_Account_Hierarchy.listView-meta.xml
+/hardis-report
