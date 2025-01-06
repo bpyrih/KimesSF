@@ -188,6 +188,7 @@
         <members>Case.Convert_to_Lead</members>
         <members>Case.Convert_to_Opportunity</members>
         <members>Opportunity.Create_Sub_Tasks</members>
+        <members>Work_File__c.Custom_Send_Review</members>
         <name>QuickAction</name>
     </types>
     <types>
@@ -205,6 +206,7 @@
     <types>
         <members>Building_Department__c</members>
         <members>Project_Task__c</members>
+        <members>Document_Sign_Config__c</members>
         <name>CustomTab</name>
     </types>
     <types>
