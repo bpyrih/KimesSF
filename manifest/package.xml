@@ -8,6 +8,12 @@
         <members>ConversionService</members>
         <members>SObjectUtility</members>
         <members>ConversionMappingsMetadataService</members>
+        <members>UpdateRecordController</members>
+        <members>WorkFileSignController</members>
+        <members>DocuSignDTO</members>
+        <members>DocuSignService</members>
+        <members>ContentDocumentUtilityDAO</members>
+        <members>ConstantUtils</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -15,7 +21,7 @@
         <name>ApexComponent</name>
     </types>
     <types>
-        <members>*</members>
+        <members>UpdateRecordPage</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -45,6 +51,7 @@
         <members>caseConversion</members>
         <members>caseConvesionToOpp</members>
         <members>lwcUtils</members>
+        <members>sendDocumentReview</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -151,6 +158,8 @@
         <members>Conversion_Mapping__mdt</members>
         <members>Activity</members>
         <members>Project_Task__c</members>
+        <members>Document_Sign_Config__c</members>
+        <members>Document_Sign_Element__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -169,6 +178,8 @@
         <members>Building_Department__c-Building Department Layout</members>
         <members>Conversion_Mapping__mdt-Conversion Mapping Layout</members>
         <members>Project_Task__c-Project Task Layout</members>
+        <members>Document_Sign_Config__c-Document Sign Config Layout</members>
+        <members>Document_Sign_Element__c-Document Sign Element Layout</members>
         <name>Layout</name>
     </types>
     <types>

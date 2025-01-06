@@ -1,0 +1,8 @@
+<template>
+    <div lwc:if={loading} class="spinnerClass">
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </div>
+    
+    <a lwc:else href={url} target="_blank" onclick={handleClick}>Open DocuSign Link</a>
+    <!-- <iframe lwc:else src={url} style="min-height: 800px; width: 100%"></iframe> -->
+</template>

@@ -10,7 +10,15 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ConstantUtils</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ContactDAO</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentDocumentUtilityDAO</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -26,11 +34,27 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DocuSignDTO</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DocuSignService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>LeadDAO</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SObjectUtility</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UpdateRecordController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WorkFileSignController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <custom>false</custom>
@@ -493,6 +517,46 @@
         <editable>false</editable>
         <field>Conversion_Mapping__mdt.Source_Field__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Config__c.Document_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.Element_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.Page_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.height__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.width__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.xPosition__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.yPosition__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -1156,6 +1220,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Work_File__c.Engineer_Sign_User__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_File__c.EnvelopId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_File__c.SignURL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Work_File__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1173,6 +1252,12 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Conversion_Mapping__mdt-Conversion Mapping Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Document_Sign_Config__c-Document Sign Config Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Document_Sign_Element__c-Document Sign Element Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
@@ -1257,6 +1342,24 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>Document_Sign_Config__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Document_Sign_Element__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Lead</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -1305,6 +1408,10 @@
         <object>Work_File__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <pageAccesses>
+        <apexPage>UpdateRecordPage</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <recordTypeVisibilities>
         <default>true</default>
         <recordType>Opportunity.ANSI</recordType>
@@ -1766,6 +1873,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageExchangeConfig</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManageFilesAndAttachments</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

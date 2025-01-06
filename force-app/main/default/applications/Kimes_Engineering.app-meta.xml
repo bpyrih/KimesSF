@@ -131,6 +131,8 @@
     <tabs>standard-Task</tabs>
     <tabs>Building_Department__c</tabs>
     <tabs>Project_Task__c</tabs>
+    <tabs>Document_Sign_Config__c</tabs>
+    <tabs>Work_File__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Kimes_Engineering_UtilityBar</utilityBar>
 </CustomApplication>
