@@ -1357,6 +1357,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Document_Sign_Config__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Project_Task__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
