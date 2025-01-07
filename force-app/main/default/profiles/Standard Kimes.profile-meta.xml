@@ -42,6 +42,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DocumentSignElementTriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>LeadDAO</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -517,6 +521,11 @@
         <editable>false</editable>
         <field>Conversion_Mapping__mdt.Source_Field__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Config__c.Config_Fields__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
