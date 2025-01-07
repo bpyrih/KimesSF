@@ -27,10 +27,9 @@ public with sharing class ConstantUtils {
         List<String> results = new List<String>();
         
         if (String.isBlank(input)) {
-            return results; // Return empty list if input is null or empty.
+            return results;
         }
         
-        // Regular expression to match substrings starting with '{' and ending with '}'.
         String regex = '\\{[^}]*\\}';
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
@@ -54,12 +53,58 @@ public with sharing class ConstantUtils {
             String fieldName = fieldParts[i];
             currentObject = (SObject) currentObject.getSObject(fieldName);
             if (currentObject == null) {
-                return null; // If any relationship is null, return null.
+                return null;
             }
         }
         
-        // Get the final field value
         String finalFieldName = fieldParts[fieldParts.size() - 1];
         return currentObject.get(finalFieldName);
+    }
+
+    public static Boolean validateRelationshipPath(String relationshipPath, String sObjectName) {
+        try {
+            Schema.SObjectType sObjectType = Schema.getGlobalDescribe().get(sObjectName);
+            if (sObjectType == null) {
+                return false;
+            }
+
+            Schema.DescribeSObjectResult describeResult = sObjectType.getDescribe();
+
+            String[] fields = relationshipPath.split('\\.');
+
+            for (Integer i = 0; i < fields.size(); i++) {
+                String field = fields[i].toLowerCase().replace('__r', '__c');
+                if (!field.contains('__c') && i != fields.size() - 1) {
+                    field = field + 'id';
+                }
+
+                Map<String, Schema.SObjectField> fieldMap = describeResult.fields.getMap();
+
+                if (!fieldMap.containsKey(field)) {
+                    return false;
+                }
+
+                if (i == fields.size() - 1) {
+                    return true;
+                }
+
+                Schema.DescribeFieldResult fieldDescribe = fieldMap.get(field).getDescribe();
+                if (fieldDescribe.getType() == Schema.DisplayType.REFERENCE) {
+                    List<Schema.SObjectType> referenceTo = fieldDescribe.getReferenceTo();
+                    if (!referenceTo.isEmpty()) {
+                        describeResult = referenceTo[0].getDescribe();
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            System.debug('Error validating relationship path: ' + e.getMessage());
+            return false;
+        }
+
+        return true;
     }
 }
