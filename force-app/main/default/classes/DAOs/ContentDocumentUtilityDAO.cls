@@ -6,7 +6,7 @@ public with sharing class ContentDocumentUtilityDAO {
     }
 
     public List<ContentVersion> getContentVersionByIds(Set<Id> contentVersionIds) {
-        return [SELECT Id, VersionData, File_Sign_Type__c FROM ContentVersion WHERE Id IN :contentVersionIds];
+        return [SELECT Id, VersionData FROM ContentVersion WHERE Id IN :contentVersionIds];
     }
 
 }

@@ -12,7 +12,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Document_Type__c</field>
+                <field>Document_Sign_Template__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

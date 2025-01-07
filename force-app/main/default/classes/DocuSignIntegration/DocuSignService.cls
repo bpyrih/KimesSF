@@ -126,6 +126,8 @@ public with sharing class DocuSignService {
                 signer.setSignerHereTab(getSignTab(signElement, createEnvelopWrapper.documentId));
             } else if (signElement.Element_Type__c == 'Text') {
                 signer.setTextTab(getTextTab(signElement, createEnvelopWrapper));
+            } else if (signElement.Element_Type__c == 'Seal') {
+                signer.setSealTab(getSealTab(signElement, createEnvelopWrapper.documentId));
             }
         }
         return signer;
@@ -133,6 +135,15 @@ public with sharing class DocuSignService {
 
     private static DocuSignDTO.SignerHereTab getSignTab(Document_Sign_Element__c signElement, String documentId) {
         DocuSignDTO.SignerHereTab tab = new DocuSignDTO.SignerHereTab();
+        tab.documentId = documentId;
+        tab.pageNumber = String.valueOf(signElement.Page_Number__c);
+        tab.xPosition = String.valueOf(signElement.xPosition__c);
+        tab.yPosition = String.valueOf(signElement.yPosition__c);
+        return tab;
+    }
+
+    private static DocuSignDTO.NotarySealTab getSealTab(Document_Sign_Element__c signElement, String documentId) {
+        DocuSignDTO.NotarySealTab tab = new DocuSignDTO.NotarySealTab();
         tab.documentId = documentId;
         tab.pageNumber = String.valueOf(signElement.Page_Number__c);
         tab.xPosition = String.valueOf(signElement.xPosition__c);

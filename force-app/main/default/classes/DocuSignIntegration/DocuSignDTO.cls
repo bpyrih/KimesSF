@@ -57,6 +57,14 @@ public class DocuSignDTO {
             
             tabs.textTabs.add(textTab);
         }
+
+        public void setSealTab(NotarySealTab sealTab) {
+            if (tabs.notarySealTabs == null) {
+                tabs.notarySealTabs = new List<NotarySealTab>();
+            }
+            
+            tabs.notarySealTabs.add(sealTab);
+        }
     }
 
     public class SignTabs {

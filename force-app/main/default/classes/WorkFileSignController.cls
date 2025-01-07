@@ -39,8 +39,8 @@ public with sharing class WorkFileSignController {
             createEnvelopWrapper.document = sourceFiles[0].ContentDocument;
             createEnvelopWrapper.base64Document = EncodingUtil.base64Encode(conVersions[0].VersionData);
 
-            if (conVersions[0].File_Sign_Type__c != null) {
-                Document_Sign_Config__c signConfig = getDocumentSignConfig(conVersions[0].File_Sign_Type__c);
+            if (workFile.Document_Sign_Template__c != null) {
+                Document_Sign_Config__c signConfig = getDocumentSignConfig(workFile.Document_Sign_Template__c);
 
                 createEnvelopWrapper.signConfig = signConfig;
             }
@@ -53,13 +53,13 @@ public with sharing class WorkFileSignController {
         return [
             SELECT Id, (SELECT Page_Number__c, Element_Type__c, xPosition__c, yPosition__c, height__c, width__c, value__c FROM Document_Sign_Elements__r)
             FROM Document_Sign_Config__c 
-            WHERE Document_Type__c =: fileSignType
+            WHERE Document_Sign_Template__c =: fileSignType
         ];
     }
 
     public static Work_File__c getWorkFile(Id workFileId) {
         Work_File__c workFile = [
-            SELECT Id, Status__c, EnvelopId__c, SignURL__c, Engineer_Sign_User__r.Name, Engineer_Sign_User__r.Email, Opportunity__r.Project_Name__c     
+            SELECT Id, Status__c, EnvelopId__c, SignURL__c, Engineer_Sign_User__r.Name, Engineer_Sign_User__r.Email, Opportunity__r.Project_Name__c, Document_Sign_Template__c    
             FROM Work_File__c
             WHERE Id = :workFileId
         ];

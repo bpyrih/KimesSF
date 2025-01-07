@@ -161,7 +161,6 @@
         <members>Document_Sign_Config__c</members>
         <members>Document_Sign_Element__c</members>
         <members>Org_Variable__mdt</members>
-        <members>ContentVersion</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -197,6 +196,7 @@
         <members>Delivery_Method</members>
         <members>Estimated_Timeframe</members>
         <members>Task_Templates</members>
+        <members>Document_Sign_Template</members>
         <name>GlobalValueSet</name>
     </types>
     <types>
