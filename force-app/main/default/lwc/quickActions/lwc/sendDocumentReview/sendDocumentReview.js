@@ -1,57 +1,71 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import { CloseActionScreenEvent } from "lightning/actions";
 import { NavigationMixin } from 'lightning/navigation';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import sentReview from "@salesforce/apex/WorkFileSignController.sentReview";
+
+import ENGINEER_SIGN_USER from "@salesforce/schema/Work_File__c.Engineer_Sign_User__c";
+
+const FIELDS = [
+    ENGINEER_SIGN_USER
+];
 
 export default class SendDocumentReview extends NavigationMixin(LightningElement) {
     @api
     recordId;
 
-    launched = false;
     url;
     
     get loading() {
         return !this.recordId || !this.url;
     }
 
-    connectedCallback() {
-        window.addEventListener('message', this.handleMessage.bind(this));
-    }
-
-    handleMessage(message) {
-        console.log(JSON.stringify(message))
-    }
-
-    renderedCallback() {
-        console.log(this.recordId);
-        if (this.recordId && !this.launched) {
-            this.launched = true;
-            
-            sentReview({workFileId : this.recordId})
-            .then(result => {
-                console.log(result);
-                this.url = result;
-                // this[NavigationMixin.GenerateUrl]({
-                //     type: 'standard__webPage',
-                //     attributes: {
-                //         url: result
-                //     }
-                // }).then((url) => {
-                //     this.url = url;
-                // });
-                console.log('result');
-                // this.dispatchEvent(new CloseActionScreenEvent());
-            })
-            .catch((error) => {
-                console.log(error);
+    @wire(getRecord, { recordId: '$recordId', fields: FIELDS})
+    wiredRecord({ error, data }) {
+        if (error) {
+            console.log(error);
+            this.showError(constantUtils.CASE_CONVERSION_MESSAGES.FATAL_ERROR_MESSAGE);
+            this.dispatchEvent(new CloseActionScreenEvent());
+        } else if (data) {
+            if (!getFieldValue(data, ENGINEER_SIGN_USER)) {
+                this.showError('Populate Engineer Sign User for Sign process!');
                 this.dispatchEvent(new CloseActionScreenEvent());
-            });
+            } else {
+                this.processSigning();
+            }
         }
+    }
+    
+    processSigning() {
+        sentReview({workFileId : this.recordId})
+        .then(result => {
+            this.url = result;
+        })
+        .catch((error) => {
+            console.log(error);
+            this.dispatchEvent(new CloseActionScreenEvent());
+        });
     }
 
     handleClick() {
-        console.log('asdasdasdasd');
-        
         window.close();
+    }
+
+    showSuccess(message) {
+        this.showToast(message, 'success', 'Success!');
+    }
+
+    showError(message) {
+        this.showToast(message, 'error', 'Error!');
+    }
+
+    showToast(message, variant, title) {
+        const event = new ShowToastEvent({
+            title,
+            message,
+            variant
+        });
+        this.dispatchEvent(event);
     }
 }

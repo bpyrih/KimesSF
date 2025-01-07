@@ -15,6 +15,11 @@
         <default>false</default>
         <label>Digital Separate</label>
     </customValue>
+    <customValue>
+        <fullName>Digital &amp; Hard copy</fullName>
+        <default>false</default>
+        <label>Digital &amp; Hard copy</label>
+    </customValue>
     <masterLabel>Delivery Method</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
