@@ -240,7 +240,30 @@
         <name>MatchingRule</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Conversion_Mapping.Lead_Client_Type</members>
+        <members>Conversion_Mapping.Lead_Company</members>
+        <members>Conversion_Mapping.Lead_Converted_Case</members>
+        <members>Conversion_Mapping.Lead_Delivery_Method</members>
+        <members>Conversion_Mapping.Lead_Email</members>
+        <members>Conversion_Mapping.Lead_FirstName</members>
+        <members>Conversion_Mapping.Lead_Flood_Zone</members>
+        <members>Conversion_Mapping.Lead_Hard_Copy_Number</members>
+        <members>Conversion_Mapping.Lead_Is_PPP</members>
+        <members>Conversion_Mapping.Lead_LastName</members>
+        <members>Conversion_Mapping.Lead_Lot_Number</members>
+        <members>Conversion_Mapping.Lead_Phone</members>
+        <members>Conversion_Mapping.Lead_Project_Address</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_City</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_CountryCode</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_PostalCode</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_StateCode</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_Street</members>
+        <members>Conversion_Mapping.Lead_Project_Description</members>
+        <members>Conversion_Mapping.Lead_Project_Name</members>
+        <members>Conversion_Mapping.Lead_Property_Owner</members>
+        <members>Conversion_Mapping.Lead_Rating</members>
+        <members>Conversion_Mapping.Lead_Receive_Date</members>
+        <members>Conversion_Mapping.Lead_Request_Type</members>
         <name>CustomMetadata</name>
     </types>
     <types>
