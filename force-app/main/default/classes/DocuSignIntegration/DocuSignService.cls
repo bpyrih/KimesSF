@@ -1,9 +1,11 @@
 public with sharing class DocuSignService {
+    
     public static final String DOCUSIGN_NAMED_CREDS = 'callout:DocuSign';
-    public static final String CREATE_ENVELOP_ENDPOINT = DOCUSIGN_NAMED_CREDS + '/restapi/v2.1/accounts/31369791/envelopes';
-    public static final String VIEW_RECIPIENTS_EDPOINT = DOCUSIGN_NAMED_CREDS + '/restapi/v2.1/accounts/31369791/envelopes/{envelopId}/views/recipient';
-    public static final String GET_ENVELOP_EDPOINT = DOCUSIGN_NAMED_CREDS + '/restapi/v2.1/accounts/31369791/envelopes/{envelopId}';
-    public static final String GET_SIGNED_DOCUMENT = DOCUSIGN_NAMED_CREDS + '/restapi/v2.1/accounts/72ebd932-a2be-4663-a803-247a4c655ed5/envelopes/{envelopId}/documents/{documentId}?encoding=base64';
+    public static final String COMMON_PATH = '/restapi/v2.1/accounts/' + ConstantUtils.DOCUSING_ACCOUNT_NUMBER;
+    public static final String CREATE_ENVELOP_ENDPOINT = DOCUSIGN_NAMED_CREDS + COMMON_PATH + '/envelopes';
+    public static final String VIEW_RECIPIENTS_EDPOINT = DOCUSIGN_NAMED_CREDS + COMMON_PATH + '/envelopes/{envelopId}/views/recipient';
+    public static final String GET_ENVELOP_EDPOINT = DOCUSIGN_NAMED_CREDS + COMMON_PATH + '/envelopes/{envelopId}';
+    public static final String GET_SIGNED_DOCUMENT = DOCUSIGN_NAMED_CREDS + COMMON_PATH + '/envelopes/{envelopId}/documents/{documentId}?encoding=base64';
 
     public static final Map<String, String> headersMap = new Map<String, String> {'Content-Type' => 'application/json'};
     public static final Map<String, String> headersMapGetDocument = new Map<String, String> {'Content-Type' => 'application/pdf', 'Content-Transfer-Encoding' => 'base64'};
@@ -51,7 +53,7 @@ public with sharing class DocuSignService {
         request.userName = workFile.Engineer_Sign_User__r.Name;
         request.authenticationMethod = 'none';
         request.clientUserId = '1';
-        request.returnUrl = Org_Variable__mdt.getInstance('VisualForceURL').Value__c + '/apex/UpdateRecordPage?recordId=' + workFile.Id;
+        request.returnUrl = ConstantUtils.VISUAL_FORCE_URL + '/apex/UpdateRecordPage?recordId=' + workFile.Id;
 
         String strRequest = JSON.serialize(request);
         System.debug(strRequest);
