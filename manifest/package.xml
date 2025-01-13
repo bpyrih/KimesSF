@@ -221,6 +221,7 @@
         <members>Kimes_Engineering_Quote_Record_Page</members>
         <members>Kimes_Engineering_Work_File_Record_Page</members>
         <members>Kimes_Engineering_Contact_Record_Page</members>
+        <members>Kimes_Engineering_Document_Sign_Element_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
