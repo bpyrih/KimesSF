@@ -130,6 +130,8 @@ public with sharing class DocuSignService {
                 signer.setTextTab(getTextTab(signElement, createEnvelopWrapper));
             } else if (signElement.Element_Type__c == 'Seal') {
                 signer.setSealTab(getSealTab(signElement, createEnvelopWrapper.documentId));
+            } else if (signElement.Element_Type__c == 'Stamp') {
+                signer.setSignerHereTab(getStampTab(signElement, createEnvelopWrapper.documentId));
             }
         }
         return signer;
@@ -141,6 +143,20 @@ public with sharing class DocuSignService {
         tab.pageNumber = String.valueOf(signElement.Page_Number__c);
         tab.xPosition = String.valueOf(signElement.xPosition__c);
         tab.yPosition = String.valueOf(signElement.yPosition__c);
+        tab.yPosition = String.valueOf(signElement.yPosition__c);
+        tab.scaleValue = String.valueOf(signElement.scaleValue__c);
+        return tab;
+    }
+
+    private static DocuSignDTO.SignerHereTab getStampTab(Document_Sign_Element__c signElement, String documentId) {
+        DocuSignDTO.SignerHereTab tab = new DocuSignDTO.SignerHereTab();
+        tab.documentId = documentId;
+        tab.pageNumber = String.valueOf(signElement.Page_Number__c);
+        tab.xPosition = String.valueOf(signElement.xPosition__c);
+        tab.yPosition = String.valueOf(signElement.yPosition__c);
+        tab.yPosition = String.valueOf(signElement.yPosition__c);
+        tab.scaleValue = String.valueOf(signElement.scaleValue__c);
+        tab.stampType = 'stamp';
         return tab;
     }
 

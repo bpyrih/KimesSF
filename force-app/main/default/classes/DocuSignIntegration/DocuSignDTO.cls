@@ -78,6 +78,8 @@ public class DocuSignDTO {
         public String pageNumber;
         public String xPosition;
         public String yPosition;
+        public String stampType;
+        public String scaleValue;
     }
 
     public class NotarySealTab {
