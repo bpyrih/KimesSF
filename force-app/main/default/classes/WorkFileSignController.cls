@@ -51,7 +51,7 @@ public with sharing class WorkFileSignController {
 
     public static Document_Sign_Config__c getDocumentSignConfig(String fileSignType) {
         return [
-            SELECT Id, (SELECT Page_Number__c, Element_Type__c, xPosition__c, yPosition__c, height__c, width__c, value__c FROM Document_Sign_Elements__r)
+            SELECT Id, (SELECT Page_Number__c, Element_Type__c, xPosition__c, yPosition__c, height__c, width__c, value__c, scaleValue__c FROM Document_Sign_Elements__r)
             FROM Document_Sign_Config__c 
             WHERE Document_Sign_Template__c =: fileSignType
         ];

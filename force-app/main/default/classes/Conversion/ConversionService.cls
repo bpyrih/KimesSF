@@ -37,6 +37,7 @@ public class ConversionService {
             Database.SaveResult sr2 = Database.insert(convertedLead, dml);
         }
         this.assignFilesFromRecordToRecord(caseId, convertedLead.Id);
+        this.assignActivitiesFromRecordToRecord(caseId, convertedLead.Id);
         return convertedLead;
     }
 
@@ -91,5 +92,41 @@ public class ConversionService {
         }
 
         insert files;
+    }
+
+    public void assignActivitiesFromRecordToRecord(Id sourceId, Id targetId) {
+        List<Task> tasks = [SELECT Subject, Status, Priority, Description, OwnerId, ActivityDate, TaskSubtype
+                        FROM Task
+                        WHERE WhatId = :sourceId];
+                        
+        List<Event> events = [SELECT Subject, Location, StartDateTime, EndDateTime, Description, OwnerId, EventSubtype
+                            FROM Event
+                            WHERE WhatId = :sourceId];
+
+        // Clone Tasks
+        List<Task> clonedTasks = new List<Task>();
+        for (Task task : tasks) {
+            Task newTask = task.clone(false, true, false, false);
+            newTask.WhatId = null; // Update WhatId to the target record
+            newTask.WhoId = targetId; // Update WhatId to the target record
+            clonedTasks.add(newTask);
+        }
+
+        // Clone Events
+        List<Event> clonedEvents = new List<Event>();
+        for (Event event : events) {
+            Event newEvent = event.clone(false, true, false, false);
+            newEvent.WhatId = null; // Update WhatId to the target record
+            newEvent.WhoId = targetId; // Update WhatId to the target record
+            clonedEvents.add(newEvent);
+        }
+
+        // Insert cloned records
+        if (!clonedTasks.isEmpty()) {
+            insert clonedTasks;
+        }
+        if (!clonedEvents.isEmpty()) {
+            insert clonedEvents;
+        }
     }
 }

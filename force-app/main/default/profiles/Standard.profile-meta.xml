@@ -549,6 +549,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Document_Sign_Element__c.scaleValue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Document_Sign_Element__c.value__c</field>
         <readable>true</readable>
     </fieldPermissions>

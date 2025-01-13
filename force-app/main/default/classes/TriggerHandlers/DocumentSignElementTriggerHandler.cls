@@ -1,10 +1,12 @@
 public with sharing class DocumentSignElementTriggerHandler {
 
     public static void beforeInsert(List<Document_Sign_Element__c> newDocSignElements) {
+        validateRecordFieldValues(newDocSignElements);
         validateFields(newDocSignElements);
     }
 
     public static void beforeUpdate(List<Document_Sign_Element__c> newDocSignElements, Map<Id, Document_Sign_Element__c> oldDocSignElementsMap) {
+        validateRecordFieldValues(newDocSignElements);
         validateFields(newDocSignElements);
     }
 
@@ -62,5 +64,13 @@ public with sharing class DocumentSignElementTriggerHandler {
         }
 
         update configs;
+    }
+
+    public static void validateRecordFieldValues(List<Document_Sign_Element__c> newList) {
+        for (Document_Sign_Element__c dse : newList) {
+            if (dse.scaleValue__c < 0.5 || dse.scaleValue__c > 2.0) {
+                dse.scaleValue__c.addError('This field accept values form 0.5 to 2.0');
+            }
+        }
     }
 }
