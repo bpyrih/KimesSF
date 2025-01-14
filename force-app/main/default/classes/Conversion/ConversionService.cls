@@ -81,7 +81,12 @@ public class ConversionService {
     private void assignFilesFromRecordToRecord(Id sourceId, Id targetId) {
         List<ContentDocumentLink> files = new List<ContentDocumentLink>();
         
-        List<ContentDocumentLink> sourceFiles = [SELECT ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :sourceId];
+        Map<Id, EmailMessage> tasks = new Map<Id, EmailMessage>([SELECT Id FROM EmailMessage WHERE ParentId = :sourceId]);
+        
+        Set<Id> sourceIds = new Set<Id> { sourceId };
+        sourceIds.addAll(tasks.keySet());
+        
+        List<ContentDocumentLink> sourceFiles = [SELECT ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId IN :sourceIds];
         for (ContentDocumentLink file : sourceFiles) {
             files.add(new ContentDocumentLink(
                 ContentDocumentId = file.ContentDocumentId,
@@ -90,7 +95,7 @@ public class ConversionService {
                 Visibility = 'AllUsers'
             ));
         }
-
+        
         insert files;
     }
 
