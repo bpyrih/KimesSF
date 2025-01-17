@@ -5,7 +5,7 @@
     <formulas>
         <name>WebCompanyName</name>
         <dataType>String</dataType>
-        <expression>IF(ISBLANK({!Get_Contact_By_Email.Id}) || ISBLANK({!Get_Contact_Account.Id}), {!$Record.SuppliedName}, {!Get_Contact_Account.Name})</expression>
+        <expression>IF(ISBLANK({!Get_Contact_By_Email.Id}) || ISBLANK({!Get_Contact_Account.Id}), {!$Record.SuppliedName} + &apos; Company&apos;, {!Get_Contact_Account.Name})</expression>
     </formulas>
     <interviewLabel>Contact&amp;Account Auto Set {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Contact&amp;Account Auto Set</label>
