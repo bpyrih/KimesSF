@@ -265,6 +265,7 @@
         <members>Conversion_Mapping.Lead_Rating</members>
         <members>Conversion_Mapping.Lead_Receive_Date</members>
         <members>Conversion_Mapping.Lead_Request_Type</members>
+        <members>Conversion_Mapping.Lead_Building_Department</members>
         <name>CustomMetadata</name>
     </types>
     <types>
