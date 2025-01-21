@@ -124,6 +124,7 @@
         <members>Quote.Timeframe_Text__c</members>
         <members>Quote.Project_Name__c</members>    
         <members>Quote.Project_Description__c</members>
+        <members>Quote.IsPaid__c</members>
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
