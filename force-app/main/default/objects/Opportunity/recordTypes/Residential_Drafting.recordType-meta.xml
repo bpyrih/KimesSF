@@ -12,6 +12,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Digital %26 Hard copy</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Digital Separate</fullName>
             <default>false</default>
         </values>
