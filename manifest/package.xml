@@ -81,6 +81,7 @@
         <members>Case.Project_Address1__c</members>
         <members>Case.Project_Address_Formula__c</members>
         <members>Case.ProjectAddressValid__c</members>
+        <members>Case.Priority_Flag__c</members>
 
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
