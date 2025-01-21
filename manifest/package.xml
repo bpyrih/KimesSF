@@ -287,5 +287,9 @@
         <members>Standard Kimes</members>
         <name>Profile</name>
     </types>
+    <types>
+        <members>Kimes_Permission_Set</members>
+        <name>PermissionSet</name>
+    </types>
     <version>61.0</version>
 </Package>
