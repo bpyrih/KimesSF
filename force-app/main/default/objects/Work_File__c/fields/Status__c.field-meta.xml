@@ -21,14 +21,19 @@
                 <label>Review</label>
             </value>
             <value>
+                <fullName>Signed</fullName>
+                <default>false</default>
+                <label>Signed</label>
+            </value>
+            <value>
                 <fullName>Client Review</fullName>
                 <default>false</default>
                 <label>Client Review</label>
             </value>
             <value>
-                <fullName>Complete</fullName>
+                <fullName>Completed</fullName>
                 <default>false</default>
-                <label>Complete</label>
+                <label>Completed</label>
             </value>
         </valueSetDefinition>
     </valueSet>

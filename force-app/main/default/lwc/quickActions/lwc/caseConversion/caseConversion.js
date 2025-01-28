@@ -6,7 +6,6 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import PPOJECT_ADDRESS_FORMULA_FIELD from "@salesforce/schema/Case.Project_Address_Formula__c";
 import PPOJECT_ADDRESS_VALID_FIELD from "@salesforce/schema/Case.ProjectAddressValid__c";
 import PROJECT_NAME_FIELD from "@salesforce/schema/Case.Project_Name__c";
-import WEB_COMPANY_FORMULA_FIELD from "@salesforce/schema/Case.SuppliedCompany";
 import WEB_NAME_FIELD from "@salesforce/schema/Case.SuppliedName";
 import WEB_EMAIL_FIELD from "@salesforce/schema/Case.SuppliedEmail";
 
@@ -16,11 +15,11 @@ import { constantUtils } from 'c/lwcUtils';
 
 const FIELDS = [
     PPOJECT_ADDRESS_FORMULA_FIELD, PROJECT_NAME_FIELD, 
-    WEB_COMPANY_FORMULA_FIELD, WEB_NAME_FIELD, WEB_EMAIL_FIELD,
+    WEB_NAME_FIELD, WEB_EMAIL_FIELD,
     PPOJECT_ADDRESS_VALID_FIELD
 ];
 
-const WEB_FIELDS = [WEB_COMPANY_FORMULA_FIELD, WEB_NAME_FIELD, WEB_EMAIL_FIELD];
+const WEB_FIELDS = [WEB_NAME_FIELD, WEB_EMAIL_FIELD];
 
 const FIELDS_LABELS = {
     SuppliedCompany : 'Web Company',

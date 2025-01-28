@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>CreateContract</excludeButtons>
-    <excludeButtons>CreateOrder</excludeButtons>
-    <excludeButtons>OpenSlackRecordChannel</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
@@ -32,6 +29,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Project_Description__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>IsPaid__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

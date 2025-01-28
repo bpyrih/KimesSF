@@ -8,9 +8,15 @@
         <members>ConversionService</members>
         <members>SObjectUtility</members>
         <members>ConversionMappingsMetadataService</members>
-
         <members>ProjectTaskTriggerHandler</members>
         <members>ProjectTaskTriggerService</members>
+        <members>UpdateRecordController</members>
+        <members>WorkFileSignController</members>
+        <members>DocuSignDTO</members>
+        <members>DocuSignService</members>
+        <members>ContentDocumentUtilityDAO</members>
+        <members>ConstantUtils</members>
+        <members>DocumentSignElementTriggerHandler</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -18,7 +24,7 @@
         <name>ApexComponent</name>
     </types>
     <types>
-        <members>*</members>
+        <members>UpdateRecordPage</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -35,6 +41,11 @@
         <members>Opportunity_Pre_Proposal</members>
         <members>Converted_Opportunity_Project_Address_Update</members>
         <members>Create_Tasks</members>
+        <members>Lead_Search_Address_Update</members>
+        <members>Case_Search_Address_Update</members>
+        <members>Opportunity_Quick_Fields_Updates</members>
+        <members>Opportunity_Product_Work_File_Assign</members>
+        <members>Opportunity_Product_Work_File_Delete</members>
         <name>Flow</name>
     </types>
     <types>
@@ -45,6 +56,7 @@
         <members>caseConversion</members>
         <members>caseConvesionToOpp</members>
         <members>lwcUtils</members>
+        <members>sendDocumentReview</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -71,6 +83,7 @@
         <members>Case.Project_Address1__c</members>
         <members>Case.Project_Address_Formula__c</members>
         <members>Case.ProjectAddressValid__c</members>
+        <members>Case.Priority_Flag__c</members>
 
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
@@ -113,6 +126,7 @@
         <members>Quote.Timeframe_Text__c</members>
         <members>Quote.Project_Name__c</members>    
         <members>Quote.Project_Description__c</members>
+        <members>Quote.IsPaid__c</members>
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
@@ -125,6 +139,16 @@
         <members>Conversion_Mapping__mdt.Source_Field__c</members>
         <members>Conversion_Mapping__mdt.Field_Convert_Type__c</members>
         <members>Conversion_Mapping__mdt.Formula__c</members>
+
+        <members>Project_Task__c.Status__c</members>
+        <members>Project_Task__c.Assigned_To__c</members>
+        <members>Project_Task__c.IsClosed__c</members>
+        <members>Project_Task__c.Comments__c</members>
+        <members>Project_Task__c.Due_Date__c</members>
+        <members>Project_Task__c.Opportunity__c</members>
+        <members>Project_Task__c.Priority__c</members>
+        <members>Project_Task__c.Status__c</members>
+        <members>Project_Task__c.Template_Name__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -140,6 +164,10 @@
         <members>Building_Department__c</members>
         <members>Conversion_Mapping__mdt</members>
         <members>Activity</members>
+        <members>Project_Task__c</members>
+        <members>Document_Sign_Config__c</members>
+        <members>Document_Sign_Element__c</members>
+        <members>Org_Variable__mdt</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -157,12 +185,16 @@
         <members>Work_File__c-Work File Layout</members>
         <members>Building_Department__c-Building Department Layout</members>
         <members>Conversion_Mapping__mdt-Conversion Mapping Layout</members>
+        <members>Project_Task__c-Project Task Layout</members>
+        <members>Document_Sign_Config__c-Document Sign Config Layout</members>
+        <members>Document_Sign_Element__c-Document Sign Element Layout</members>
         <name>Layout</name>
     </types>
     <types>
         <members>Case.Convert_to_Lead</members>
         <members>Case.Convert_to_Opportunity</members>
         <members>Opportunity.Create_Sub_Tasks</members>
+        <members>Work_File__c.Custom_Send_Review</members>
         <name>QuickAction</name>
     </types>
     <types>
@@ -171,6 +203,7 @@
         <members>Delivery_Method</members>
         <members>Estimated_Timeframe</members>
         <members>Task_Templates</members>
+        <members>Document_Sign_Template</members>
         <name>GlobalValueSet</name>
     </types>
     <types>
@@ -179,6 +212,9 @@
     </types>
     <types>
         <members>Building_Department__c</members>
+        <members>Project_Task__c</members>
+        <members>Document_Sign_Config__c</members>
+        <members>Work_File__c</members>
         <name>CustomTab</name>
     </types>
     <types>
@@ -189,7 +225,12 @@
         <members>Kimes_Engineering_Quote_Record_Page</members>
         <members>Kimes_Engineering_Work_File_Record_Page</members>
         <members>Kimes_Engineering_Contact_Record_Page</members>
+        <members>Kimes_Engineering_Document_Sign_Element_Record_Page</members>
         <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Project_Task__c</members>
+        <name>SharingRules</name>
     </types>
     <types>
         <members>*</members>
@@ -204,7 +245,31 @@
         <name>MatchingRule</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Conversion_Mapping.Lead_Client_Type</members>
+        <members>Conversion_Mapping.Lead_Company</members>
+        <members>Conversion_Mapping.Lead_Converted_Case</members>
+        <members>Conversion_Mapping.Lead_Delivery_Method</members>
+        <members>Conversion_Mapping.Lead_Email</members>
+        <members>Conversion_Mapping.Lead_FirstName</members>
+        <members>Conversion_Mapping.Lead_Flood_Zone</members>
+        <members>Conversion_Mapping.Lead_Hard_Copy_Number</members>
+        <members>Conversion_Mapping.Lead_Is_PPP</members>
+        <members>Conversion_Mapping.Lead_LastName</members>
+        <members>Conversion_Mapping.Lead_Lot_Number</members>
+        <members>Conversion_Mapping.Lead_Phone</members>
+        <members>Conversion_Mapping.Lead_Project_Address</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_City</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_CountryCode</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_PostalCode</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_StateCode</members>
+        <members>Conversion_Mapping.Lead_Project_Address1_Street</members>
+        <members>Conversion_Mapping.Lead_Project_Description</members>
+        <members>Conversion_Mapping.Lead_Project_Name</members>
+        <members>Conversion_Mapping.Lead_Property_Owner</members>
+        <members>Conversion_Mapping.Lead_Rating</members>
+        <members>Conversion_Mapping.Lead_Receive_Date</members>
+        <members>Conversion_Mapping.Lead_Request_Type</members>
+        <members>Conversion_Mapping.Lead_Building_Department</members>
         <name>CustomMetadata</name>
     </types>
     <types>

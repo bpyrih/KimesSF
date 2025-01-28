@@ -10,7 +10,15 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ConstantUtils</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ContactDAO</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentDocumentUtilityDAO</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -26,11 +34,31 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DocuSignDTO</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DocuSignService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DocumentSignElementTriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>LeadDAO</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SObjectUtility</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UpdateRecordController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WorkFileSignController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <custom>false</custom>
@@ -257,6 +285,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Priority</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Priority_Flag__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -493,6 +526,56 @@
         <editable>false</editable>
         <field>Conversion_Mapping__mdt.Source_Field__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Config__c.Config_Fields__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Config__c.Document_Sign_Template__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.Element_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.Page_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.height__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.scaleValue__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.width__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.xPosition__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Document_Sign_Element__c.yPosition__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -901,6 +984,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Document_Sign_Template__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.ExternalDataSourceId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -927,6 +1015,46 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.StockKeepingUnit</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.Assigned_To__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.Due_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.IsClosed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.Opportunity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.Priority__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Project_Task__c.Template_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1001,6 +1129,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Quote.IsPaid__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Quote.Phone</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1010,7 +1143,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Quote.Project_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1116,6 +1249,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Work_File__c.Document_Sign_Template__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_File__c.Engineer_Sign_User__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_File__c.EnvelopId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_File__c.Opportunity_Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Work_File__c.SignURL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Work_File__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1133,6 +1291,12 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Conversion_Mapping__mdt-Conversion Mapping Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Document_Sign_Config__c-Document Sign Config Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Document_Sign_Element__c-Document Sign Element Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
@@ -1154,6 +1318,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product2-Product Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Project_Task__c-Project Task Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Quote-Pre Proposal Layout</layout>
@@ -1235,6 +1402,10 @@
         <object>Quote</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <pageAccesses>
+        <apexPage>UpdateRecordPage</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
     <recordTypeVisibilities>
         <default>true</default>
         <recordType>Opportunity.ANSI</recordType>
@@ -1262,6 +1433,18 @@
     </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Building_Department__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Document_Sign_Config__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Project_Task__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Work_File__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

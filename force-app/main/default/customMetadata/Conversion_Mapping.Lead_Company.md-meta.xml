@@ -8,11 +8,11 @@
     </values>
     <values>
         <field>Field_Convert_Type__c</field>
-        <value xsi:type="xsd:string">Standard</value>
+        <value xsi:type="xsd:string">Formula</value>
     </values>
     <values>
         <field>Formula__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">if(ISBLANK(SuppliedCompany), SuppliedName &amp; &apos; Company&apos;, SuppliedCompany)</value>
     </values>
     <values>
         <field>Source_Field__c</field>

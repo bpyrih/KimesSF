@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Priority_Flag__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Priority, &apos;High&apos;), 
+
+     IMAGE (&quot;/img/samples/color_red.gif&quot;, &quot;RED_Code&quot;, 30, 30),
+
+        IF( ISPICKVAL(Priority, &apos;Medium&apos;), 
+
+            IMAGE (&quot;/img/samples/color_yellow.gif&quot;, &quot;YELLOW_Code&quot;, 30, 30),
+
+            IMAGE (&quot;/img/samples/color_green.gif&quot;, &quot;GREEN_Code&quot;,  30, 30)
+
+        )
+
+      )</formula>
+    <label>Priority Flag</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

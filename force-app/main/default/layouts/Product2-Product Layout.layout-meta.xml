@@ -15,6 +15,10 @@
                 <behavior>Edit</behavior>
                 <field>ProductCode</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Document_Sign_Template__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
