@@ -8,6 +8,8 @@
         <members>ConversionService</members>
         <members>SObjectUtility</members>
         <members>ConversionMappingsMetadataService</members>
+        <members>ProjectTaskTriggerHandler</members>
+        <members>ProjectTaskTriggerService</members>
         <members>UpdateRecordController</members>
         <members>WorkFileSignController</members>
         <members>DocuSignDTO</members>
@@ -15,6 +17,18 @@
         <members>ContentDocumentUtilityDAO</members>
         <members>ConstantUtils</members>
         <members>DocumentSignElementTriggerHandler</members>
+        <members>CustomNotificationSender</members>
+        <members>CaseDAOTest</members>
+        <members>ContactDAOTest</members>
+        <members>ContentDocumentUtilityDAOTest</members>
+        <members>ConversionControllerTest</members>
+        <members>ConversionServiceTest</members>
+        <members>CustomNotificationSenderTest</members>
+        <members>DocumentSignElementTriggerHandlerTest</members>
+        <members>LeadDAOTest</members>
+        <members>ProjectTaskTriggerServiceTest</members>
+        <members>UpdateRecordControllerTest</members>
+        <members>WorkFileSignControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -30,7 +44,7 @@
         <name>ApexTestSuite</name>
     </types>
     <types>
-        <members>*</members>
+        <members>ProjectTask</members>
         <name>ApexTrigger</name>
     </types>
     <types>

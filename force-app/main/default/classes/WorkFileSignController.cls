@@ -59,7 +59,7 @@ public with sharing class WorkFileSignController {
 
     public static Work_File__c getWorkFile(Id workFileId) {
         Work_File__c workFile = [
-            SELECT Id, Status__c, EnvelopId__c, SignURL__c, Engineer_Sign_User__r.Name, Engineer_Sign_User__r.Email, Opportunity__r.Project_Name__c, Document_Sign_Template__c    
+            SELECT Id, Status__c, EnvelopId__c, SignURL__c, Engineer_Sign_User__r.Name, Engineer_Sign_User__r.Email, Opportunity__r.Project_Name__c, Document_Sign_Template__c, Opportunity__r.Name
             FROM Work_File__c
             WHERE Id = :workFileId
         ];

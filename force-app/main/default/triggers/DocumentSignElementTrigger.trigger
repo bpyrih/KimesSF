@@ -1,4 +1,4 @@
-trigger DocumentSignElementTrigger on Document_Sign_Element__c (before insert, before update) {
+trigger DocumentSignElementTrigger on Document_Sign_Element__c (before insert, before update, after insert, after update) {
     if (Trigger.isBefore && Trigger.isInsert) {
         DocumentSignElementTriggerHandler.beforeInsert(Trigger.new);
     }

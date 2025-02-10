@@ -9,10 +9,36 @@ public class UpdateRecordControllerTest {
         Opportunity opp = new Opportunity(Name = 'Test Opp', Project_Name__c = 'Test Project Name', AccountId = acc.Id, StageName = 'Draft', CloseDate = System.today(), RecordTypeId = recordTypeId);
         insert opp;
 
-        Work_File__c testRecord = new Work_File__c(Name = 'Test Work File', Status__c = 'Draft', Opportunity__c = opp.Id);
+        Work_File__c testRecord = new Work_File__c(Name = 'Test Work File', Status__c = 'Draft', Opportunity__c = opp.Id, EnvelopId__c = '12334567890');
         insert testRecord;
 
+        ContentVersion testContentVersion = new ContentVersion(
+            Title = 'Test File',
+            PathOnClient = 'Test_File.pdf',
+            VersionData = Blob.valueOf('Test file content'),
+            IsMajorVersion = true
+        );
+        insert testContentVersion;
+
+        testContentVersion = [
+            SELECT ContentDocumentId 
+            FROM ContentVersion 
+            WHERE Id = :testContentVersion.Id
+        ];
+
+        ContentDocument testContentDocument = [
+            SELECT Id FROM ContentDocument WHERE Id = :testContentVersion.ContentDocumentId
+        ];
+
+        ContentDocumentLink testContentDocumentLink = new ContentDocumentLink(
+            LinkedEntityId = testRecord.Id,
+            ContentDocumentId = testContentDocument.Id,
+            ShareType = 'V'
+        );
+        insert testContentDocumentLink;
+
         Test.startTest();
+        Test.setMock(HttpCalloutMock.class, new HTTP_Mock());
         PageReference pageRef = Page.UpdateRecordPage; // Replace with your Visualforce page name
         Test.setCurrentPage(pageRef);
         ApexPages.currentPage().getParameters().put('recordId', testRecord.Id);

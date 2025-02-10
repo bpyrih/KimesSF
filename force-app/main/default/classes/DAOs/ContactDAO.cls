@@ -1,7 +1,7 @@
 public with sharing class ContactDAO {
     public List<Contact> getContactsByEmails(Set<String> emails) {
         return [
-            SELECT Id, AccountId
+            SELECT Id, AccountId, Email
             FROM Contact 
             WHERE Email IN :emails
         ];
