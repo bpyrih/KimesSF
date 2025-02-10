@@ -29,6 +29,7 @@
         <members>ProjectTaskTriggerServiceTest</members>
         <members>UpdateRecordControllerTest</members>
         <members>WorkFileSignControllerTest</members>
+        <members>HTTP_Mock</members>
         <name>ApexClass</name>
     </types>
     <types>
