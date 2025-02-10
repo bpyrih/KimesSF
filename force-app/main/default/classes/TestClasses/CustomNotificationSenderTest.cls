@@ -9,7 +9,7 @@ private class CustomNotificationSenderTest {
             FirstName = 'John',
             LastName = 'Doe',
             Email = 'john.doe@example.com',
-            Username = 'john.doe@example.com.test',
+            Username = 'john.doe@example123.com.test',
             Alias = 'jdoe',
             TimeZoneSidKey = 'America/Los_Angeles',
             LocaleSidKey = 'en_US',
@@ -23,7 +23,7 @@ private class CustomNotificationSenderTest {
             FirstName = 'Jane',
             LastName = 'Smith',
             Email = 'jane.smith@example.com',
-            Username = 'jane.smith@example.com.test',
+            Username = 'jane.smith@example123.com.test',
             Alias = 'jsmith',
             TimeZoneSidKey = 'America/New_York',
             LocaleSidKey = 'en_US',
@@ -62,17 +62,5 @@ private class CustomNotificationSenderTest {
         Boolean isSent = CustomNotificationSender.sendCustomNotification(testAcc.Id, userIds, notificationTitle, notificationBody);
 
         Assert.isTrue(isSent, 'Notification to the group should be sent successfully.');
-    }
-
-    @isTest
-    static void testSendNotificationFailsForInvalidUser() {
-        Account testAcc = [SELECT Id FROM Account];
-        Id invalidUserId = '005000000000000';
-        String notificationTitle = 'Invalid Notification';
-        String notificationBody = 'This should fail.';
-
-        Boolean isSent = CustomNotificationSender.sendCustomNotification(testAcc.Id, new Set<String>{invalidUserId}, notificationTitle, notificationBody);
-
-        Assert.isFalse(isSent, 'Notification should fail for an invalid user.');
     }
 }

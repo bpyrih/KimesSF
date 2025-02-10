@@ -101,7 +101,6 @@ public class DocuSignDTO {
         public String value;
     }
 
-
     public class EnvelopResponse {
         public String envelopeId;
         public String uri;
@@ -110,7 +109,6 @@ public class DocuSignDTO {
     }
 
     //----------------
-
 
     public class RecipientViewRequest {
         public String email = 'andrii.makarchuk99@gmail.com';
