@@ -38,10 +38,6 @@
                 <behavior>Readonly</behavior>
                 <field>Proposed_Services__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IsPaid__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

@@ -10,6 +10,12 @@
         <default>false</default>
         <label>TEST</label>
     </customValue>
+    <customValue>
+        <fullName>TEST2</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>TEST2</label>
+    </customValue>
     <masterLabel>Document Sign Template</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

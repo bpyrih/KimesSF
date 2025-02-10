@@ -4,31 +4,59 @@
     <description>Steps for residential drafting</description>
     <isActive>true</isActive>
     <values>
-        <fullName>Accounting</fullName>
+        <fullName>Assign Technician</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Client Review</fullName>
+        <fullName>Billing</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Closed Lost</fullName>
+        <fullName>Closed</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Closed Won</fullName>
+        <fullName>Create Quote</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Draft</fullName>
+        <fullName>Down Payment Pending</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Engineer Review</fullName>
+        <fullName>Drafting%2FProcessing Stage</fullName>
         <default>false</default>
     </values>
     <values>
-        <fullName>Quote</fullName>
+        <fullName>Engineer Approval</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Engineering Stage</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Intake Stage</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Quote Stage</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Scope of Work</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Send Quote</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Submit Draft to Client</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Technician Review</fullName>
         <default>false</default>
     </values>
 </BusinessProcess>

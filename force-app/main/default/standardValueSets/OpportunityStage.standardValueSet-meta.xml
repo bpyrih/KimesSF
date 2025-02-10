@@ -66,4 +66,40 @@
         <probability>100</probability>
         <won>true</won>
     </standardValue>
+    <standardValue>
+        <fullName>Intake Stage</fullName>
+        <default>false</default>
+        <label>Intake Stage</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>10</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Quote Stage</fullName>
+        <default>false</default>
+        <label>Quote Stage</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>25</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Drafting/Processing Stage</fullName>
+        <default>false</default>
+        <label>Drafting/Processing Stage</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>60</probability>
+        <won>false</won>
+    </standardValue>
+    <standardValue>
+        <fullName>Engineering Stage</fullName>
+        <default>false</default>
+        <label>Engineering Stage</label>
+        <closed>false</closed>
+        <forecastCategory>Pipeline</forecastCategory>
+        <probability>90</probability>
+        <won>false</won>
+    </standardValue>
 </StandardValueSet>

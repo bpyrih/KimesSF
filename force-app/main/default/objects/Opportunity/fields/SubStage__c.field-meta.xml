@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubStage__c</fullName>
+    <label>SubStage</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ready to Start</fullName>
+                <default>false</default>
+                <label>Ready to Start</label>
+            </value>
+            <value>
+                <fullName>Needs Predesign Meeting</fullName>
+                <default>false</default>
+                <label>Needs Predesign Meeting</label>
+            </value>
+            <value>
+                <fullName>County Comments</fullName>
+                <default>false</default>
+                <label>County Comments</label>
+            </value>
+            <value>
+                <fullName>Revision</fullName>
+                <default>false</default>
+                <label>Revision</label>
+            </value>
+            <value>
+                <fullName>Pending Payment</fullName>
+                <default>false</default>
+                <label>Pending Payment</label>
+            </value>
+            <value>
+                <fullName>RFI</fullName>
+                <default>false</default>
+                <label>RFI</label>
+            </value>
+            <value>
+                <fullName>Waiting on Client</fullName>
+                <default>false</default>
+                <label>Waiting on Client</label>
+            </value>
+            <value>
+                <fullName>On Hold</fullName>
+                <default>false</default>
+                <label>On Hold</label>
+            </value>
+            <value>
+                <fullName>Quote Required</fullName>
+                <default>false</default>
+                <label>Quote Required</label>
+            </value>
+            <value>
+                <fullName>Review Quote</fullName>
+                <default>false</default>
+                <label>Review Quote</label>
+            </value>
+            <value>
+                <fullName>Quote Sent</fullName>
+                <default>false</default>
+                <label>Quote Sent</label>
+            </value>
+            <value>
+                <fullName>Work in Progress</fullName>
+                <default>false</default>
+                <label>Work in Progress</label>
+            </value>
+            <value>
+                <fullName>Client Review</fullName>
+                <default>false</default>
+                <label>Client Review</label>
+            </value>
+            <value>
+                <fullName>Next to be Started</fullName>
+                <default>false</default>
+                <label>Next to be Started</label>
+            </value>
+            <value>
+                <fullName>Ready to Continue</fullName>
+                <default>false</default>
+                <label>Ready to Continue</label>
+            </value>
+            <value>
+                <fullName>Mark ups</fullName>
+                <default>false</default>
+                <label>Mark ups</label>
+            </value>
+            <value>
+                <fullName>Ready for Signature</fullName>
+                <default>false</default>
+                <label>Ready for Signature</label>
+            </value>
+            <value>
+                <fullName>Signed and Sealed</fullName>
+                <default>false</default>
+                <label>Signed and Sealed</label>
+            </value>
+            <value>
+                <fullName>Needs CAD File</fullName>
+                <default>false</default>
+                <label>Needs CAD File</label>
+            </value>
+            <value>
+                <fullName>Site Visit Required</fullName>
+                <default>false</default>
+                <label>Site Visit Required</label>
+            </value>
+            <value>
+                <fullName>At Variance</fullName>
+                <default>false</default>
+                <label>At Variance</label>
+            </value>
+            <value>
+                <fullName>Revision/Fix</fullName>
+                <default>false</default>
+                <label>Revision/Fix</label>
+            </value>
+            <value>
+                <fullName>Co/DoH Comments</fullName>
+                <default>false</default>
+                <label>Co/DoH Comments</label>
+            </value>
+            <value>
+                <fullName>Quote Prepared</fullName>
+                <default>false</default>
+                <label>Quote Prepared</label>
+            </value>
+            <value>
+                <fullName>Needs Equipment</fullName>
+                <default>false</default>
+                <label>Needs Equipment</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Ready to Start</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Needs Predesign Meeting</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>County Comments</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Revision</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>RFI</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Waiting on Client</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>On Hold</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <valueName>Work in Progress</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <valueName>Client Review</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <valueName>Next to be Started</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <valueName>Ready to Continue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Engineering Stage</controllingFieldValue>
+            <valueName>Mark ups</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Engineering Stage</controllingFieldValue>
+            <valueName>Ready for Signature</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Revision/Fix</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Co/DoH Comments</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Drafting/Processing Stage</controllingFieldValue>
+            <valueName>Needs Equipment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Engineering Stage</controllingFieldValue>
+            <valueName>Signed and Sealed</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Pending Payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <controllingFieldValue>Quote Stage</controllingFieldValue>
+            <valueName>Quote Required</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Needs CAD File</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>Site Visit Required</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <valueName>At Variance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Intake Stage</controllingFieldValue>
+            <controllingFieldValue>Quote Stage</controllingFieldValue>
+            <valueName>Quote Prepared</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quote Stage</controllingFieldValue>
+            <valueName>Review Quote</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Quote Stage</controllingFieldValue>
+            <valueName>Quote Sent</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

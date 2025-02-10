@@ -8,7 +8,15 @@
         <default>false</default>
     </values>
     <values>
+        <fullName>Billing</fullName>
+        <default>false</default>
+    </values>
+    <values>
         <fullName>Client Review</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Closed</fullName>
         <default>false</default>
     </values>
     <values>
@@ -24,11 +32,23 @@
         <default>false</default>
     </values>
     <values>
+        <fullName>Engineer Approval</fullName>
+        <default>false</default>
+    </values>
+    <values>
         <fullName>Engineer Review</fullName>
         <default>false</default>
     </values>
     <values>
         <fullName>Quote</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Scope of Work</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Technician Review</fullName>
         <default>false</default>
     </values>
 </BusinessProcess>

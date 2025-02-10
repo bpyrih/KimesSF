@@ -58,6 +58,7 @@
         <members>Opportunity_Quick_Fields_Updates</members>
         <members>Opportunity_Product_Work_File_Assign</members>
         <members>Opportunity_Product_Work_File_Delete</members>
+        <members>Opportunity_Product_Project_Task_Assign</members>
         <name>Flow</name>
     </types>
     <types>
@@ -238,6 +239,7 @@
         <members>Kimes_Engineering_Work_File_Record_Page</members>
         <members>Kimes_Engineering_Contact_Record_Page</members>
         <members>Kimes_Engineering_Document_Sign_Element_Record_Page</members>
+        <members>Kimes_Engineering_Project_Task_Record_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
@@ -305,6 +307,12 @@
     <types>
         <members>Kimes_Permission_Set</members>
         <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>ANSI_Path</members>
+        <members>Commercial_Engineering_Path</members>
+        <members>Residential_Engineering_Path</members>
+        <name>PathAssistant</name>
     </types>
     <version>61.0</version>
 </Package>

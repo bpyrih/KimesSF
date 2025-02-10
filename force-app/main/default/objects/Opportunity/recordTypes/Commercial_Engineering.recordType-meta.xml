@@ -183,6 +183,85 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>SubStage__c</picklist>
+        <values>
+            <fullName>At Variance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Co%2FDoH Comments</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mark ups</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Needs CAD File</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Needs Equipment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Needs Predesign Meeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Next to be Started</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending Payment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quote Prepared</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quote Required</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quote Sent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RFI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ready to Continue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ready to Start</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Revision%2FFix</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Signed and Sealed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Site Visit Required</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting on Client</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Work in Progress</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Type</picklist>
         <values>
             <fullName>Existing Business</fullName>

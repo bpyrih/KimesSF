@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Opportunity</entityName>
+    <fieldName>StageName</fieldName>
+    <masterLabel>Residential Engineering Path</masterLabel>
+    <pathAssistantSteps>
+        <fieldNames>Pre_Proposal_Quote__c</fieldNames>
+        <fieldNames>Pre_Proposal_Required__c</fieldNames>
+        <picklistValueName>Quote Stage</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>Residential_Drafting</recordTypeName>
+</PathAssistant>
