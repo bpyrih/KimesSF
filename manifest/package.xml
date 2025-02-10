@@ -17,6 +17,18 @@
         <members>ContentDocumentUtilityDAO</members>
         <members>ConstantUtils</members>
         <members>DocumentSignElementTriggerHandler</members>
+        <members>CustomNotificationSender</members>
+        <members>CaseDAOTest</members>
+        <members>ContactDAOTest</members>
+        <members>ContentDocumentUtilityDAOTest</members>
+        <members>ConversionControllerTest</members>
+        <members>ConversionServiceTest</members>
+        <members>CustomNotificationSenderTest</members>
+        <members>DocumentSignElementTriggerHandlerTest</members>
+        <members>LeadDAOTest</members>
+        <members>ProjectTaskTriggerServiceTest</members>
+        <members>UpdateRecordControllerTest</members>
+        <members>WorkFileSignControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
