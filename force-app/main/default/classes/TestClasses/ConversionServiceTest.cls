@@ -15,7 +15,6 @@ private class ConversionServiceTest {
             Receive_Date__c = Date.today(),
             SuppliedEmail = 'test1001Convert@example.com',
             SuppliedPhone = '123-456-7890',
-            SuppliedCompany = 'Test Company 1',
             SuppliedName = 'John Doe',
             Priority = 'High',
             Project_Description__c = 'Test Project 1 Description',
