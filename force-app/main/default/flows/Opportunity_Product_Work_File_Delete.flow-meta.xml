@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>62.0</apiVersion>
+    <decisions>
+        <name>Check_Work_Files</name>
+        <label>Check Work Files</label>
+        <locationX>182</locationX>
+        <locationY>395</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Work_File</leftValueReference>
+                <operator>IsEmpty</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Delete_Work_File</targetReference>
+            </connector>
+            <label>If Exists</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Opportunity Product Work File Delete {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity Product Work File Delete</label>
@@ -26,8 +48,19 @@
     <recordDeletes>
         <name>Delete_Work_File</name>
         <label>Delete Work File</label>
-        <locationX>176</locationX>
+        <locationX>50</locationX>
+        <locationY>503</locationY>
+        <inputReference>Get_Work_File</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <name>Get_Work_File</name>
+        <label>Get Work File</label>
+        <locationX>182</locationX>
         <locationY>287</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Work_Files</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Opportunity_Product__c</field>
@@ -36,13 +69,16 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Work_File__c</object>
-    </recordDeletes>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Delete_Work_File</targetReference>
+            <targetReference>Get_Work_File</targetReference>
         </connector>
         <object>OpportunityLineItem</object>
         <recordTriggerType>Delete</recordTriggerType>

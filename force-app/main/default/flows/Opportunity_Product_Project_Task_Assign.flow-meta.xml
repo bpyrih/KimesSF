@@ -5,7 +5,7 @@
         <name>Add_Temp_Task</name>
         <label>Add Temp Task</label>
         <locationX>264</locationX>
-        <locationY>755</locationY>
+        <locationY>1163</locationY>
         <assignmentItems>
             <assignToReference>OpportunityTasks</assignToReference>
             <operator>Add</operator>
@@ -18,10 +18,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>AssignToCollection</name>
+        <label>AssignToCollection</label>
+        <locationX>264</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>AssignedTaskNames</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Set_Assigned_Task_Names.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_Assigned_Task_Names</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Create_New_Task</name>
         <label>Create New Task</label>
         <locationX>264</locationX>
-        <locationY>647</locationY>
+        <locationY>1055</locationY>
         <assignmentItems>
             <assignToReference>TempTask.Name</assignToReference>
             <operator>Assign</operator>
@@ -65,10 +81,24 @@
     <interviewLabel>Opportunity Product Project Task Assign {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity Product Project Task Assign</label>
     <loops>
+        <name>Set_Assigned_Task_Names</name>
+        <label>Set Assigned Task Names</label>
+        <locationX>176</locationX>
+        <locationY>539</locationY>
+        <collectionReference>Get_Assigned_Tasks</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>AssignToCollection</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Tasks</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Task_Loop</name>
         <label>Task Loop</label>
         <locationX>176</locationX>
-        <locationY>539</locationY>
+        <locationY>947</locationY>
         <collectionReference>Get_Tasks</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -101,9 +131,32 @@
         <name>Create_Tasks</name>
         <label>Create Tasks</label>
         <locationX>176</locationX>
-        <locationY>947</locationY>
+        <locationY>1355</locationY>
         <inputReference>OpportunityTasks</inputReference>
     </recordCreates>
+    <recordLookups>
+        <name>Get_Assigned_Tasks</name>
+        <label>Get Assigned Tasks</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Assigned_Task_Names</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.OpportunityId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Project_Task__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_Product</name>
         <label>Get Product</label>
@@ -111,7 +164,7 @@
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Tasks</targetReference>
+            <targetReference>Get_Assigned_Tasks</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -131,7 +184,7 @@
         <name>Get_Tasks</name>
         <label>Get Tasks</label>
         <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Task_Loop</targetReference>
@@ -149,6 +202,13 @@
             <operator>EqualTo</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>NotIn</operator>
+            <value>
+                <elementReference>AssignedTaskNames</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -170,6 +230,13 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>AssignedTaskNames</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>OpportunityTasks</name>
         <dataType>SObject</dataType>
