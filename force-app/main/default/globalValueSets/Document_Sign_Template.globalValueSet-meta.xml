@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>ANSI</fullName>
+        <fullName>ANSI Engineering</fullName>
         <default>false</default>
-        <label>ANSI</label>
+        <label>ANSI Engineering</label>
     </customValue>
     <customValue>
-        <fullName>TEST</fullName>
+        <fullName>Full Plan Set</fullName>
         <default>false</default>
-        <label>TEST</label>
+        <label>Full Plan Set</label>
     </customValue>
     <customValue>
-        <fullName>TEST2</fullName>
+        <fullName>Signed Sealed Site Plan</fullName>
         <default>false</default>
-        <isActive>false</isActive>
-        <label>TEST2</label>
+        <label>Signed Sealed Site Plan</label>
+    </customValue>
+    <customValue>
+        <fullName>Drainage Plan</fullName>
+        <default>false</default>
+        <label>Drainage Plan</label>
     </customValue>
     <masterLabel>Document Sign Template</masterLabel>
     <sorted>false</sorted>
