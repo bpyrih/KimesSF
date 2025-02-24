@@ -60,6 +60,7 @@
         <members>Opportunity_Product_Work_File_Assign</members>
         <members>Opportunity_Product_Work_File_Delete</members>
         <members>Opportunity_Product_Project_Task_Assign</members>
+        <members>Email_Message_Notification</members>
         <name>Flow</name>
     </types>
     <types>
