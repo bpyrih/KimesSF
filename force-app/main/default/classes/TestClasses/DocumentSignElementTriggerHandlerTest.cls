@@ -2,7 +2,7 @@
 public class DocumentSignElementTriggerHandlerTest {
     @IsTest
     static void triggerTest() {
-        Document_Sign_Config__c dsc = new Document_Sign_Config__c(Document_Sign_Template__c = 'ANSI');
+        Document_Sign_Config__c dsc = new Document_Sign_Config__c(Document_Sign_Template__c = 'ANSI Engineering');
         insert dsc;
 
         List<Document_Sign_Element__c> signElems = new List<Document_Sign_Element__c>();

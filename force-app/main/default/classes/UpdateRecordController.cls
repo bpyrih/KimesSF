@@ -10,26 +10,28 @@ public class UpdateRecordController {
         if (recordId != null) {
             try {
                 System.debug(event);
-                Work_File__c recordToUpdate = [SELECT Id, Status__c, EnvelopId__c, SignURL__c FROM Work_File__c WHERE Id = :recordId LIMIT 1];
+                Work_File__c recordToUpdate = [SELECT Id, Status__c, EnvelopId__c, SignURL__c, Opportunity__r.Delivery_Method__c FROM Work_File__c WHERE Id = :recordId LIMIT 1];
 
                 if (event != 'decline' && event != 'cancel' && event != 'ttl_expired') {
                     recordToUpdate.Status__c = 'Signed';
-                    System.debug('signed');
+
                     ContentDocumentLink cdl = new ContentDocumentUtilityDAO().getContentDocumentLinksByLinkedEntityIdsAndExtensions(new List<Id>{recordToUpdate.Id}, new List<String>{'pdf'})[0];
-                    System.debug('cdl');
+
                     String documentBase64String = DocuSignService.callGetSignDocument(recordToUpdate.EnvelopId__c, '1');
-                    System.debug('documentBase64String');
-                    createSignedContentDocument(recordToUpdate.Id, documentBase64String, cdl.ContentDocument.Title);
-                    System.debug('cldSinged');
+
+                    String prefix = 'Signed';
+                    if (recordToUpdate.Opportunity__r.Delivery_Method__c == 'Hard Copy') {
+                        prefix = 'Modified';
+                        recordToUpdate.Status__c = 'Review';
+                    }
+                    createSignedContentDocument(recordToUpdate.Id, documentBase64String, cdl.ContentDocument.Title, prefix);
                 }
                 
                 if (event == 'decline') {
                     recordToUpdate.EnvelopId__c = null;
                     recordToUpdate.SignURL__c = null;
                 }
-                System.debug('preupdate');
                 update recordToUpdate;
-                System.debug('redirect');
                 PageReference redirect = new PageReference('/' + recordId);
                 redirect.setRedirect(true);
                 return redirect;
@@ -45,11 +47,11 @@ public class UpdateRecordController {
         return null;
     }
 
-    public static void createSignedContentDocument(Id workfileId, String documentBase64String, String title) {
+    public static void createSignedContentDocument(Id workfileId, String documentBase64String, String title, String prefix) {
         ContentVersion contentVersion = new ContentVersion();
-        contentVersion.Title = 'Signed ' + title;
+        contentVersion.Title = prefix + ' ' + title;
         contentVersion.VersionData = EncodingUtil.base64Decode(documentBase64String);
-        contentVersion.PathOnClient = 'Signed ' + title + '.pdf';
+        contentVersion.PathOnClient = prefix + ' ' + title + '.pdf';
         insert contentVersion;
 
         Id contentDocumentId = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :contentVersion.Id].ContentDocumentId;

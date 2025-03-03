@@ -3,7 +3,7 @@ public class WorkFileSignControllerTest {
     @TestSetup
     static void testSetup() {
         
-        Document_Sign_Config__c dsc = new Document_Sign_Config__c(Document_Sign_Template__c = 'ANSI');
+        Document_Sign_Config__c dsc = new Document_Sign_Config__c(Document_Sign_Template__c = 'ANSI Engineering');
         insert dsc;
 
         List<Document_Sign_Element__c> signElems = new List<Document_Sign_Element__c>();
@@ -67,7 +67,7 @@ public class WorkFileSignControllerTest {
         );
         insert testOpportunity;
 
-        Work_File__c wf = new Work_File__c(Opportunity__c=testOpportunity.Id, Status__c='Draft', Document_Sign_Template__c='ANSI', Engineer_Sign_User__c=System.UserInfo.getUserId());
+        Work_File__c wf = new Work_File__c(Opportunity__c=testOpportunity.Id, Status__c='Draft', Document_Sign_Template__c='ANSI Engineering', Engineer_Sign_User__c=System.UserInfo.getUserId());
         insert wf;
 
         ContentVersion testContentVersion = new ContentVersion(

@@ -123,14 +123,15 @@ public with sharing class DocuSignService {
         signer.recipientId = index;
         signer.routingOrder = index;
         signer.clientUserId = index;
+        String oppDeliveryMethod = String.valueOf(ConstantUtils.getFieldValue(createEnvelopWrapper.signRecord, 'Opportunity__r.Delivery_Method__c'));
         for (Document_Sign_Element__c signElement : createEnvelopWrapper.signConfig.Document_Sign_Elements__r) {
-            if (signElement.Element_Type__c == 'Sign') {
+            if (signElement.Element_Type__c == 'Sign' && oppDeliveryMethod != 'Hard Copy') {
                 signer.setSignerHereTab(getSignTab(signElement, createEnvelopWrapper.documentId));
             } else if (signElement.Element_Type__c == 'Text') {
                 signer.setTextTab(getTextTab(signElement, createEnvelopWrapper));
-            } else if (signElement.Element_Type__c == 'Seal') {
+            } else if (signElement.Element_Type__c == 'Seal' && oppDeliveryMethod != 'Hard Copy') {
                 signer.setSealTab(getSealTab(signElement, createEnvelopWrapper.documentId));
-            } else if (signElement.Element_Type__c == 'Stamp') {
+            } else if (signElement.Element_Type__c == 'Stamp' && oppDeliveryMethod != 'Hard Copy') {
                 signer.setSignerHereTab(getStampTab(signElement, createEnvelopWrapper.documentId));
             }
         }
