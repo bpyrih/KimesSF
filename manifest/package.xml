@@ -30,6 +30,7 @@
         <members>UpdateRecordControllerTest</members>
         <members>WorkFileSignControllerTest</members>
         <members>HTTP_Mock</members>
+        <members>EmailMessageTriggerHandlerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -46,6 +47,7 @@
     </types>
     <types>
         <members>ProjectTask</members>
+        <members>EmailMessageTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
