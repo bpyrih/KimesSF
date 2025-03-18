@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Icon__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  ISPICKVAL(Status, &quot;New&quot;), 
+  &quot;🔵&quot;, 
+  IF(
+    ISPICKVAL(Status, &quot;Client Replied&quot;), 
+    &quot;🟢&quot;, 
+    IF(
+      ISPICKVAL(Status, &quot;Agent Replied/Follow Up&quot;),
+      &quot;🟡&quot;, 
+      IF(
+        OR(ISPICKVAL(Status, &quot;Closed&quot;), ISPICKVAL(Status, &quot;Converted&quot;)), 
+        &quot;⚪&quot;, 
+        &quot;&quot;
+      )
+    )
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Status Icon</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
