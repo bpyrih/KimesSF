@@ -20,6 +20,16 @@
         <default>false</default>
         <label>Drainage Plan</label>
     </customValue>
+    <customValue>
+        <fullName>Standard Engineering</fullName>
+        <default>false</default>
+        <label>Standard Engineering</label>
+    </customValue>
+    <customValue>
+        <fullName>8.5 x 11 Standard</fullName>
+        <default>false</default>
+        <label>8.5 x 11 Standard</label>
+    </customValue>
     <masterLabel>Document Sign Template</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>
