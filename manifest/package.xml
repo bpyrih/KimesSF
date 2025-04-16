@@ -101,6 +101,7 @@
         <members>Case.Project_Address_Formula__c</members>
         <members>Case.ProjectAddressValid__c</members>
         <members>Case.Priority_Flag__c</members>
+        <members>Case.Subdivision__c</members>
 
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
@@ -119,6 +120,7 @@
         <members>Lead.Hard_Copy_Number__c</members>
         <members>Lead.Project_Address1__c</members>
         <members>Lead.Project_Address_Formula__c</members>
+        <members>Lead.Subdivision__c</members>
 
         <members>Opportunity.Receive_Date__c</members>
         <members>Opportunity.Flood_Zone__c</members>
@@ -137,6 +139,7 @@
         <members>Opportunity.Project_Address1__c</members>
         <members>Opportunity.Project_Address_Formula__c</members>
         <members>Opportunity.Delivery_Method__c</members>
+        <members>Opportunity.Subdivision__c</members>
         
         <members>Quote.Estimated_Timeframe__c</members>
         <members>Quote.Proposed_Services__c</members>
@@ -288,6 +291,7 @@
         <members>Conversion_Mapping.Lead_Receive_Date</members>
         <members>Conversion_Mapping.Lead_Request_Type</members>
         <members>Conversion_Mapping.Lead_Building_Department</members>
+        <members>Conversion_Mapping.Lead_Subdivision</members>
         <name>CustomMetadata</name>
     </types>
     <types>
