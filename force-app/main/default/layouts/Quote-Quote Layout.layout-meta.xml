@@ -281,6 +281,7 @@
     </relatedContent>
     <relatedLists>
         <fields>QUOTE_LI.PRODUCT2</fields>
+        <fields>Item_Description__c</fields>
         <fields>QUOTE_LI.DESCRIPTION</fields>
         <fields>QUOTE_LI.QUANTITY</fields>
         <fields>QUOTE_LI.UNIT_PRICE</fields>
