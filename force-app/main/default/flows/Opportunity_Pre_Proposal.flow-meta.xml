@@ -94,7 +94,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <stringValue>Pre Proposal </stringValue>
+                <elementReference>$Record.Name</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
