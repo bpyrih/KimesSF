@@ -25,6 +25,7 @@ public class UpdateRecordController {
                         recordToUpdate.Status__c = 'Review';
                     }
                     createSignedContentDocument(recordToUpdate.Id, documentBase64String, cdl.ContentDocument.Title, prefix);
+                    delete cdl;
                 }
                 
                 if (event == 'decline') {

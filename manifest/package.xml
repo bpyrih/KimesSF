@@ -48,6 +48,7 @@
     <types>
         <members>ProjectTask</members>
         <members>EmailMessageTrigger</members>
+        <members>DocumentSignElementTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>

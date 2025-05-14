@@ -12,6 +12,11 @@
         <dataType>Date</dataType>
         <expression>TODAY() + 30</expression>
     </formulas>
+    <formulas>
+        <name>QuoteName</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Name} &amp; &quot; &quot; &amp; {!Get_Opportunity_Account.Name}</expression>
+    </formulas>
     <interviewLabel>Opportunity Pre Proposal {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity Pre Proposal</label>
     <processMetadataValues>
@@ -37,7 +42,7 @@
         <name>Create_New_Task</name>
         <label>Create New Task</label>
         <locationX>176</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <inputAssignments>
             <field>ActivityDate</field>
             <value>
@@ -75,7 +80,7 @@
         <name>Create_Pre_Proposal_Quote</name>
         <label>Create Pre Proposal Quote</label>
         <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <connector>
             <targetReference>Update_Opportunity_Pre_Proposal_Quote</targetReference>
         </connector>
@@ -94,7 +99,7 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <elementReference>$Record.Name</elementReference>
+                <elementReference>QuoteName</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -128,7 +133,7 @@
         <name>Get_Draft_Queue</name>
         <label>Get Draft Queue</label>
         <locationX>176</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_New_Task</targetReference>
@@ -154,13 +159,36 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Opportunity_Account</name>
+        <label>Get Opportunity Account</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Pre_Proposal_Quote</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Pre_Proposal_RT</name>
         <label>Get Pre Proposal RT</label>
         <locationX>176</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Create_Pre_Proposal_Quote</targetReference>
+            <targetReference>Get_Opportunity_Account</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -179,7 +207,7 @@
         <name>Update_Opportunity_Pre_Proposal_Quote</name>
         <label>Update Opportunity Pre Proposal Quote</label>
         <locationX>176</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Get_Draft_Queue</targetReference>
         </connector>

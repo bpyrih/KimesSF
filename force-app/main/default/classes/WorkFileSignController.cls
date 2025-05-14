@@ -43,6 +43,12 @@ public with sharing class WorkFileSignController {
                 Document_Sign_Config__c signConfig = getDocumentSignConfig(workFile.Document_Sign_Template__c);
 
                 createEnvelopWrapper.signConfig = signConfig;
+                if (String.isNotBlank(signConfig.Config_Fields__c)) {
+                    Set<String> configFields = new Set<String>(signConfig.Config_Fields__c.split(','));
+                    Set<String> additionalFields = new Set<String> {'Id', 'Status__c', 'EnvelopId__c', 'SignURL__c', 'Engineer_Sign_User__r.Name', 'Engineer_Sign_User__r.Email', 'Opportunity__r.Project_Name__c', 'Document_Sign_Template__c', 'Opportunity__r.Name', 'Opportunity__r.Delivery_Method__c'};
+                    configFields.addAll(additionalFields);
+                    createEnvelopWrapper.signRecord = getWorkFile(workFile.Id, configFields);
+                }
             }
         }
 
@@ -51,7 +57,7 @@ public with sharing class WorkFileSignController {
 
     public static Document_Sign_Config__c getDocumentSignConfig(String fileSignType) {
         return [
-            SELECT Id, (SELECT Page_Number__c, Element_Type__c, xPosition__c, yPosition__c, height__c, width__c, value__c, scaleValue__c FROM Document_Sign_Elements__r)
+            SELECT Id, Config_Fields__c, (SELECT Page_Number__c, Element_Type__c, xPosition__c, yPosition__c, height__c, width__c, value__c, scaleValue__c FROM Document_Sign_Elements__r)
             FROM Document_Sign_Config__c 
             WHERE Document_Sign_Template__c =: fileSignType
         ];
@@ -68,4 +74,10 @@ public with sharing class WorkFileSignController {
         return workFile;
     }
 
+    public static Work_File__c getWorkFile(Id workFileId, Set<String> configFields) {
+        String queryString = 'SELECT {0} FROM Work_File__c WHERE Id = :workFileId';
+        queryString = String.format(queryString, new List<String> {String.join(configFields, ',')});
+        Work_File__c workFileConfig = Database.query(queryString);
+        return workFileConfig;
+    }
 }
