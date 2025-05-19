@@ -67,10 +67,13 @@
                     <name>actionNames</name>
                     <valueList>
                         <valueListItems>
-                            <value>MassChangeOwner</value>
+                            <value>New</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>New</value>
+                            <value>Project_Task__c.Quick_Update</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>MassChangeOwner</value>
                         </valueListItems>
                     </valueList>
                 </componentInstanceProperties>

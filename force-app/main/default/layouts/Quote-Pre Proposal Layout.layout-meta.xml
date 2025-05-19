@@ -35,6 +35,10 @@
                 <behavior>Readonly</behavior>
                 <field>Proposed_Services__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Payment_Schedule__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

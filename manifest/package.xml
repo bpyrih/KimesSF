@@ -148,6 +148,7 @@
         <members>Quote.Project_Name__c</members>    
         <members>Quote.Project_Description__c</members>
         <members>Quote.IsPaid__c</members>
+        <members>Quote.Payment_Schedule__c</members>
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
@@ -216,6 +217,7 @@
         <members>Case.Convert_to_Opportunity</members>
         <members>Opportunity.Create_Sub_Tasks</members>
         <members>Work_File__c.Custom_Send_Review</members>
+        <members>Project_Task__c.Quick_Update</members>
         <name>QuickAction</name>
     </types>
     <types>
