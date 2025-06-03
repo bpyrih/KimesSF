@@ -1,0 +1,18 @@
+<template>
+    <article class="slds-card slds-related-list slds-card_boundary">
+        <lightning-card title="Work File Attachments" variant="Narrow" icon-name="standard:file">
+        <lightning-datatable
+            key-field="contentDocumentId"
+            data={files}
+            columns={columns}
+            hide-checkbox-column
+            class="slds-m-around_small">
+        </lightning-datatable>
+        <template if:true={error}>
+            <div class="slds-text-color_error slds-p-around_small">
+                {error}
+            </div>
+        </template>
+        </lightning-card>
+    </article>
+  </template>
