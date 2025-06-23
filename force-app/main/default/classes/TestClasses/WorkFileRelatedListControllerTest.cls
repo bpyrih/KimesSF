@@ -38,6 +38,32 @@ public with sharing class WorkFileRelatedListControllerTest {
             Visibility = 'AllUsers'
         );
         insert cdl;
+        ContentDocumentLink cdl2 = new ContentDocumentLink(
+            ContentDocumentId = cv.ContentDocumentId,
+            LinkedEntityId = opp.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert cdl2;
+
+        ContentVersion cv1 = new ContentVersion(
+            Title = 'TestFile2',
+            PathOnClient = 'TestFile2.pdf',
+            VersionData = Blob.valueOf('Sample content for testing'),
+            IsMajorVersion = true
+        );
+        insert cv1;
+
+        cv1 = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :cv1.Id];
+
+        // Link the ContentDocument to the Work_File__c record
+        ContentDocumentLink cdl4 = new ContentDocumentLink(
+            ContentDocumentId = cv1.ContentDocumentId,
+            LinkedEntityId = opp.Id,
+            ShareType = 'V',
+            Visibility = 'AllUsers'
+        );
+        insert cdl4;
     }
 
     @isTest
@@ -75,5 +101,42 @@ public with sharing class WorkFileRelatedListControllerTest {
 
         System.assertNotEquals(null, files, 'Files list should not be null');
         System.assertEquals(0, files.size(), 'There should be no related files');
+    }
+
+
+    @IsTest
+    static void testSingleAndMultipleFiles() {
+        // Fetch the case Id
+        Opportunity cs = [SELECT Id, Name FROM Opportunity LIMIT 1];
+
+        Test.startTest();
+        WorkFileRelatedListController.CaseFileWrapper wrapper =
+            WorkFileRelatedListController.downloadCaseFiles(cs.Id);
+        Test.stopTest();
+
+        // Assert CaseNumber matches
+        System.assertEquals(cs.Name, wrapper.caseNumber,
+            'Should return correct CaseNumber');
+
+        // Expect 2 files
+        System.assertEquals(2, wrapper.files.size(),
+            'Should return both files');
+
+        // Validate filenames and content
+        Set<String> expectedNames = new Set<String>{'TestFile.pdf', 'TestFile2.pdf'};
+        Set<String> actualNames = new Set<String>();
+        Set<String> expectedContents = new Set<String>{ EncodingUtil.base64Encode(Blob.valueOf('Sample content for testing')),
+                                                        EncodingUtil.base64Encode(Blob.valueOf('Sample content for testing')) };
+        Set<String> actualContents = new Set<String>();
+
+        for (WorkFileRelatedListController.FileWrapper fw : wrapper.files) {
+            actualNames.add(fw.fileName);
+            actualContents.add(fw.fileContent);
+        }
+
+        System.assertEquals(expectedNames, actualNames,
+            'File names must match');
+        System.assertEquals(expectedContents, actualContents,
+            'File contents must match Base64 encoding');
     }
 }

@@ -1,6 +1,8 @@
 <template>
     <article class="slds-card slds-related-list slds-card_boundary">
         <lightning-card title="Work File Attachments" variant="Narrow" icon-name="standard:file">
+        <lightning-button label="Get Files" slot="actions" disabled={isActionsDisabled} onclick={handleGetAllFiles}></lightning-button>
+        <lightning-button label="Upload Sign Files" slot="actions" disabled={isActionsDisabled}></lightning-button>
         <lightning-datatable
             key-field="contentDocumentId"
             data={files}

@@ -58,4 +58,42 @@ public with sharing class WorkFileRelatedListController {
         }
         return results;
     }
+
+
+    @AuraEnabled
+   public static CaseFileWrapper downloadCaseFiles(Id caseId) {
+      List<FileWrapper> files = new List<FileWrapper>();
+      Opportunity cs = [SELECT Name FROM Opportunity WHERE Id = :caseId LIMIT 1];
+
+      List<ContentDocumentLink> cdlList = [SELECT ContentDocument.LatestPublishedVersionId, ContentDocument.Title
+                                           FROM ContentDocumentLink 
+                                           WHERE LinkedEntityId = :caseId];
+      Set<Id> versionIds = new Set<Id>();
+      for (ContentDocumentLink link : cdlList) versionIds.add(link.ContentDocument.LatestPublishedVersionId);
+      Map<Id, ContentVersion> cvs = new Map<Id, ContentVersion>(
+         [SELECT Id, VersionData, FileExtension 
+          FROM ContentVersion WHERE Id IN :versionIds]
+      );
+      for (ContentDocumentLink link : cdlList) {
+        ContentVersion cv = cvs.get(link.ContentDocument.LatestPublishedVersionId);
+        if (cv != null) {
+            String b64 = EncodingUtil.base64Encode(cv.VersionData);
+            String name = link.ContentDocument.Title + '.' + cv.FileExtension;
+            files.add(new FileWrapper(name, b64));
+        }
+      }
+      return new CaseFileWrapper(cs.Name, files);
+   }
+
+   public class FileWrapper {
+      @AuraEnabled public String fileName;
+      @AuraEnabled public String fileContent;
+      public FileWrapper(String fn, String fc) { fileName=fn; fileContent=fc; }
+   }
+
+   public class CaseFileWrapper {
+      @AuraEnabled public String caseNumber;
+      @AuraEnabled public List<FileWrapper> files;
+      public CaseFileWrapper(String cn, List<FileWrapper> fs) { caseNumber=cn; files=fs; }
+   }
 }
