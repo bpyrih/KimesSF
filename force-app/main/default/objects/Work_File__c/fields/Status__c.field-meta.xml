@@ -21,6 +21,11 @@
                 <label>Review</label>
             </value>
             <value>
+                <fullName>Annotated</fullName>
+                <default>false</default>
+                <label>Annotated</label>
+            </value>
+            <value>
                 <fullName>Signed</fullName>
                 <default>false</default>
                 <label>Signed</label>

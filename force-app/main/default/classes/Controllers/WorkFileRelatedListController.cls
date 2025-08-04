@@ -1,99 +1,140 @@
 public with sharing class WorkFileRelatedListController {
-    /** Simple wrapper to send file data to the LWC */
-    public class FileInfo {
-        @AuraEnabled public Id contentDocumentId;
-        @AuraEnabled public String fileName;
-        @AuraEnabled public String fileType;
-        @AuraEnabled public Integer fileSize;
-        @AuraEnabled public Integer versionNumber;
-        @AuraEnabled public DateTime lastModified;
-        public FileInfo(ContentDocument doc, ContentVersion ver) {
-            this.contentDocumentId = doc.Id;
-            this.fileName          = doc.Title + (doc.FileType != null ? '.'+doc.FileType : '');
-            this.fileType          = doc.FileType;
-            this.fileSize          = Integer.valueOf(doc.ContentSize);
-            this.versionNumber     = Integer.valueOf(ver.VersionNumber);
-            this.lastModified      = ver.LastModifiedDate;
-        }
-    }
-    
-    /** 
-     * Returns files attached to all Work_File__c records   
-     * related to the given Opportunity.
-     */
+    private static ContentDocumentUtilityDAO contentDocumentUtilityDAO = new ContentDocumentUtilityDAO();
+    private static WorkFileDAO workFileDAO = new WorkFileDAO();
+
     @AuraEnabled(cacheable=true)
     public static List<FileInfo> getRelatedWorkFiles(Id opportunityId) {
-        // 1) get all Work_File__c records for this Opportunity
-        List<Work_File__c> wfList = [
-            SELECT Id 
-            FROM Work_File__c 
-            WHERE Opportunity__c = :opportunityId
-        ];
-        if (wfList.isEmpty()) {
+        Map<Id, Work_File__c> wfMap = new Map<Id, Work_File__c>(workFileDAO.getWorkFilesByOpportunityIds(new Set<Id> {opportunityId}));
+        if (wfMap.isEmpty()) {
             return new List<FileInfo>();
         }
-        Set<Id> wfIds = new Set<Id>();
-        for (Work_File__c wf : wfList) wfIds.add(wf.Id);
         
-        // 2) find ContentDocumentLink records for those work files
-        List<ContentDocumentLink> links = [
-            SELECT ContentDocumentId,
-                   ContentDocument.Title,
-                   ContentDocument.FileType,
-                   ContentDocument.ContentSize,
-                   ContentDocument.LatestPublishedVersion.Id,
-                   ContentDocument.LatestPublishedVersion.VersionNumber,
-                   ContentDocument.LatestPublishedVersion.LastModifiedDate
-            FROM ContentDocumentLink
-            WHERE LinkedEntityId IN :wfIds
-        ];
+        List<ContentDocumentLink> links = contentDocumentUtilityDAO.getContentDocumentLinksByLinkedEntityIdsAndExtensions(new List<Id>(wfMap.keySet()), new List<String>{'pdf'});
         
-        // 3) build FileInfo wrappers
         List<FileInfo> results = new List<FileInfo>();
-        for (ContentDocumentLink l : links) {
-            // LatestPublishedVersion is automatically populated via the sub-query
-            ContentDocument doc = l.ContentDocument;
-            ContentVersion ver = l.ContentDocument.LatestPublishedVersion;
-            results.add(new FileInfo(doc, ver));
+        for (ContentDocumentLink link : links) {
+            results.add(new FileInfo(link, wfMap.get(link.LinkedEntityId)));
         }
         return results;
     }
 
+    @AuraEnabled
+    public static FileCollectionWrapper downloadWorkFiles(Id opportunityId, List<FileInfo> workFileInfos) {
+        List<WorkFileWrapper> wfWrapperList = new List<WorkFileWrapper>();
+        Map<Id, FileInfo> contentVersionIdToFileInfoMap = new Map<Id, FileInfo>();
+        for (FileInfo fi : workFileInfos) {
+            contentVersionIdToFileInfoMap.put(fi.versionId, fi);
+        }
+        List<ContentVersion> contentVersions = contentDocumentUtilityDAO.getContentVersionByIds(contentVersionIdToFileInfoMap.keySet());
+
+        for (ContentVersion contentVersion : contentVersions) {
+            String b64 = EncodingUtil.base64Encode(contentVersion.VersionData);
+            String name = contentVersion.ContentDocument.Title + '.' + contentVersion.FileExtension;
+            wfWrapperList.add(new WorkFileWrapper(name, b64));
+        }
+
+        Opportunity opp = [SELECT Id, Name FROM Opportunity WHERE Id = :opportunityId][0];
+
+        return new FileCollectionWrapper(opp.Name, wfWrapperList);
+    }
 
     @AuraEnabled
-   public static CaseFileWrapper downloadCaseFiles(Id caseId) {
-      List<FileWrapper> files = new List<FileWrapper>();
-      Opportunity cs = [SELECT Name FROM Opportunity WHERE Id = :caseId LIMIT 1];
-
-      List<ContentDocumentLink> cdlList = [SELECT ContentDocument.LatestPublishedVersionId, ContentDocument.Title
-                                           FROM ContentDocumentLink 
-                                           WHERE LinkedEntityId = :caseId];
-      Set<Id> versionIds = new Set<Id>();
-      for (ContentDocumentLink link : cdlList) versionIds.add(link.ContentDocument.LatestPublishedVersionId);
-      Map<Id, ContentVersion> cvs = new Map<Id, ContentVersion>(
-         [SELECT Id, VersionData, FileExtension 
-          FROM ContentVersion WHERE Id IN :versionIds]
-      );
-      for (ContentDocumentLink link : cdlList) {
-        ContentVersion cv = cvs.get(link.ContentDocument.LatestPublishedVersionId);
-        if (cv != null) {
-            String b64 = EncodingUtil.base64Encode(cv.VersionData);
-            String name = link.ContentDocument.Title + '.' + cv.FileExtension;
-            files.add(new FileWrapper(name, b64));
+    public static Boolean uploadWorkFiles(Id opportunityId, List<WorkFileWrapper> uploadFiles) {
+        Map<Id, Work_File__c> wfMap = new Map<Id, Work_File__c>(workFileDAO.getWorkFilesByOpportunityIds(new Set<Id> {opportunityId}));
+        if (wfMap.isEmpty()) {
+            return false;
         }
-      }
-      return new CaseFileWrapper(cs.Name, files);
-   }
 
-   public class FileWrapper {
-      @AuraEnabled public String fileName;
-      @AuraEnabled public String fileContent;
-      public FileWrapper(String fn, String fc) { fileName=fn; fileContent=fc; }
-   }
+        List<ContentDocumentLink> links = contentDocumentUtilityDAO.getContentDocumentLinksByLinkedEntityIdsAndExtensions(new List<Id>(wfMap.keySet()), new List<String>{'pdf'});
 
-   public class CaseFileWrapper {
-      @AuraEnabled public String caseNumber;
-      @AuraEnabled public List<FileWrapper> files;
-      public CaseFileWrapper(String cn, List<FileWrapper> fs) { caseNumber=cn; files=fs; }
-   }
+        List<ContentVersion> cvs = new List<ContentVersion>();
+
+        List<Work_File__c> workFilesForSing = new List<Work_File__c>();
+
+        for (Integer i = 0; i < uploadFiles.size(); i++) {
+            WorkFileWrapper f = uploadFiles[i];
+
+            String docId;
+            for (Work_File__c wf : wfMap.values()) {
+                if (f.fileName.contains(wf.Work_File_Name__c)) {
+                    if (!wf.ContentDocumentLinks.isEmpty()) {
+                        docId = wf.ContentDocumentLinks[0].ContentDocumentId;
+                    }
+                }
+            }
+
+            if (docId == null) {
+                continue;
+            }
+
+            Id workFileId;
+            for (ContentDocumentLink cdLink : links) {
+                if (docId == cdLink.ContentDocumentId) {
+                    workFileId = cdLink.LinkedEntityId;
+                    break;
+                }
+            }
+
+            if (workFileId == null) {
+                continue;
+            }
+
+            workFilesForSing.add(new Work_File__c(Id = workFileId, Status__c = 'Signed'));
+
+            ContentVersion cv = new ContentVersion();
+            String title = f.fileName;
+            cv.Title = title.replace('.pdf', '');
+            cv.PathOnClient = title;
+            cv.Description = 'Signed Version';
+            cv.VersionData = EncodingUtil.base64Decode(f.fileContent);
+            cv.ContentDocumentId = docId;
+
+            cvs.add(cv);
+        }
+
+        insert cvs;
+
+        update workFilesForSing;
+
+        return true;
+    }
+
+    public class FileCollectionWrapper {
+        @AuraEnabled public String opportunityName;
+        @AuraEnabled public List<WorkFileWrapper> files;
+        public FileCollectionWrapper(String oppName, List<WorkFileWrapper> fis) { opportunityName = oppName; files = fis; }
+    }
+
+    public class WorkFileWrapper {
+        @AuraEnabled public String fileName {get; set;}
+        @AuraEnabled public String fileContent {get; set;}
+        public WorkFileWrapper(String fn, String fc) { fileName=fn; fileContent=fc; }
+        public WorkFileWrapper() {}
+    }
+
+    public class FileInfo {
+        @AuraEnabled public Id contentDocumentId {get; set;}
+        @AuraEnabled public Id versionId {get; set;}
+        @AuraEnabled public String fileName {get; set;}
+        @AuraEnabled public String fileType {get; set;}
+        @AuraEnabled public Integer fileSize {get; set;}
+        @AuraEnabled public Integer versionNumber {get; set;}
+        @AuraEnabled public DateTime lastModified {get; set;}
+        @AuraEnabled public Id workFileId {get; set;}
+        @AuraEnabled public String workFileStatus {get; set;}
+        public FileInfo(ContentDocumentLink link, Work_File__c workFile) {
+            this.contentDocumentId = link.ContentDocumentId;
+            this.versionId         = link.ContentDocument.LatestPublishedVersionId;
+            this.fileName          = link.ContentDocument.Title + (link.ContentDocument.FileExtension != null ? '.' + link.ContentDocument.FileExtension : '');
+            this.fileType          = link.ContentDocument.FileType;
+            this.fileSize          = Integer.valueOf(link.ContentDocument.ContentSize);
+            this.versionNumber     = Integer.valueOf(link.ContentDocument.LatestPublishedVersion.VersionNumber);
+            this.lastModified      = link.ContentDocument.LatestPublishedVersion.LastModifiedDate;
+            this.workFileId        = link.LinkedEntityId;
+            this.workFileStatus    = workFile.Status__c;
+        }
+        public FileInfo() {
+
+        }
+    }
 }

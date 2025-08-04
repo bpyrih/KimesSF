@@ -1,20 +1,28 @@
 <template>
     <article class="slds-card slds-related-list slds-card_boundary">
         <lightning-card title="Work File Attachments" variant="Narrow" icon-name="standard:file">
-        <lightning-button label="Get Files" slot="actions" disabled={isActionsDisabled} onclick={handleGetAllFiles}></lightning-button>
-        <lightning-button label="Upload Sign Files" slot="actions" disabled={isActionsDisabled}></lightning-button>
-        <lightning-datatable
-            key-field="contentDocumentId"
-            data={files}
-            columns={columns}
-            hide-checkbox-column
-            class="slds-m-around_small">
-        </lightning-datatable>
-        <template if:true={error}>
-            <div class="slds-text-color_error slds-p-around_small">
-                {error}
-            </div>
-        </template>
+            <lightning-button-group slot="actions">
+                <lightning-button label="Refresh" onclick={handleRefresh}></lightning-button>
+                <!-- <lightning-button label="Edit"></lightning-button>
+                <lightning-button label="Save" icon-name="utility:save"></lightning-button> -->
+                <lightning-button-menu alternative-text="Show menu" variant="border-filled" menu-alignment="auto" onselect={handleMenuSelect}>
+                    <lightning-menu-item label="Download Files For Sign" value="item1"></lightning-menu-item>
+                    <lightning-menu-item label="Upload Signed Files" value="item2"></lightning-menu-item>
+                    <!-- <lightning-menu-item label="Menu Item Three" value="item3"></lightning-menu-item> -->
+                </lightning-button-menu>
+            </lightning-button-group>
+            <lightning-datatable
+                key-field="contentDocumentId"
+                data={files}
+                columns={columns}
+                hide-checkbox-column
+                class="slds-m-around_small">
+            </lightning-datatable>
+            <template if:true={error}>
+                <div class="slds-text-color_error slds-p-around_small">
+                    {error}
+                </div>
+            </template>
         </lightning-card>
     </article>
   </template>

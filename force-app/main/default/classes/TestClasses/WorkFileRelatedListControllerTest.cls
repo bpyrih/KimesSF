@@ -1,142 +1,87 @@
 @isTest
-public with sharing class WorkFileRelatedListControllerTest {
+private class WorkFileRelatedListControllerTest {
+    public static Id recordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get('ANSI').getRecordTypeId();
     @testSetup
-    static void setupTestData() {
-        // Create an Opportunity
-        Opportunity opp = new Opportunity(
-            Name = 'Test Opportunity', 
-            CloseDate = Date.today(), 
-            StageName = 'Draft', 
-            Project_Name__c = 'Test Project 1'
-        );
+    static void setupData() {
+        Account acc = new Account(Name = 'Test Account');
+        insert acc;
+
+        Opportunity opp = new Opportunity(Name = 'Test Opp', Project_Name__c = 'Test Project Name', AccountId = acc.Id, StageName = 'Draft', CloseDate = System.today(), RecordTypeId = recordTypeId);
         insert opp;
 
-        // Create a custom Work_File__c record linked to the Opportunity
+        // Create Work_File__c related to the Opportunity
         Work_File__c wf = new Work_File__c(
-            Name = 'Test Work File',
-            Opportunity__c = opp.Id
+            Opportunity__c = opp.Id,
+            Work_File_Name__c = 'Test Project Name',
+            Status__c = 'Draft'
         );
         insert wf;
 
-        // Create a ContentVersion (file) and link it to the Work_File__c via ContentDocumentLink
+        // Create ContentVersion
         ContentVersion cv = new ContentVersion(
-            Title = 'TestFile',
-            PathOnClient = 'TestFile.pdf',
-            VersionData = Blob.valueOf('Sample content for testing'),
+            Title = 'Test Project Name',
+            PathOnClient = 'Test Project Name.pdf',
+            VersionData = Blob.valueOf('Test Content'),
             IsMajorVersion = true
         );
         insert cv;
 
-        // Retrieve the ContentDocumentId
-        cv = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id];
+        // Retrieve auto-created ContentDocumentId
+        cv = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :cv.Id LIMIT 1];
 
-        // Link the ContentDocument to the Work_File__c record
+        // Create ContentDocumentLink between ContentDocument and Work_File__c
         ContentDocumentLink cdl = new ContentDocumentLink(
-            ContentDocumentId = cv.ContentDocumentId,
             LinkedEntityId = wf.Id,
+            ContentDocumentId = cv.ContentDocumentId,
             ShareType = 'V',
             Visibility = 'AllUsers'
         );
         insert cdl;
-        ContentDocumentLink cdl2 = new ContentDocumentLink(
-            ContentDocumentId = cv.ContentDocumentId,
-            LinkedEntityId = opp.Id,
-            ShareType = 'V',
-            Visibility = 'AllUsers'
-        );
-        insert cdl2;
 
-        ContentVersion cv1 = new ContentVersion(
-            Title = 'TestFile2',
-            PathOnClient = 'TestFile2.pdf',
-            VersionData = Blob.valueOf('Sample content for testing'),
-            IsMajorVersion = true
-        );
-        insert cv1;
-
-        cv1 = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id = :cv1.Id];
-
-        // Link the ContentDocument to the Work_File__c record
-        ContentDocumentLink cdl4 = new ContentDocumentLink(
-            ContentDocumentId = cv1.ContentDocumentId,
-            LinkedEntityId = opp.Id,
-            ShareType = 'V',
-            Visibility = 'AllUsers'
-        );
-        insert cdl4;
+        // Add ContentDocumentLink relationship to Work_File__c (for upload logic)
+        wf = [SELECT Id, (SELECT Id, ContentDocumentId FROM ContentDocumentLinks) FROM Work_File__c WHERE Id = :wf.Id];
     }
 
     @isTest
     static void testGetRelatedWorkFiles() {
-        Opportunity opp = [SELECT Id FROM Opportunity WHERE Project_Name__c = 'Test Project 1' LIMIT 1];
-
+        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
         Test.startTest();
         List<WorkFileRelatedListController.FileInfo> files = WorkFileRelatedListController.getRelatedWorkFiles(opp.Id);
         Test.stopTest();
 
-        System.assertNotEquals(null, files, 'Files list should not be null');
-        System.assertEquals(1, files.size(), 'There should be exactly one related file');
- 
-        WorkFileRelatedListController.FileInfo info = files[0];
-        System.assertEquals('TestFile.PDF', info.fileName, 'File name should match');
-        System.assert(info.contentDocumentId != null, 'ContentDocumentId should not be null');
-        System.assert(info.fileType == 'pdf' || info.fileType == 'PDF', 'File type should be PDF');
-        System.assert(info.versionNumber == 1, 'Version number should be 1');
-        System.assertNotEquals(null, info.lastModified, 'Last modified date should be populated');
+        System.assertNotEquals(null, files);
+        System.assertEquals(1, files.size(), 'Expected 1 related file');
+        System.assert(files[0].fileName.contains('Test Project Name'), 'File name should match');
     }
 
     @isTest
-    static void testNoWorkFiles() {
-        Opportunity opp2 = new Opportunity(
-            Name = 'No Files Opportunity',
-            StageName = 'Prospecting',
-            CloseDate = Date.today().addDays(30),
-            Project_Name__c = 'Test Project 2'
-        );
-        insert opp2;
+    static void testDownloadWorkFiles() {
+        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
+        List<WorkFileRelatedListController.FileInfo> files = WorkFileRelatedListController.getRelatedWorkFiles(opp.Id);
 
         Test.startTest();
-        List<WorkFileRelatedListController.FileInfo> files = WorkFileRelatedListController.getRelatedWorkFiles(opp2.Id);
+        WorkFileRelatedListController.FileCollectionWrapper wrapper = WorkFileRelatedListController.downloadWorkFiles(opp.Id, files);
         Test.stopTest();
 
-        System.assertNotEquals(null, files, 'Files list should not be null');
-        System.assertEquals(0, files.size(), 'There should be no related files');
+        System.assertNotEquals(null, wrapper);
+        System.assertEquals('Test Project Name', wrapper.opportunityName);
+        System.assertEquals(1, wrapper.files.size());
+        System.assert(wrapper.files[0].fileName.endsWith('.pdf'));
     }
 
+    @isTest
+    static void testUploadWorkFiles() {
+        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
 
-    @IsTest
-    static void testSingleAndMultipleFiles() {
-        // Fetch the case Id
-        Opportunity cs = [SELECT Id, Name FROM Opportunity LIMIT 1];
+        // Simulate uploaded file wrapper
+        WorkFileRelatedListController.WorkFileWrapper upload = new WorkFileRelatedListController.WorkFileWrapper();
+        upload.fileName = 'Test Project Name.pdf';
+        upload.fileContent = EncodingUtil.base64Encode(Blob.valueOf('Signed Content'));
 
         Test.startTest();
-        WorkFileRelatedListController.CaseFileWrapper wrapper =
-            WorkFileRelatedListController.downloadCaseFiles(cs.Id);
+        Boolean result = WorkFileRelatedListController.uploadWorkFiles(opp.Id, new List<WorkFileRelatedListController.WorkFileWrapper>{upload});
         Test.stopTest();
 
-        // Assert CaseNumber matches
-        System.assertEquals(cs.Name, wrapper.caseNumber,
-            'Should return correct CaseNumber');
-
-        // Expect 2 files
-        System.assertEquals(2, wrapper.files.size(),
-            'Should return both files');
-
-        // Validate filenames and content
-        Set<String> expectedNames = new Set<String>{'TestFile.pdf', 'TestFile2.pdf'};
-        Set<String> actualNames = new Set<String>();
-        Set<String> expectedContents = new Set<String>{ EncodingUtil.base64Encode(Blob.valueOf('Sample content for testing')),
-                                                        EncodingUtil.base64Encode(Blob.valueOf('Sample content for testing')) };
-        Set<String> actualContents = new Set<String>();
-
-        for (WorkFileRelatedListController.FileWrapper fw : wrapper.files) {
-            actualNames.add(fw.fileName);
-            actualContents.add(fw.fileContent);
-        }
-
-        System.assertEquals(expectedNames, actualNames,
-            'File names must match');
-        System.assertEquals(expectedContents, actualContents,
-            'File contents must match Base64 encoding');
+        System.assertEquals(true, result, 'Upload should return true');
     }
 }

@@ -18,6 +18,13 @@
         <members>ConstantUtils</members>
         <members>DocumentSignElementTriggerHandler</members>
         <members>CustomNotificationSender</members>
+        <members>ContentDocumentFlowService</members>
+        <members>DocumentSignConfigController</members>
+        <members>WorkFileRelatedListController</members>
+        <members>WorkFileDAO</members>
+        <members>PDFRestDTO</members>
+        <members>PDFRestHelper</members>
+        <members>PDFRestService</members>
         <members>CaseDAOTest</members>
         <members>ContactDAOTest</members>
         <members>ContentDocumentUtilityDAOTest</members>
@@ -31,6 +38,7 @@
         <members>WorkFileSignControllerTest</members>
         <members>HTTP_Mock</members>
         <members>EmailMessageTriggerHandlerTest</members>
+        <members>ContentDocumentFlowServiceTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -64,6 +72,7 @@
         <members>Opportunity_Product_Work_File_Delete</members>
         <members>Opportunity_Product_Project_Task_Assign</members>
         <members>Email_Message_Notification</members>
+        <members>Opportunity_Product_Count</members>
         <name>Flow</name>
     </types>
     <types>
@@ -75,6 +84,9 @@
         <members>caseConvesionToOpp</members>
         <members>lwcUtils</members>
         <members>sendDocumentReview</members>
+        <members>workFileRelatedList</members>
+        <members>downloadWorkFiles</members>
+        <members>uploadWorkFiles</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -152,6 +164,13 @@
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
+        <members>Work_File__c.Document_Sign_Template__c</members>
+        <members>Work_File__c.Engineer_Sign_User__c</members>
+        <members>Work_File__c.EnvelopId__c</members>
+        <members>Work_File__c.Opportunity_Product__c</members>
+        <members>Work_File__c.SignURL__c</members>
+        <members>Work_File__c.PDF_Rest_Id__c</members>
+        <members>Work_File__c.Work_File_Name__c</members>
 
         <members>Activity.IsTemplateActivity__c</members>
         <members>Activity.Opportunity__c</members>
@@ -171,6 +190,11 @@
         <members>Project_Task__c.Priority__c</members>
         <members>Project_Task__c.Status__c</members>
         <members>Project_Task__c.Template_Name__c</members>
+
+        <members>Product2.Document_Sign_Template__c</members>
+        <members>Product2.Is_Work_File_Required__c</members>
+
+        <members>OpportunityLineItem.Same_Product_Count__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -190,6 +214,7 @@
         <members>Document_Sign_Config__c</members>
         <members>Document_Sign_Element__c</members>
         <members>Org_Variable__mdt</members>
+        <members>OpportunityLineItem</members>
         <name>CustomObject</name>
     </types>
     <types>

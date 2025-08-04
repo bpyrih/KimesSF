@@ -361,6 +361,12 @@
         </itemInstances>
         <itemInstances>
             <componentInstance>
+                <componentName>workFileRelatedList</componentName>
+                <identifier>c_workFileRelatedList</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>parentFieldApiName</name>
                     <value>Opportunity.Id</value>

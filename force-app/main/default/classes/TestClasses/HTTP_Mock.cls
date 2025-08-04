@@ -24,9 +24,17 @@ public with sharing class HTTP_Mock implements HttpCalloutMock {
                 + '"statusDateTime": "recipientview",'
                 + '"uri": "https://demo.docusign.net/Member/StartInSession.aspx?"'
                 + '}');
+        } else if (req.getEndpoint().contains('/pdf-with-added-text')) {
+            res.setBody('{'
+                + '"outputUrl": "https://testurl.com",'
+                + '"outputId": "outputIdTest",'
+                + '"inputId": "inputIdTest",'
+                + '"message": "hsucess"'
+                + '}');
+        } else if (req.getEndpoint().contains('/resource/')) {
+            res.setBodyAsBlob(Blob.valueOf('Test file content 2'));
         }
 
-        System.debug('aaaaaaa' + res.getBody());
         return res;
     } 
 }

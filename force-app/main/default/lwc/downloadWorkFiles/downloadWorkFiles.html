@@ -1,0 +1,13 @@
+<template>
+    <lightning-modal-header label="Create Zip Work Files package Modal"></lightning-modal-header>
+
+    <div class="bodyHolder">
+        <a lwc:if={isDownloadReady} lwc:ref="documentZip" class="hrefStyles" href={downloadHref} download={zipName}>{zipName}</a>
+        <lightning-spinner lwc:else alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+    
+    <!-- <lightning-modal-body> Content: {content} </lightning-modal-body> -->
+    <lightning-modal-footer>
+        <lightning-button label="Download Zip" disabled={disableDownload} onclick={handleDownload}></lightning-button>
+    </lightning-modal-footer>
+</template>

@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Clone_Document_And_Attach_to_WorkFile</name>
+        <label>Clone Document And Attach to WorkFile</label>
+        <locationX>50</locationX>
+        <locationY>863</locationY>
+        <actionName>ContentDocumentFlowService</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>description</name>
+            <value>
+                <stringValue>Initial Version</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sourceContentDocumentId</name>
+            <value>
+                <elementReference>Get_Document_Link.ContentDocumentId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetParentId</name>
+            <value>
+                <elementReference>Create_Work_File</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>WorkFileName</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ContentDocumentFlowService</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>62.0</apiVersion>
     <decisions>
         <name>Check_Is_Link_Has_Document</name>
         <label>Check Is Link Has Document</label>
-        <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Outcome_1_of_Check_Is_Link_Has_Document</name>
@@ -29,8 +65,28 @@
             </connector>
             <label>Outcome 1 of Check Is Link Has Document</label>
         </rules>
+        <rules>
+            <name>Outcome_2_Is_Work_FIle_Required</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Product.Is_Work_File_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Work_FileOpportunity_Product2</targetReference>
+            </connector>
+            <label>Outcome 2 Is Work FIle Required</label>
+        </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>WorkFileName</name>
+        <dataType>String</dataType>
+        <expression>{!Get_Opportunity.Project_Name__c} + &quot; &quot; + {!Get_Product.Name} + IF({!$Record.Same_Product_Count__c} = 1, &quot;&quot;, &quot; &quot; + TEXT({!$Record.Same_Product_Count__c}))</expression>
+    </formulas>
     <interviewLabel>Opportunity Product Work File {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity Product Work File Assign</label>
     <processMetadataValues>
@@ -53,44 +109,12 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <name>Create_Content_Document_Link</name>
-        <label>Create Content Document Link</label>
+        <name>Create_Work_File</name>
+        <label>Create Work FileOpportunity Product</label>
         <locationX>50</locationX>
         <locationY>755</locationY>
-        <inputAssignments>
-            <field>ContentDocumentId</field>
-            <value>
-                <elementReference>Get_Document_Link.ContentDocumentId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>LinkedEntityId</field>
-            <value>
-                <elementReference>Create_Work_File</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ShareType</field>
-            <value>
-                <stringValue>V</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Visibility</field>
-            <value>
-                <stringValue>AllUsers</stringValue>
-            </value>
-        </inputAssignments>
-        <object>ContentDocumentLink</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>Create_Work_File</name>
-        <label>Create Work File</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
         <connector>
-            <targetReference>Create_Content_Document_Link</targetReference>
+            <targetReference>Clone_Document_And_Attach_to_WorkFile</targetReference>
         </connector>
         <inputAssignments>
             <field>Document_Sign_Template__c</field>
@@ -122,14 +146,58 @@
                 <stringValue>Draft</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Work_File_Name__c</field>
+            <value>
+                <elementReference>WorkFileName</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Work_File__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Work_FileOpportunity_Product2</name>
+        <label>Create Work FileOpportunity Product</label>
+        <locationX>314</locationX>
+        <locationY>755</locationY>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Get_Product.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Opportunity_Product__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Opportunity__c</field>
+            <value>
+                <elementReference>$Record.OpportunityId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Draft</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Work_File_Name__c</field>
+            <value>
+                <elementReference>WorkFileName</elementReference>
+            </value>
+        </inputAssignments>
         <object>Work_File__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
         <name>Get_Document_Link</name>
         <label>Get Document Link</label>
-        <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Is_Link_Has_Document</targetReference>
@@ -149,10 +217,33 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Opportunity</name>
+        <label>Get Opportunity</label>
+        <locationX>314</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Product</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Opportunity.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Project_Name__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Product</name>
         <label>Get Product</label>
-        <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Document_Link</targetReference>
@@ -169,13 +260,15 @@
         <object>Product2</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>Document_Sign_Template__c</queriedFields>
+        <queriedFields>Is_Work_File_Required__c</queriedFields>
+        <queriedFields>Name</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>56</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Product</targetReference>
+            <targetReference>Get_Opportunity</targetReference>
         </connector>
         <object>OpportunityLineItem</object>
         <recordTriggerType>Create</recordTriggerType>

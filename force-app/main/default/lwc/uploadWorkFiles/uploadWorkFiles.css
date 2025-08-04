@@ -1,0 +1,13 @@
+.mainBody {
+    background-color: white;
+}
+
+.bodyHolder {
+    background-color: white;
+    position: relative;
+    /* display: inline-block; */
+    height: 80px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}

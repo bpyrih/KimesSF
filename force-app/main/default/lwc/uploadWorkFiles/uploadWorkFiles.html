@@ -1,0 +1,28 @@
+<template>
+    <lightning-modal-header label="Upload Work Files Modal"></lightning-modal-header>
+
+    <div class="mainBody">
+        <div class="bodyHolder">
+            <lightning-spinner lwc:if={uploadStarted} alternative-text="Loading" size="medium"></lightning-spinner>
+            <lightning-input lwc:else
+              type="file" 
+              label="Select Files" 
+              accept=".pdf"
+              multiple 
+              onchange={handleFiles}>
+            </lightning-input>
+        </div>
+        <div class="filesSection slds-m-left_large slds-p-vertical_medium">
+            <div>Files ready for Upload:</div>
+            <template for:each={files} for:item="file" for:index="ind">
+                <div key={file.name} class="fileHolder">{file.name}</div>
+            </template>
+        </div>
+    </div> 
+    
+    <!-- <lightning-modal-body> Content: {content} </lightning-modal-body> -->
+    <lightning-modal-footer>
+        <lightning-button variant="brand" label="Upload Files" disabled={disableUpload} onclick={handleUpload}></lightning-button>
+        <!-- <lightning-button label="Download Zip" disabled={disableDownload} onclick={handleDownload}></lightning-button> -->
+    </lightning-modal-footer>
+</template>

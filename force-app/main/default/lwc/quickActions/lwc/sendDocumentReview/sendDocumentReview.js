@@ -4,6 +4,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import sentReview from "@salesforce/apex/WorkFileSignController.sentReview";
+import annotateWorkFile from "@salesforce/apex/PDFRestService.annotateWorkFile";
 
 import ENGINEER_SIGN_USER from "@salesforce/schema/Work_File__c.Engineer_Sign_User__c";
 
@@ -38,9 +39,10 @@ export default class SendDocumentReview extends NavigationMixin(LightningElement
     }
     
     processSigning() {
-        sentReview({workFileId : this.recordId})
+        annotateWorkFile({workFileId : this.recordId})
         .then(result => {
-            this.url = result;
+            // this.url = result;
+            this.dispatchEvent(new CloseActionScreenEvent());
         })
         .catch((error) => {
             console.log(error);
