@@ -94,6 +94,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FileVersionsController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HTTP_Mock</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1019,6 +1023,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Opportunity_Queue_Formula__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.PPP__c</field>
         <readable>true</readable>
@@ -1071,6 +1080,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Property_Owner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Queue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

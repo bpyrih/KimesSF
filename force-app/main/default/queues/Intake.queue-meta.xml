@@ -9,6 +9,9 @@
         <sobjectType>Lead</sobjectType>
     </queueSobject>
     <queueSobject>
+        <sobjectType>Queue__c</sobjectType>
+    </queueSobject>
+    <queueSobject>
         <sobjectType>Task</sobjectType>
     </queueSobject>
 </Queue>

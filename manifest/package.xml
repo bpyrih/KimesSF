@@ -217,6 +217,7 @@
         <members>Document_Sign_Element__c</members>
         <members>Org_Variable__mdt</members>
         <members>OpportunityLineItem</members>
+        <members>Queue__c</members>
         <name>CustomObject</name>
     </types>
     <types>

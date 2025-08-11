@@ -15,6 +15,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>reason</name>
+            <value>
+                <stringValue>Initial Version</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>sourceContentDocumentId</name>
             <value>
                 <elementReference>Get_Document_Link.ContentDocumentId</elementReference>
@@ -176,12 +182,6 @@
             <field>Opportunity__c</field>
             <value>
                 <elementReference>$Record.OpportunityId</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status__c</field>
-            <value>
-                <stringValue>Draft</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
