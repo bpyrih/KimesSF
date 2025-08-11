@@ -13,6 +13,7 @@ public with sharing class PDFRestHelper {
         contentVersion.Title = addedTextResponse.sfFileName;
         contentVersion.VersionData = documentBase64String;
         contentVersion.Description = 'Annotated Version';
+        contentVersion.ReasonForChange = 'Annotated Version';
         contentVersion.PathOnClient = addedTextResponse.sfFileName + '.pdf';
         contentVersion.ContentDocumentId = addedTextResponse.sfFileId;
         insert contentVersion;

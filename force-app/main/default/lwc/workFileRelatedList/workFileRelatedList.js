@@ -13,10 +13,11 @@ const workFileColumsn = [
     type: 'url',
     typeAttributes: {
       label: { fieldName: 'fileName' },
-      target: '_blank'
+      target: '_self'
     }
   },
   { label: 'Work File Status', fieldName: 'workFileStatus', type: 'text' },
+  { label: 'Work File Type', fieldName: 'workFileType', type: 'text' },
   // { label: 'Size (bytes)',    fieldName: 'fileSize',       type: 'number' },
   // { label: 'Version',         fieldName: 'versionNumber',  type: 'number' },
   // {
@@ -59,7 +60,7 @@ export default class WorkFileRelatedList extends LightningElement {
       this.workFileData = data;
       this.files = this.workFileData.map(f => ({
         ...f,
-        detailUrl: `/lightning/r/ContentDocument/${f.contentDocumentId}/view`
+        detailUrl: `/${f.workFileId}`
       }));
     } else if (error) {
       this.files = [];

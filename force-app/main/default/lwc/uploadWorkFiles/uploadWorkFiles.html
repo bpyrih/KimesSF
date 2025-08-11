@@ -15,7 +15,48 @@
         <div class="filesSection slds-m-left_large slds-p-vertical_medium">
             <div>Files ready for Upload:</div>
             <template for:each={files} for:item="file" for:index="ind">
-                <div key={file.name} class="fileHolder">{file.name}</div>
+                <!-- <div  class="fileHolder">{file.name}</div> -->
+                <div key={file.name}  class="slds-grid slds-wrap slds-gutters">
+                    <div class="slds-col slds-size_1-of-6">
+                        <lightning-input
+                            type="text"
+                            label="File Name"
+                            value={file.name}
+                            read-only="true"
+                            class="name-input">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_2-of-6">
+                        <lightning-input data-key={file.name}
+                            type="text"
+                            label="Change Reason"
+                            value={file.reason}
+                            required
+                            class="reason-input"
+                            onchange={handleChange}
+                            disabled={uploadStarted}>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_2-of-6">
+                        <lightning-textarea data-key={file.name}
+                            label="Description"
+                            value={file.description}
+                            class="description-input"
+                            onchange={handleChange}
+                            disabled={uploadStarted}>
+                        </lightning-textarea>
+                    </div>
+                    <div class="slds-col slds-size_1-of-6">
+                        <lightning-button data-key={file.name} 
+                            variant="base" 
+                            label="Remove" 
+                            title="Remove File" 
+                            onclick={handleClick} 
+                            class="slds-m-left_x-small slds-m-top_medium"
+                            disabled={uploadStarted}>
+                        </lightning-button>
+                    </div>
+                </div>
             </template>
         </div>
     </div> 

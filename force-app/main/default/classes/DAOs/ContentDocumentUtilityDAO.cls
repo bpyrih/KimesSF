@@ -19,4 +19,8 @@ public with sharing class ContentDocumentUtilityDAO {
         return [SELECT Id, ContentDocumentId, VersionData, FileExtension, ContentDocument.Title FROM ContentVersion WHERE Id IN :contentVersionIds];
     }
 
+    public List<ContentVersion> getContentVersionsByContentDocumentIds(Set<Id> contentDocumentIds) {
+        return [SELECT Id, ContentDocumentId, VersionNumber, VersionDataURL, PathOnClient, Title, IsLatest, Description, ReasonForChange, CreatedDate FROM ContentVersion WHERE ContentDocumentId IN :contentDocumentIds ORDER BY CreatedDate DESC];
+    }
+
 }

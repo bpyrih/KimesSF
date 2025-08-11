@@ -1,0 +1,70 @@
+<template>
+    <lightning-card title={currentFileName} icon-name="standard:document">
+        <div slot="actions">
+            <lightning-button-icon
+                icon-name="utility:refresh" onclick={handleRefresh}
+            ></lightning-button-icon>
+        </div>
+        <div class="slds-p-around_medium">
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Loading File Versions" size="medium"></lightning-spinner>
+            </template>
+
+            <template lwc:else>
+                <template lwc:if={error}>
+                    <div class="slds-text-color_destructive slds-m-bottom_small">
+                        An error occurred: {error}
+                    </div>
+                </template>
+
+                <template lwc:if={versionOptions.length}>
+                    <div class="slds-m-bottom_medium">
+                        <lightning-datatable
+                            key-field="value"
+                            data={versionOptions}
+                            columns={columns}
+                            onrowaction={handleRowAction}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                    
+
+
+                    <lightning-layout>
+                        <lightning-layout-item padding="around-small">
+                            <!-- <lightning-combobox
+                                name="fileVersions"
+                                label="Select File Version"
+                                value={selectedVersionId}
+                                placeholder="Choose a version"
+                                options={versionOptions}
+                                onchange={handleVersionChange}
+                            ></lightning-combobox> -->
+                            <p>{versionNumber}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item padding="around-small">
+                            <p>{versionName}</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item padding="around-small">
+                            
+                        </lightning-layout-item>
+                        <lightning-layout-item padding="around-small">
+                            
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    
+                    <!-- <div class="slds-m-top_small">
+                        <p>Selected Version File: <strong>{selectedVersionFileName}</strong></p>
+                    </div> -->
+                </template>
+                <template lwc:else>
+                    <p>No file versions found for this record.</p>
+                </template>
+                <template lwc:if={versionURL}>
+                    <iframe src={versionURL} height={pdfHeight}></iframe>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

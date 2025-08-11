@@ -1,6 +1,7 @@
 import { api, track } from 'lwc';
 import LightningModal from 'lightning/modal';
 import uploadWorkFiles from '@salesforce/apex/WorkFileRelatedListController.uploadWorkFiles';
+import uploadWorkFile from '@salesforce/apex/WorkFileRelatedListController.uploadWorkFile';
 
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -39,14 +40,14 @@ export default class UploadWorkFiles extends LightningModal {
             }
         }
 
-        this.files = Array.from(event.target.files).map(file => {
+        let files = Array.from(event.target.files).map(file => {
             return {
                 name: file.name,
                 base64: null,
                 file
             };
         });
-        this.files.forEach((f, index) => {
+        files.forEach((f, index) => {
             const reader = new FileReader();
             reader.onload = () => {
                 this.files[index].base64 = reader.result.split(',')[1];
@@ -54,14 +55,26 @@ export default class UploadWorkFiles extends LightningModal {
             };
             reader.readAsDataURL(f.file);
         });
+
+        this.files.push(...files);
     }
 
     handleUpload() {
+        for (let i = 0; i < this.files.length; i++) {
+            if (this.files[i].reason == null) {
+                this.handleError('Please fill all Change Reason fields!');
+                return;
+            }
+        }
+
         this.uploadStarted = true;
         const promises = [];
 
         this.files.forEach(f => {
-            promises.push(uploadWorkFiles({ opportunityId: this.opportunityId, uploadFiles: [{fileName: f.name, fileContent: f.base64}] }));
+            console.log(f.description);
+            console.log(f.reason);
+            
+            promises.push(uploadWorkFile({ opportunityId: this.opportunityId, uploadFile: {fileName: f.name, fileReason: f.reason, fileDescription: f.description, fileContent: f.base64} }));
             // .then(result => {
             //     console.log('Upload result:', result);
             // })
@@ -87,5 +100,27 @@ export default class UploadWorkFiles extends LightningModal {
 
     handleError(msg) {
         this.dispatchEvent(new ShowToastEvent({ title: 'Error', message: msg, variant: 'error' }));
+    }
+
+    handleChange(event) {
+        console.log(event.target.value);
+        console.log(event.target.label);
+        console.log(event.target.dataset.key);
+        
+        let file = this.files.find(f => f.name === event.target.dataset.key);
+
+        if (event.target.label == 'Description') {
+            file.description = event.target.value;
+        }
+        else if (event.target.label == 'Change Reason') {
+            file.reason = event.target.value;   
+        }
+    }
+
+    handleClick(event) {
+        console.log(event.target.dataset.key);
+        
+        let files = this.files.filter(f => f.name !== event.target.dataset.key);
+        this.files = files;
     }
 }

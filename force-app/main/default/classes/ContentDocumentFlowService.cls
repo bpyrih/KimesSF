@@ -8,6 +8,8 @@ public with sharing class ContentDocumentFlowService {
         public String title;
         @InvocableVariable(label='Description' required=false)
         public String description;
+        @InvocableVariable(label='New Version Reason' required=false)
+        public String reason;
     }
     public class Response {
         @InvocableVariable(label='New ContentDocument Id')
@@ -16,16 +18,19 @@ public with sharing class ContentDocumentFlowService {
 
     @InvocableMethod(label='Bulk Clone ContentDocuments')
     public static List<Response> cloneDocs(List<Request> requests) {
+        System.debug(requests);
         // 1. Prepare ordered lists of inputs
         List<Id> sourceDocIds = new List<Id>();
         List<Id> targetParentIds = new List<Id>();
         List<String> descriptions = new List<String>();
         List<String> titles = new List<String>();
+        List<String> reasons = new List<String>();
         for (Request r : requests) {
             sourceDocIds.add(r.sourceContentDocumentId);
             targetParentIds.add(r.targetParentId);
             descriptions.add(r.description);
             titles.add(r.title);
+            reasons.add(r.reason);
         }
 
         // 2. Fetch latest versions in same order as sourceDocIds
@@ -49,6 +54,7 @@ public with sharing class ContentDocumentFlowService {
                 clone.Title = titles.get(sourceDocIds.indexOf(srcId));
                 clone.PathOnClient = titles.get(sourceDocIds.indexOf(srcId)) + '.pdf';
                 clone.Description = descriptions.get(sourceDocIds.indexOf(srcId));
+                clone.ReasonForChange = reasons.get(sourceDocIds.indexOf(srcId));
                 clones.add(clone);
             } else {
                 clones.add(null); // keep structure

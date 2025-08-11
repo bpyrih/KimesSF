@@ -25,6 +25,7 @@
         <members>PDFRestDTO</members>
         <members>PDFRestHelper</members>
         <members>PDFRestService</members>
+        <members>FileVersionsController</members>
         <members>CaseDAOTest</members>
         <members>ContactDAOTest</members>
         <members>ContentDocumentUtilityDAOTest</members>
@@ -87,6 +88,7 @@
         <members>workFileRelatedList</members>
         <members>downloadWorkFiles</members>
         <members>uploadWorkFiles</members>
+        <members>fileVersionDisplay</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
