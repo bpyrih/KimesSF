@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 08-12-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
 <template>
     <lightning-modal-header label="Upload Work Files Modal"></lightning-modal-header>
 
@@ -31,9 +38,9 @@
                             type="text"
                             label="Change Reason"
                             value={file.reason}
-                            required
+                            required={isNotEngineer}
                             class="reason-input"
-                            onchange={handleChange}
+                            onchange={handleReason}
                             disabled={uploadStarted}>
                         </lightning-input>
                     </div>
@@ -42,7 +49,8 @@
                             label="Description"
                             value={file.description}
                             class="description-input"
-                            onchange={handleChange}
+                            onchange={handleDescription}
+                            required={isNotEngineer}
                             disabled={uploadStarted}>
                         </lightning-textarea>
                     </div>

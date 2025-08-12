@@ -2,6 +2,7 @@ import { api, track } from 'lwc';
 import LightningModal from 'lightning/modal';
 import uploadWorkFiles from '@salesforce/apex/WorkFileRelatedListController.uploadWorkFiles';
 import uploadWorkFile from '@salesforce/apex/WorkFileRelatedListController.uploadWorkFile';
+import isEngineerRole from '@salesforce/apex/WorkFileRelatedListController.isEngineerRole';
 
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -9,8 +10,14 @@ export default class UploadWorkFiles extends LightningModal {
     @api opportunityId;
 
     @track files = [];
-
+    @track isEngineer = false;
+    @track fileReason = '';
+    @track fileDescription = '';
     uploadStarted = false;
+
+    get isNotEngineer() {
+        return !this.isEngineer;
+    }
 
     get disableUpload() {
         if (this.uploadStarted) {
@@ -58,14 +65,35 @@ export default class UploadWorkFiles extends LightningModal {
 
         this.files.push(...files);
     }
+    
+    connectedCallback() {
+        isEngineerRole()
+            .then(result => {
+                this.isEngineer = result;
+        })
+        .catch(error => {
+            this.handleError(error);
+        });
+    }
+    
+    handleReasonChange(event) {
+        this.fileReason = event.target.value;
+    }
+    
+    handleDescriptionChange(event) {
+        this.fileDescription = event.target.value;
+    }
 
     handleUpload() {
-        for (let i = 0; i < this.files.length; i++) {
-            if (this.files[i].reason == null) {
-                this.handleError('Please fill all Change Reason fields!');
-                return;
+        if(!this.isEngineer) {
+            for (let i = 0; i < this.files.length; i++) {
+                if (!this.files[i].reason || !this.files[i].description) {
+                    this.handleError('Please fill all Change Reason fields!');
+                    return;
+                }
             }
         }
+        
 
         this.uploadStarted = true;
         const promises = [];

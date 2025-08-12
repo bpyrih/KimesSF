@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @group             : 
+ * @last modified on  : 08-12-2025
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+**/
 public with sharing class WorkFileRelatedListController {
     private static ContentDocumentUtilityDAO contentDocumentUtilityDAO = new ContentDocumentUtilityDAO();
     private static WorkFileDAO workFileDAO = new WorkFileDAO();
@@ -46,6 +53,36 @@ public with sharing class WorkFileRelatedListController {
     }
 
     @AuraEnabled
+    private static Boolean isEngineerRole(){
+        User u=[
+            SELECT UserRole.Name 
+            FROM User 
+            WHERE Id = :UserInfo.getUserId() 
+            Limit 1];
+
+        return u.UserRole != null && 
+               u.UserRole.Name != null && 
+               u.UserRole.Name.containsIgnoreCase('engineer');
+    }
+
+    @AuraEnabled
+    private static void validateAndFillReasonDescription(WorkFileWrapper file){
+        Boolean engineer=isEngineerRole();
+        if (engineer){
+            if (String.isBlank(file.fileReason)){
+                file.fileReason= 'Signed Version';
+            }
+            if (String.isBlank(file.fileDescription)){
+                file.fileDescription= 'Signed Version';
+            }
+            else {
+                if (String.isBlank(file.fileReason) || String.isBlank(file.fileDescription)){
+                    throw new AuraHandledException('Change Reason and Description are required.');
+                }
+            }
+        }
+    }
+    @AuraEnabled
     public static Boolean uploadWorkFiles(Id opportunityId, List<WorkFileWrapper> uploadFiles) {
         Map<Id, Work_File__c> wfMap = new Map<Id, Work_File__c>(workFileDAO.getWorkFilesByOpportunityIds(new Set<Id> {opportunityId}));
         if (wfMap.isEmpty()) {
@@ -90,12 +127,13 @@ public with sharing class WorkFileRelatedListController {
 
             workFilesForSign.add(new Work_File__c(Id = workFileId, Status__c = 'Signed'));
 
+            validateAndFillReasonDescription(f);
             ContentVersion cv = new ContentVersion();
             String title = f.fileName;
             cv.Title = title.replace('.pdf', '');
             cv.PathOnClient = title;
-            cv.Description = 'Signed Version';
-            cv.ReasonForChange = 'Signed Version';
+            cv.Description = f.fileDescription;
+            cv.ReasonForChange = f.fileDescription;
             cv.VersionData = EncodingUtil.base64Decode(f.fileContent);
             cv.ContentDocumentId = docId;
 
@@ -135,15 +173,15 @@ public with sharing class WorkFileRelatedListController {
             return false;
         }
 
+        validateAndFillReasonDescription(uploadFile);
         ContentVersion cv = new ContentVersion();
-
         String title = uploadFile.fileName;
-        String reason = String.isNotBlank(uploadFile.fileReason) ? uploadFile.fileReason : 'Signed Version';
-        String description = String.isNotBlank(uploadFile.fileDescription) ? uploadFile.fileDescription : 'Signed Version';
+        //String reason = String.isNotBlank(uploadFile.fileReason) ? uploadFile.fileReason : 'Signed Version';
+        //String description = String.isNotBlank(uploadFile.fileDescription) ? uploadFile.fileDescription : 'Signed Version';
         cv.Title = title.replace('.pdf', '');
         cv.PathOnClient = title;
-        cv.Description = description;
-        cv.ReasonForChange = reason;
+        cv.Description = uploadFile.fileDescription;
+        cv.ReasonForChange = uploadFile.fileReason;
         cv.VersionData = EncodingUtil.base64Decode(uploadFile.fileContent);
         cv.ContentDocumentId = docId;
         // cv.Is_Latest_Signed__c = uploadFile.isLatestSigned;
