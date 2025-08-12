@@ -65,22 +65,6 @@ public with sharing class WorkFileRelatedListController {
                u.UserRole.Name.containsIgnoreCase('engineer');
     }
 
-    @AuraEnabled
-    public static void validateAndFillReasonDescription(WorkFileWrapper file){
-        Boolean engineer=isEngineerRole();
-        if (engineer){
-            if (String.isBlank(file.fileReason)){
-                file.fileReason= 'Signed Version';
-            }
-            if (String.isBlank(file.fileDescription)){
-                file.fileDescription= 'Signed Version';
-            } 
-        }else {
-            if (String.isBlank(file.fileReason) || String.isBlank(file.fileDescription)){
-                throw new AuraHandledException('Change Reason and Description are required.');
-            }
-        }
-    }
 
     @AuraEnabled
     public static Boolean uploadWorkFiles(Id opportunityId, List<WorkFileWrapper> uploadFiles) {
@@ -127,13 +111,12 @@ public with sharing class WorkFileRelatedListController {
 
             workFilesForSign.add(new Work_File__c(Id = workFileId, Status__c = 'Signed'));
 
-            validateAndFillReasonDescription(f);
             ContentVersion cv = new ContentVersion();
             String title = f.fileName;
             cv.Title = title.replace('.pdf', '');
             cv.PathOnClient = title;
             cv.Description = f.fileDescription;
-            cv.ReasonForChange = f.fileDescription;
+            cv.ReasonForChange = f.fileReason;
             cv.VersionData = EncodingUtil.base64Decode(f.fileContent);
             cv.ContentDocumentId = docId;
 
@@ -173,7 +156,6 @@ public with sharing class WorkFileRelatedListController {
             return false;
         }
 
-        validateAndFillReasonDescription(uploadFile);
         ContentVersion cv = new ContentVersion();
         String title = uploadFile.fileName;
         //String reason = String.isNotBlank(uploadFile.fileReason) ? uploadFile.fileReason : 'Signed Version';

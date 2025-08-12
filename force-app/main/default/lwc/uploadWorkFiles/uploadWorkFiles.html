@@ -40,7 +40,7 @@
                             value={file.reason}
                             required={isNotEngineer}
                             class="reason-input"
-                            onchange={handleReason}
+                            onchange={handleChange}
                             disabled={uploadStarted}>
                         </lightning-input>
                     </div>
@@ -48,9 +48,9 @@
                         <lightning-textarea data-key={file.name}
                             label="Description"
                             value={file.description}
-                            class="description-input"
-                            onchange={handleDescription}
                             required={isNotEngineer}
+                            class="description-input"
+                            onchange={handleChange}
                             disabled={uploadStarted}>
                         </lightning-textarea>
                     </div>

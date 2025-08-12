@@ -11,8 +11,7 @@ export default class UploadWorkFiles extends LightningModal {
 
     @track files = [];
     @track isEngineer = false;
-    @track fileReason = '';
-    @track fileDescription = '';
+
     uploadStarted = false;
 
     get isNotEngineer() {
@@ -85,15 +84,23 @@ export default class UploadWorkFiles extends LightningModal {
     }
 
     handleUpload() {
-        if(!this.isEngineer) {
-            for (let i = 0; i < this.files.length; i++) {
-                if (!this.files[i].reason || !this.files[i].description) {
-                    this.handleError('Please fill all Change Reason fields!');
+        for (let i = 0; i < this.files.length; i++) {
+            if (this.isEngineer) {
+                if (!this.files[i].reason || this.files[i].reason.trim() === '') {
+                    this.files.reason = 'Signed Version';
+                }
+                if (!this.files[i].description || this.files[i].description.trim() === '') {
+                    this.files[i].description = 'Signed Version';
+                }
+            } else {
+                if (!this.files[i].reason || !this.files[i].description ||
+                    this.files[i].reason.trim() === '' ||
+                    this.files[i].description.trim() === '') {
+                    this.handleError('Change Reason and Description are required.');
                     return;
                 }
             }
         }
-        
 
         this.uploadStarted = true;
         const promises = [];
@@ -102,7 +109,15 @@ export default class UploadWorkFiles extends LightningModal {
             console.log(f.description);
             console.log(f.reason);
             
-            promises.push(uploadWorkFile({ opportunityId: this.opportunityId, uploadFile: {fileName: f.name, fileReason: f.reason, fileDescription: f.description, fileContent: f.base64} }));
+            promises.push(uploadWorkFile({
+                opportunityId: this.opportunityId,
+                uploadFile: {
+                    fileName: f.name,
+                    fileReason: f.reason,
+                    fileDescription:f.description,
+                    fileContent: f.base64
+                }
+            }));
             // .then(result => {
             //     console.log('Upload result:', result);
             // })
@@ -114,6 +129,9 @@ export default class UploadWorkFiles extends LightningModal {
             results.forEach((result) => console.log(result));
             this.handleSuccess('Files Uploaded');
             this.close('Files Uploaded');
+         })
+        .catch(error => {
+            this.handleError(error);
         });
         console.log(JSON.stringify(payload));
     }
