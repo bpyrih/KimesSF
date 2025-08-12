@@ -53,7 +53,7 @@ public with sharing class WorkFileRelatedListController {
     }
 
     @AuraEnabled
-    private static Boolean isEngineerRole(){
+    public static Boolean isEngineerRole(){
         User u=[
             SELECT UserRole.Name 
             FROM User 
@@ -66,7 +66,7 @@ public with sharing class WorkFileRelatedListController {
     }
 
     @AuraEnabled
-    private static void validateAndFillReasonDescription(WorkFileWrapper file){
+    public static void validateAndFillReasonDescription(WorkFileWrapper file){
         Boolean engineer=isEngineerRole();
         if (engineer){
             if (String.isBlank(file.fileReason)){
@@ -74,14 +74,14 @@ public with sharing class WorkFileRelatedListController {
             }
             if (String.isBlank(file.fileDescription)){
                 file.fileDescription= 'Signed Version';
-            }
-            else {
-                if (String.isBlank(file.fileReason) || String.isBlank(file.fileDescription)){
-                    throw new AuraHandledException('Change Reason and Description are required.');
-                }
+            } 
+        }else {
+            if (String.isBlank(file.fileReason) || String.isBlank(file.fileDescription)){
+                throw new AuraHandledException('Change Reason and Description are required.');
             }
         }
     }
+
     @AuraEnabled
     public static Boolean uploadWorkFiles(Id opportunityId, List<WorkFileWrapper> uploadFiles) {
         Map<Id, Work_File__c> wfMap = new Map<Id, Work_File__c>(workFileDAO.getWorkFilesByOpportunityIds(new Set<Id> {opportunityId}));
