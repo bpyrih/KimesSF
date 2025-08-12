@@ -9,6 +9,7 @@ public with sharing class FileVersionsController {
         @AuraEnabled public String description;
         @AuraEnabled public String reason;
         @AuraEnabled public DateTime createdDate;
+        @AuraEnabled public Boolean latestSigned;
     }
 
     @AuraEnabled(cacheable=true)
@@ -43,9 +44,16 @@ public with sharing class FileVersionsController {
                 option.description = cv.Description;
                 option.createdDate = cv.CreatedDate;
                 option.reason = cv.ReasonForChange;
+                option.latestSigned = cv.Is_Latest_Signed__c;
                 options.add(option);
             }
         }
         return options;
+    }
+
+    @AuraEnabled
+    public static Id updateMarkAsSigned(Id contentVersionId) {
+        update new ContentVersion(Id = contentVersionId, Is_Latest_Signed__c = true);
+        return contentVersionId;
     }
 }

@@ -74,7 +74,7 @@ export default class UploadWorkFiles extends LightningModal {
             console.log(f.description);
             console.log(f.reason);
             
-            promises.push(uploadWorkFile({ opportunityId: this.opportunityId, uploadFile: {fileName: f.name, fileReason: f.reason, fileDescription: f.description, fileContent: f.base64} }));
+            promises.push(uploadWorkFile({ opportunityId: this.opportunityId, uploadFile: {fileName: f.name, fileReason: f.reason, fileDescription: f.description, isLatestSigned : false, fileContent: f.base64} }));
             // .then(result => {
             //     console.log('Upload result:', result);
             // })

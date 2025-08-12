@@ -146,6 +146,7 @@ public with sharing class WorkFileRelatedListController {
         cv.ReasonForChange = reason;
         cv.VersionData = EncodingUtil.base64Decode(uploadFile.fileContent);
         cv.ContentDocumentId = docId;
+        // cv.Is_Latest_Signed__c = uploadFile.isLatestSigned;
 
         insert cv;
 
@@ -180,6 +181,7 @@ public with sharing class WorkFileRelatedListController {
         @AuraEnabled public String fileReason {get; set;}
         @AuraEnabled public String fileDescription {get; set;}
         @AuraEnabled public String fileCustomStatus {get; set;}
+        @AuraEnabled public Boolean isLatestSigned {get; set;}
         @AuraEnabled public String fileContent {get; set;}
         public WorkFileWrapper(String fn, String fc) { fileName=fn; fileContent=fc; }
         public WorkFileWrapper() {}

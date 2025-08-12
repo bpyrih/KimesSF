@@ -1,6 +1,9 @@
 <template>
     <lightning-card title={currentFileName} icon-name="standard:document">
         <div slot="actions">
+            <lightning-button label="Mark As Signed" onclick={handleMarkAsSigned} disabled={isLatestMarked}
+            ></lightning-button>
+
             <lightning-button-icon
                 icon-name="utility:refresh" onclick={handleRefresh}
             ></lightning-button-icon>

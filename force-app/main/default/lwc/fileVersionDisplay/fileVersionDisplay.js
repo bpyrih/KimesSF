@@ -1,5 +1,6 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import getFileVersions from '@salesforce/apex/FileVersionsController.getFileVersions';
+import updateMarkAsSigned from '@salesforce/apex/FileVersionsController.updateMarkAsSigned';
 import { refreshApex } from '@salesforce/apex';
 
 export default class FileVersionDisplay extends LightningElement {
@@ -32,6 +33,10 @@ export default class FileVersionDisplay extends LightningElement {
         return this.selectedOption?.label;
     }
 
+    get isLatestMarked() {
+        return this.allVersionsData?.find(option => option.isLatest).latestSigned;
+    }
+
     columns = [
         { label: 'File Name', fieldName: 'fileName' },
         { label: 'Version', fieldName: 'label' },
@@ -47,6 +52,7 @@ export default class FileVersionDisplay extends LightningElement {
             }
          },
         { label: 'Last Version', fieldName: 'isLatest', type: 'boolean' },
+        { label: 'Latest Signed', fieldName: 'latestSigned', type: 'boolean' },
         {
             type: 'button',
             typeAttributes: {
@@ -144,6 +150,15 @@ export default class FileVersionDisplay extends LightningElement {
     async handleRefresh() {
         console.log('REFRESH');
         
+        await refreshApex(this.wiredData);
+    }
+
+    async handleMarkAsSigned() {
+        console.log('handleMarkAsSigned');
+        
+        const contentVersionId = this.allVersionsData.find(option => option.isLatest).value;
+        console.log(contentVersionId);
+        await updateMarkAsSigned({contentVersionId})
         await refreshApex(this.wiredData);
     }
 }

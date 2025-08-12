@@ -20,7 +20,7 @@ public with sharing class ContentDocumentUtilityDAO {
     }
 
     public List<ContentVersion> getContentVersionsByContentDocumentIds(Set<Id> contentDocumentIds) {
-        return [SELECT Id, ContentDocumentId, VersionNumber, VersionDataURL, PathOnClient, Title, IsLatest, Description, ReasonForChange, CreatedDate FROM ContentVersion WHERE ContentDocumentId IN :contentDocumentIds ORDER BY CreatedDate DESC];
+        return [SELECT Id, ContentDocumentId, VersionNumber, VersionDataURL, PathOnClient, Title, IsLatest, Description, ReasonForChange, CreatedDate, Is_Latest_Signed__c FROM ContentVersion WHERE ContentDocumentId IN :contentDocumentIds ORDER BY CreatedDate DESC];
     }
 
 }
