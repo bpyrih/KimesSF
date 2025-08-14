@@ -1,7 +1,7 @@
 <template>
     <lightning-card title="Assign Opportunity to Queue" icon-name="standard:opportunity">
-        <div class="slds-p-around_medium">
-            <div class="slds-m-bottom_medium">
+        <div class="slds-p-around_small slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+            <div class="slds-col slds-size_2-of-3">
                 <lightning-combobox
                     name="queueSelect"
                     label="Select Queue"
@@ -11,7 +11,7 @@
                     onchange={handleChange}>
                 </lightning-combobox>
             </div>
-            <div class="slds-text-align_right">
+            <div class="slds-col slds-size_1-of-3 slds-text-align_right">
                 <lightning-button 
                     variant="brand" 
                     label="Save" 
