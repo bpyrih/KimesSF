@@ -1,38 +1,25 @@
 public with sharing class AssignOpportunityQueueController {
+
     @AuraEnabled(cacheable=true)
-    public static List<IdNameWrapper> getQueues() {
-        List<IdNameWrapper> results = new List<IdNameWrapper>();
-        
-        for (Group g : [
-            SELECT Id, Name 
-            FROM Group 
-            WHERE Type = 'Queue' 
-            ORDER BY Name
-        ]) {
-            results.add(new IdNameWrapper(g.Id, g.Name));
-        }
-        
-        return results;
+    public static List<Queue__c> getQueues() {
+        return [SELECT Id, Name FROM Queue__c ORDER BY Name];
     }
-    
+
+    @AuraEnabled(cacheable=true)
+    public static Id getOpportunityQueue(Id opportunityId) {
+        Opportunity opp = [SELECT Queue__c FROM Opportunity WHERE Id = :opportunityId LIMIT 1];
+        return opp.Queue__c;
+    }
+
     @AuraEnabled
-    public static void assignQueueToOpportunity(Id opportunityId, Id queueId) {
-        Opportunity opp = [
-            SELECT Id, Queue__c 
-            FROM Opportunity 
-            WHERE Id = :opportunityId
-            LIMIT 1
-        ];
-        opp.Queue__c = queueId;
-        update opp;
-    }
-    
-    public class IdNameWrapper {
-        @AuraEnabled public String id;
-        @AuraEnabled public String name;
-        public IdNameWrapper(String id, String name) {
-            this.id = id;
-            this.name = name;
+    public static Id assignQueueToOpportunity(Id opportunityId, Id queueId) {
+        try {
+            Opportunity opp = [SELECT Id, Queue__c FROM Opportunity WHERE Id = :opportunityId LIMIT 1];
+            opp.Queue__c = queueId;
+            update opp;
+            return opp.Queue__c;
+        } catch(Exception e) {
+            throw new AuraHandledException('Failed to assign queue: ' + e.getMessage());
         }
     }
 }
