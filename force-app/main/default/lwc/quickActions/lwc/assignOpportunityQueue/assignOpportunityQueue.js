@@ -1,37 +1,21 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import getQueues from '@salesforce/apex/AssignOpportunityQueueController.getQueues';
-import getOpportunityQueue from '@salesforce/apex/AssignOpportunityQueueController.getOpportunityQueue';
 import assignQueueToOpportunity from '@salesforce/apex/AssignOpportunityQueueController.assignQueueToOpportunity';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { CloseActionScreenEvent } from 'lightning/actions';
 import { getRecordNotifyChange } from 'lightning/uiRecordApi';
+import { CloseActionScreenEvent } from 'lightning/actions';
 
 export default class AssignOpportunityQueue extends LightningElement {
-    @api recordId; 
+    @api recordId;
     @track queueOptions = [];
     @track selectedQueueId;
-    wiredCurrentQueueResult;
 
     @wire(getQueues)
-    wiredQueues({ error, data }) {
+    wiredQueues({ data, error }) {
         if (data) {
-            this.queueOptions = data.map(queue => ({
-                label: queue.Name,
-                value: queue.Id
-            }));
+            this.queueOptions = data.map(q => ({ label: q.Name, value: q.Id }));
         } else if (error) {
             this.showToast('Error', 'Failed to load queues', 'error');
-        }
-    }
-
-    @wire(getOpportunityQueue, { opportunityId: '$recordId' })
-    wiredCurrentQueue(result) {
-        this.wiredCurrentQueueResult = result;
-        const { data, error } = result;
-        if (data) {
-            this.selectedQueueId = data;
-        } else if (error) {
-            this.showToast('Error', 'Failed to load current queue', 'error');
         }
     }
 
@@ -49,24 +33,14 @@ export default class AssignOpportunityQueue extends LightningElement {
             .then(() => {
                 this.showToast('Success', 'Queue assigned successfully', 'success');
                 getRecordNotifyChange([{ recordId: this.recordId }]);
-                this.closeModal();
+                this.dispatchEvent(new CloseActionScreenEvent());
             })
             .catch(error => {
                 this.showToast('Error', error.body?.message || 'An error occurred', 'error');
             });
     }
 
-    handleCancel() {
-        this.closeModal();
-    }
-
-    closeModal() {
-        this.dispatchEvent(new CloseActionScreenEvent());
-    }
-
     showToast(title, message, variant) {
-        this.dispatchEvent(
-            new ShowToastEvent({ title, message, variant })
-        );
+        this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
     }
 }
