@@ -1,0 +1,18 @@
+<template>
+    <lightning-combobox
+        name="queueSelect"
+        label="Assign Queue"
+        value={selectedQueueId}
+        placeholder="Select a queue"
+        options={queueOptions}
+        onchange={handleChange}>
+    </lightning-combobox>
+
+    <div class="slds-m-top_medium">
+        <lightning-button 
+            variant="brand" 
+            label="Save" 
+            onclick={handleSave}>
+        </lightning-button>
+    </div>
+</template>
