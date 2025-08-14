@@ -1,6 +1,6 @@
 import { LightningElement, api, track, wire } from 'lwc';
-import getQueues from '@salesforce/apex/QueueController.getQueues';
-import assignQueueToOpportunity from '@salesforce/apex/QueueController.assignQueueToOpportunity';
+import getQueues from '@salesforce/apex/AssignOpportunityQueueController.getQueues';
+import assignQueueToOpportunity from '@salesforce/apex/AssignOpportunityQueueController.assignQueueToOpportunity';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { CloseActionScreenEvent } from 'lightning/actions';
 
