@@ -14,8 +14,10 @@ public with sharing class AssignOpportunityQueueController {
     @AuraEnabled
     public static Id assignQueueToOpportunity(Id opportunityId, Id queueId) {
         try {
-            Opportunity opp = [SELECT Id, Queue__c FROM Opportunity WHERE Id = :opportunityId LIMIT 1];
-            opp.Queue__c = queueId;
+            Opportunity opp = new Opportunity(
+            Id = opportunityId,
+            Queue__c = queueId
+            );
             update opp;
             return opp.Queue__c;
         } catch(Exception e) {
