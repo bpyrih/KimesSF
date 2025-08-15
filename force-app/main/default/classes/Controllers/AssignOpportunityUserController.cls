@@ -22,7 +22,7 @@ public with sharing class AssignOpportunityUserController {
             Opportunity opp = new Opportunity(
                 Id = opportunityId,
                 OwnerId = userId,
-                Opportunity_Queue__c = null // Clear the queue if assigning to a user  
+                Queue__c = null // Clear the queue if assigning to a user  
             );
             update opp;
     }

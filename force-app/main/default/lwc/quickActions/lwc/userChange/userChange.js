@@ -1,6 +1,6 @@
 import { LightningElement, api, track, wire } from "lwc";
 import getAssignableUsers from "@salesforce/apex/AssignOpportunityUserController.getAssignableUsers";
-import assignUserToOpportunity from "@salesforce/apex/AssignOpportunityUserController.assignUserToOpportunity";
+import assignUserToOpportunity from "@salesforce/apex/AssignOpportunityUserController.assignOpportunityToUser";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import {CloseActionScreenEvent} from "lightning/actions";
 import { getRecordNotifyChange } from "lightning/uiRecordApi";
