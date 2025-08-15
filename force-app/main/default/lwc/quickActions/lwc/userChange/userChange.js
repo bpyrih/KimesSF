@@ -1,9 +1,9 @@
 import { LightningElement, api, track, wire } from "lwc";
 import getAssignableUsers from "@salesforce/apex/AssignOpportunityUserController.getAssignableUsers";
-import assignUserToOpportunity from "@salesforce/apex/AssignOpportunityUserController.assignOpportunityToUser";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import {CloseActionScreenEvent} from "lightning/actions";
 import { getRecordNotifyChange } from "lightning/uiRecordApi";
+import assignOpportunityToUser from "@salesforce/apex/AssignOpportunityUserController.assignOpportunityToUser";
 
 export default class UserChange extends LightningElement {
     @api recordId;
@@ -31,20 +31,28 @@ export default class UserChange extends LightningElement {
             this.showToast('Warning', 'Please select a user', 'warning');
             return;
         }
-
-        assignUserToOpportunity({ opportunityId: this.recordId, userId: this.selectedUserId })
+        assignOpportunityToUser({ opportunityId: this.recordId, userId: this.selectedUserId })
             .then(() => {
-                this.showToast('Success', 'User assigned successfully', 'success');
+                this.showToast('Success', 'Opportunity assigned successfully', 'success');
                 getRecordNotifyChange([{ recordId: this.recordId }]);
-                this.dispatchEvent(new CloseActionScreenEvent());
+                this.closeModal();
             })
             .catch(error => {
                 this.showToast('Error', error.body?.message || 'An error occurred', 'error');
             });
     }
 
+    handleCancel() {
+        this.closeModal();
+    }
+
+    closeModal() {
+        this.dispatchEvent(new CloseActionScreenEvent());
+    }
+
     showToast(title, message, variant) {
         this.dispatchEvent(
-            new ShowToastEvent({ title, message, variant }));
+            new ShowToastEvent({ title, message, variant })
+        );
     }
 }

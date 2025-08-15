@@ -2,7 +2,7 @@ public with sharing class AssignOpportunityUserController {
     @AuraEnabled(cacheable=true)
     public static List<IdNameWrapper> getAssignableUsers() {
         List<IdNameWrapper> results = new List<IdNameWrapper>();
-
+        
         for(User u: [
             SELECT Id, Name 
             FROM User 
@@ -12,27 +12,34 @@ public with sharing class AssignOpportunityUserController {
         }
         return results;
     }
-
-
+    
+    
     @AuraEnabled
     public static void assignOpportunityToUser(Id opportunityId, Id userId) {
         if (opportunityId == null || userId == null) {
             throw new AuraHandledException('Opportunity ID and User ID cannot be null.');
         }
-            Opportunity opp = new Opportunity(
-                Id = opportunityId,
-                OwnerId = userId,
-                Queue__c = null // Clear the queue if assigning to a user  
-            );
-            update opp;
+        Opportunity opp = [
+            SELECT Id, Queue__c 
+            FROM Opportunity 
+            WHERE Id = :opportunityId 
+            LIMIT 1];
+        
+        if (String.isBlank(opp.Queue__c)) {
+            throw new AuraHandledException('Cannot assign to user: Opportunity Queue is empty.');
+        }
+        
+        opp.OwnerId = userId;
+        opp.Queue__c = null;
+        update opp;
     }
-
+    
     public class IdNameWrapper {
-        @AuraEnabled public Id id;
+        @AuraEnabled public Id Id;
         @AuraEnabled public String Name;
-
+        
         public IdNameWrapper(Id id, String name) {
-            this.id = id;
+            this.Id = id;
             this.Name = name;
         }
     }
