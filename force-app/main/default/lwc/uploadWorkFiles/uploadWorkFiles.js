@@ -87,7 +87,7 @@ export default class UploadWorkFiles extends LightningModal {
         for (let i = 0; i < this.files.length; i++) {
             if (this.isEngineer) {
                 if (!this.files[i].reason || this.files[i].reason.trim() === '') {
-                    this.files.reason = 'Signed Version';
+                    this.files[i].reason = 'Signed Version';
                 }
                 if (!this.files[i].description || this.files[i].description.trim() === '') {
                     this.files[i].description = 'Signed Version';
