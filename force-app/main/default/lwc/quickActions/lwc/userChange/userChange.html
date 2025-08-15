@@ -1,0 +1,22 @@
+<template>
+    <lighting-card title="Assign Opportunity to User" icon-name="standard:opportunity">
+        <div class="slds-p-around_medium">
+            <div class="slds-m-bottom_medium">
+                <lightning-combobox
+                    name="userSelect"
+                    label="Select User"
+                    value={selectedUserId}
+                    placeholder="Choose a user"
+                    options={userOptions}
+                    onchange={handleChange}>
+                </lightning-combobox>
+            </div>
+            <div class="slds-text-align_right">
+                <lightning-button 
+                    variant="brand" 
+                    label="Save" 
+                    onclick={handleSave}>
+                </lightning-button>
+            </div>
+        </div>
+</template>
