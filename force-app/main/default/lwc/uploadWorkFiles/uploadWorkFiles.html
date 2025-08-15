@@ -19,6 +19,7 @@
               onchange={handleFiles}>
             </lightning-input>
         </div>
+        <template if:true={roleChecked}>
         <div class="filesSection slds-m-left_large slds-p-vertical_medium">
             <div>Files ready for Upload:</div>
             <template for:each={files} for:item="file" for:index="ind">
@@ -67,6 +68,7 @@
                 </div>
             </template>
         </div>
+        </template>
     </div> 
     
     <!-- <lightning-modal-body> Content: {content} </lightning-modal-body> -->

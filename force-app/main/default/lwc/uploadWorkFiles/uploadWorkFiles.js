@@ -11,6 +11,7 @@ export default class UploadWorkFiles extends LightningModal {
 
     @track files = [];
     @track isEngineer = false;
+    @track roleChecked = false;
 
     uploadStarted = false;
 
@@ -69,9 +70,11 @@ export default class UploadWorkFiles extends LightningModal {
         isEngineerRole()
             .then(result => {
                 this.isEngineer = result;
+                this.roleChecked=true;
         })
         .catch(error => {
             this.handleError(error);
+            this.roleChecked=true;
         });
     }
     
