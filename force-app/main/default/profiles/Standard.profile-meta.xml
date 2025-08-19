@@ -655,6 +655,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContentVersion.Is_Latest_Signed__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Conversion_Mapping__mdt.Formula__c</field>
         <readable>false</readable>
     </fieldPermissions>

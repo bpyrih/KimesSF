@@ -203,6 +203,8 @@
         <members>Product2.Is_Work_File_Required__c</members>
 
         <members>OpportunityLineItem.Same_Product_Count__c</members>
+
+        <members>ContentVersion.Is_Latest_Signed__c </members>
         <name>CustomField</name>
     </types>
     <types>
@@ -224,6 +226,7 @@
         <members>Org_Variable__mdt</members>
         <members>OpportunityLineItem</members>
         <members>Queue__c</members>
+        <members>ContentVersion</members>
         <name>CustomObject</name>
     </types>
     <types>
