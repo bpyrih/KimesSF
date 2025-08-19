@@ -19,6 +19,7 @@
               onchange={handleFiles}>
             </lightning-input>
         </div>
+        <template if:true={roleChecked}>
         <div class="filesSection slds-m-left_large slds-p-vertical_medium">
             <div>Files ready for Upload:</div>
             <template for:each={files} for:item="file" for:index="ind">
@@ -40,7 +41,7 @@
                             value={file.reason}
                             required={isNotEngineer}
                             class="reason-input"
-                            onchange={handleReason}
+                            onchange={handleChange}
                             disabled={uploadStarted}>
                         </lightning-input>
                     </div>
@@ -48,9 +49,9 @@
                         <lightning-textarea data-key={file.name}
                             label="Description"
                             value={file.description}
-                            class="description-input"
-                            onchange={handleDescription}
                             required={isNotEngineer}
+                            class="description-input"
+                            onchange={handleChange}
                             disabled={uploadStarted}>
                         </lightning-textarea>
                     </div>
@@ -67,6 +68,7 @@
                 </div>
             </template>
         </div>
+        </template>
     </div> 
     
     <!-- <lightning-modal-body> Content: {content} </lightning-modal-body> -->
