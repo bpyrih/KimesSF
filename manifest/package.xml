@@ -28,6 +28,9 @@
         <members>FileVersionsController</members>
         <members>AssignOpportunityQueueController</members>
         <members>AssignOpportunityUserController</members>
+        <members>FileVersionsController</members>
+
+
         <members>CaseDAOTest</members>
         <members>ContactDAOTest</members>
         <members>ContentDocumentUtilityDAOTest</members>
@@ -45,6 +48,8 @@
         <members>AssignOpportunityQueueControllerTest</members>
         <members>AssignOpportunityUserControllerTest</members>
         <members>WorkFileRelatedListControllerTest</members>
+        <members>PDFRestServiceTest</members>
+        <members>FileVersionsControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
