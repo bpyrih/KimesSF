@@ -248,6 +248,8 @@
         <members>Opportunity.Create_Sub_Tasks</members>
         <members>Work_File__c.Custom_Send_Review</members>
         <members>Project_Task__c.Quick_Update</members>
+        <members>Opportunity.Assign_to_Queue1</members>
+        <members>Opportunity.Assign_to_User</members>
         <name>QuickAction</name>
     </types>
     <types>
