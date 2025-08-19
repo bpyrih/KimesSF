@@ -91,6 +91,7 @@
         <members>uploadWorkFiles</members>
         <members>fileVersionDisplay</members>
         <members>assignOpportunityQueue</members>
+        <members>userChange</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
