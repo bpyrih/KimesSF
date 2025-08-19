@@ -27,6 +27,7 @@
         <members>PDFRestService</members>
         <members>FileVersionsController</members>
         <members>AssignOpportunityQueueController</members>
+        <members>AssignOpportunityUserController</members>
         <members>CaseDAOTest</members>
         <members>ContactDAOTest</members>
         <members>ContentDocumentUtilityDAOTest</members>
@@ -41,6 +42,8 @@
         <members>HTTP_Mock</members>
         <members>EmailMessageTriggerHandlerTest</members>
         <members>ContentDocumentFlowServiceTest</members>
+        <members>AssignOpportunityQueueControllerTest</members>
+        <members>AssignOpportunityUserControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
