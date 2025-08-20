@@ -42,14 +42,16 @@ public with sharing class PDFRestHelper {
 
         Document_Sign_Config__c dsc = DocumentSignConfigController.getTempateByName(workFile.Document_Sign_Template__c);
 
-        workFile = workFileDAO.getWorkFile(workFileId, new Set<String>(dsc.Config_Fields__c.split(',')));
+        workFile = workFileDAO.getWorkFile(workFileId, new Set<String>(String.isNotBlank(dsc.Config_Fields__c) ? dsc.Config_Fields__c?.split(',') : new List<String> {'Id'}));
 
         List<PDFRestDTO.PDFWithAddedTextFieldData> pdfFields = new List<PDFRestDTO.PDFWithAddedTextFieldData>();
 
         for (Document_Sign_Element__c dse : dsc.Document_Sign_Elements__r) {
             PDFRestDTO.PDFWithAddedTextFieldData pdfWithAddedTextFieldData = new PDFRestDTO.PDFWithAddedTextFieldData();
             pdfWithAddedTextFieldData.max_width = String.valueOf(dse.width__c);
-            pdfWithAddedTextFieldData.text = getTextValue(dse.value__c, workFile);
+            if (String.isNotBlank(dse.value__c)) {
+                pdfWithAddedTextFieldData.text = getTextValue(dse.value__c, workFile);
+            }
             pdfWithAddedTextFieldData.x = String.valueOf(dse.xPosition__c);
             pdfWithAddedTextFieldData.y = String.valueOf(dse.yPosition__c);
             pdfWithAddedTextFieldData.page = String.valueOf(dse.Page_Number__c);

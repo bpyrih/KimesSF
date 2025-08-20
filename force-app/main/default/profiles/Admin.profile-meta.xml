@@ -114,6 +114,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FileVersionsControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>HTTP_Mock</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -135,6 +139,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PDFRestService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PDFRestServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -167,6 +175,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>WorkFileRelatedListController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WorkFileRelatedListControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1731,6 +1743,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Project_Task__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Queue__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
