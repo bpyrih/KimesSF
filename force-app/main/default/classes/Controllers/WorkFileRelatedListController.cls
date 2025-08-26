@@ -166,7 +166,7 @@ public with sharing class WorkFileRelatedListController {
         cv.ReasonForChange = uploadFile.fileReason;
         cv.VersionData = EncodingUtil.base64Decode(uploadFile.fileContent);
         cv.ContentDocumentId = docId;
-        // cv.Is_Latest_Signed__c = uploadFile.isLatestSigned;
+        cv.Is_Latest_Signed__c = false;
 
         insert cv;
 
