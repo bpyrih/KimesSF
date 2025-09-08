@@ -1,0 +1,16 @@
+/* ...existing code... */
+:host .slds-modal__close {
+    position: relative;
+}
+
+/* Якщо хочеш контролювати внутрішній (manual) close */
+:host .slds-modal__container .slds-modal__close,
+:host .slds-modal__close {
+    position: absolute !important;
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+    z-index: 10001 !important;      /* значно вище за стандартні бекдропи */
+    pointer-events: auto !important; /* дозволяє кліки */
+    transform: none !important;
+}
+
