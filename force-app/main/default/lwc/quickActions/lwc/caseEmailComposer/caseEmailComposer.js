@@ -49,7 +49,6 @@ export default class CaseEmailComposer extends LightningElement {
             this.subject = data.defaultSubject || '';
             this.body = data.defaultBody || '';
 
-            // перетворюємо рядки дат у JS Date
             this.workFiles = (data.workFiles || []).map(f => ({
                 ...f,
                 lastModified: f.lastModified ? new Date(f.lastModified) : null
