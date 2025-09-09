@@ -2,13 +2,10 @@
         <div class="slds-modal__container"
              style="width: 800px; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; position: relative;">
 
-
-            <!-- header -->
             <header class="slds-modal__header">
                 <h2 class="slds-text-heading_medium">Send Email</h2>
             </header>
 
-            <!-- scrollable content area -->
             <div class="slds-modal__content slds-p-around_medium" style="overflow:auto; flex: 1 1 auto;">
                 <lightning-input label="To" value={toInput} disabled class="slds-m-bottom_small"></lightning-input>
                 <lightning-input label="Subject" value={subject} onchange={handleSubjectChange} class="slds-m-bottom_small"></lightning-input>
@@ -25,7 +22,6 @@
                     style="min-height:120px;">
                 </lightning-input-rich-text>
 
-                <!-- Work Files (datatable inside limited-height wrapper to avoid inner overflow) -->
                 <lightning-accordion allow-multiple-sections-open>
                     <lightning-accordion-section name="workFiles" label="Work Files">
                         <template if:true={hasWorkFiles}>
@@ -41,7 +37,6 @@
                     </lightning-accordion-section>
                 </lightning-accordion>
 
-                <!-- Quote Attachments -->
                 <lightning-accordion allow-multiple-sections-open>
                     <lightning-accordion-section name="quoteFiles" label="Quote Attachments">
                         <template if:true={hasQuoteFiles}>
