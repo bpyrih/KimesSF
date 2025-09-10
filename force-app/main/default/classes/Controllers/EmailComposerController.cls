@@ -28,7 +28,8 @@ public with sharing class EmailComposerController {
     public static InitialDataDTO getInitialData(Id caseId) {
         if(caseId == null) throw new AuraHandledException('caseId is required');
         
-        Case c = [SELECT Id, Subject, SuppliedEmail, Opportunity__c FROM Case WHERE Id = :caseId LIMIT 1];
+        Case c = [SELECT Id, Subject, SuppliedEmail, Opportunity__c, ContactId, AccountId 
+                  FROM Case WHERE Id = :caseId LIMIT 1];
         
         InitialDataDTO dto = new InitialDataDTO();
         dto.defaultTo = c.SuppliedEmail;
@@ -37,25 +38,23 @@ public with sharing class EmailComposerController {
         
         dto.workFiles = fetchFilesByParents(getWorkFileIds(c.Opportunity__c));
         dto.quoteFiles = fetchFilesByParents(getQuoteIds(c.Opportunity__c));
-        dto.templates = fetchTemplates();
+        dto.templates = fetchTemplates(c);
         
         return dto;
     }
 
     private static Set<Id> getWorkFileIds(Id oppId) {
         if(oppId == null) return new Set<Id>();
-        List<Work_File__c> workFiles = [SELECT Id FROM Work_File__c WHERE Opportunity__c = :oppId];
-        Set<Id> ids = new Set<Id>();
-        for(Work_File__c wf : workFiles) ids.add(wf.Id);
-        return ids;
+        return new Map<Id, Work_File__c>(
+            [SELECT Id FROM Work_File__c WHERE Opportunity__c = :oppId]
+        ).keySet();
     }
 
     private static Set<Id> getQuoteIds(Id oppId) {
         if(oppId == null) return new Set<Id>();
-        List<Quote> quotes = [SELECT Id FROM Quote WHERE OpportunityId = :oppId];
-        Set<Id> ids = new Set<Id>();
-        for(Quote q : quotes) ids.add(q.Id);
-        return ids;
+        return new Map<Id, Quote>(
+            [SELECT Id FROM Quote WHERE OpportunityId = :oppId]
+        ).keySet();
     }
 
     private static List<FileRowDTO> fetchFilesByParents(Set<Id> parentIds) {
@@ -108,43 +107,80 @@ public with sharing class EmailComposerController {
         return rows;
     }
 
-    private static List<TemplateDTO> fetchTemplates() {
+    private static List<TemplateDTO> fetchTemplates(Case c) {
         List<TemplateDTO> out = new List<TemplateDTO>();
-        
-        try {
-            for(SObject mdt : Database.query(
-                'SELECT Id, MasterLabel, Subject__c, Body__c, Active__c FROM Support_Email_Template__mdt WHERE Active__c = true'
-            )) {
-                TemplateDTO t = new TemplateDTO();
-                t.id = (String)mdt.get('Id');
-                t.label = (String)mdt.get('MasterLabel');
-                t.subject = (String)mdt.get('Subject__c');
-                t.body = (String)mdt.get('Body__c');
-                out.add(t);
-            }
-            if(!out.isEmpty()) return out;
-        } catch(Exception e){}
-        
-        for(EmailTemplate et : [SELECT Id, Name, Subject, HtmlValue FROM EmailTemplate WHERE IsActive = true LIMIT 50]) {
+
+        User u = [SELECT Id, FirstName, LastName, Title, CompanyName 
+                  FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
+
+        Lead l;
+        if (c.ContactId != null) {
+            Contact con = [SELECT Id, FirstName, LastName FROM Contact WHERE Id = :c.ContactId LIMIT 1];
+            l = new Lead(FirstName = con.FirstName, LastName = con.LastName); 
+        }
+        for (Support_Email_Template__mdt mdt : [
+            SELECT Id, MasterLabel, Subject__c, Body__c, Active__c 
+            FROM Support_Email_Template__mdt 
+            WHERE Active__c = true
+        ]) {
             TemplateDTO t = new TemplateDTO();
-            t.id = et.Id;
-            t.label = et.Name;
-            t.subject = et.Subject;
-            t.body = et.HtmlValue;
+            t.id = mdt.Id;
+            t.label = mdt.MasterLabel;
+            t.subject = mergeTemplate(mdt.Subject__c, l, u);
+            t.body = mergeTemplate(mdt.Body__c, l, u);
             out.add(t);
         }
-        
+        for (EmailTemplate et : [
+            SELECT Id, Name, Subject, HtmlValue 
+            FROM EmailTemplate 
+            WHERE IsActive = true 
+              AND (DeveloperName LIKE 'Case%')
+            LIMIT 50
+        ]) {
+            try {
+                Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
+                    et.Id,
+                    c.ContactId,
+                    c.Id
+                );
+                TemplateDTO t = new TemplateDTO();
+                t.id = et.Id;
+                t.label = et.Name;
+                t.subject = rendered.getSubject();
+                t.body = rendered.getHtmlBody();
+                out.add(t);
+            } catch (Exception e) {
+                System.debug('⚠️ Could not render template ' + et.Id + ': ' + e.getMessage());
+            }
+        }
+
         return out;
     }
+
+    private static String mergeTemplate(String text, Lead l, User u) {
+        if (String.isBlank(text)) return text;
+        if (l != null) {
+            text = text.replace('{!Lead.FirstName}', l.FirstName != null ? l.FirstName : '');
+            text = text.replace('{!Lead.LastName}', l.LastName != null ? l.LastName : '');
+        }
+        if (u != null) {
+            text = text.replace('{!User.FirstName}', u.FirstName != null ? u.FirstName : '');
+            text = text.replace('{!User.LastName}', u.LastName != null ? u.LastName : '');
+            text = text.replace('{!User.Title}', u.Title != null ? u.Title : '');
+            text = text.replace('{!User.CompanyName}', u.CompanyName != null ? u.CompanyName : '');
+        }
+        return text;
+    }
+
 
     @AuraEnabled
     public static void sendEmail(
         Id caseId,
-    String toAddressesCsv,
-    String ccAddressesCsv,
-    String bccAddressesCsv,
-    String htmlBody,
-    List<Id> contentDocumentIds
+        String toAddressesCsv,
+        String ccAddressesCsv,
+        String bccAddressesCsv,
+        String htmlBody,
+        List<Id> contentDocumentIds
     ) {
         if(caseId == null) throw new AuraHandledException('caseId is required');
         if(String.isBlank(toAddressesCsv)) throw new AuraHandledException('To address is required');
