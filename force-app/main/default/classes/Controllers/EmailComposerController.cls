@@ -42,24 +42,24 @@ public with sharing class EmailComposerController {
         
         return dto;
     }
-
+    
     private static Set<Id> getWorkFileIds(Id oppId) {
         if(oppId == null) return new Set<Id>();
         return new Map<Id, Work_File__c>(
             [SELECT Id FROM Work_File__c WHERE Opportunity__c = :oppId]
-        ).keySet();
+            ).keySet();
     }
-
+    
     private static Set<Id> getQuoteIds(Id oppId) {
         if(oppId == null) return new Set<Id>();
         return new Map<Id, Quote>(
             [SELECT Id FROM Quote WHERE OpportunityId = :oppId]
-        ).keySet();
+            ).keySet();
     }
-
+    
     private static List<FileRowDTO> fetchFilesByParents(Set<Id> parentIds) {
         if(parentIds.isEmpty()) return new List<FileRowDTO>();
-
+        
         List<ContentDocumentLink> links = [
             SELECT ContentDocumentId
             FROM ContentDocumentLink
@@ -89,7 +89,7 @@ public with sharing class EmailComposerController {
             
             FileRowDTO r = new FileRowDTO();
             r.id = l.ContentDocumentId;
-
+            
             String fileName = v.Title;
             if (!fileName.toLowerCase().endsWith('.' + v.FileType.toLowerCase())) {
                 fileName += '.' + v.FileType;
@@ -106,81 +106,56 @@ public with sharing class EmailComposerController {
         
         return rows;
     }
-
+    
     private static List<TemplateDTO> fetchTemplates(Case c) {
         List<TemplateDTO> out = new List<TemplateDTO>();
-
-        User u = [SELECT Id, FirstName, LastName, Title, CompanyName 
-                  FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
-
-        Lead l;
-        if (c.ContactId != null) {
-            Contact con = [SELECT Id, FirstName, LastName FROM Contact WHERE Id = :c.ContactId LIMIT 1];
-            l = new Lead(FirstName = con.FirstName, LastName = con.LastName); 
+        List<EmailTemplate> templates = [
+        SELECT Id, Name, Subject, HtmlValue, Body
+        FROM EmailTemplate 
+        WHERE IsActive = true AND (Name LIKE '%Case%')
+        LIMIT 50
+    ];
+        
+        if (templates.isEmpty()) {
+            System.debug('No active templates found in folder "Case Templates".');
+            return out;
         }
-        for (Support_Email_Template__mdt mdt : [
-            SELECT Id, MasterLabel, Subject__c, Body__c, Active__c 
-            FROM Support_Email_Template__mdt 
-            WHERE Active__c = true
-        ]) {
-            TemplateDTO t = new TemplateDTO();
-            t.id = mdt.Id;
-            t.label = mdt.MasterLabel;
-            t.subject = mergeTemplate(mdt.Subject__c, l, u);
-            t.body = mergeTemplate(mdt.Body__c, l, u);
-            out.add(t);
-        }
-        for (EmailTemplate et : [
-            SELECT Id, Name, Subject, HtmlValue 
-            FROM EmailTemplate 
-            WHERE IsActive = true 
-              AND (DeveloperName LIKE 'Case%')
-            LIMIT 50
-        ]) {
+        for (EmailTemplate et : templates) {
             try {
                 Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
                     et.Id,
-                    c.ContactId,
-                    c.Id
-                );
+                c.ContactId,
+                c.Id  
+                    );
+                
                 TemplateDTO t = new TemplateDTO();
                 t.id = et.Id;
                 t.label = et.Name;
                 t.subject = rendered.getSubject();
-                t.body = rendered.getHtmlBody();
+                
+                String htmlBody = rendered.getHtmlBody();
+                String plainTextBody = rendered.getPlainTextBody();
+                t.body = !String.isBlank(htmlBody) ? htmlBody : plainTextBody;
+                
                 out.add(t);
+                
             } catch (Exception e) {
-                System.debug('⚠️ Could not render template ' + et.Id + ': ' + e.getMessage());
+                System.debug(LoggingLevel.ERROR, 'Could not render template "' + et.Name + '" (' + et.Id + '). Error: ' + e.getMessage());
             }
         }
-
+        
         return out;
     }
-
-    private static String mergeTemplate(String text, Lead l, User u) {
-        if (String.isBlank(text)) return text;
-        if (l != null) {
-            text = text.replace('{!Lead.FirstName}', l.FirstName != null ? l.FirstName : '');
-            text = text.replace('{!Lead.LastName}', l.LastName != null ? l.LastName : '');
-        }
-        if (u != null) {
-            text = text.replace('{!User.FirstName}', u.FirstName != null ? u.FirstName : '');
-            text = text.replace('{!User.LastName}', u.LastName != null ? u.LastName : '');
-            text = text.replace('{!User.Title}', u.Title != null ? u.Title : '');
-            text = text.replace('{!User.CompanyName}', u.CompanyName != null ? u.CompanyName : '');
-        }
-        return text;
-    }
-
-
+    
+   
     @AuraEnabled
     public static void sendEmail(
         Id caseId,
-        String toAddressesCsv,
-        String ccAddressesCsv,
-        String bccAddressesCsv,
-        String htmlBody,
-        List<Id> contentDocumentIds
+    String toAddressesCsv,
+    String ccAddressesCsv,
+    String bccAddressesCsv,
+    String htmlBody,
+    List<Id> contentDocumentIds
     ) {
         if(caseId == null) throw new AuraHandledException('caseId is required');
         if(String.isBlank(toAddressesCsv)) throw new AuraHandledException('To address is required');
