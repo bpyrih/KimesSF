@@ -112,7 +112,7 @@ public with sharing class EmailComposerController {
         List<EmailTemplate> templates = [
         SELECT Id, Name, Subject, HtmlValue, Body
         FROM EmailTemplate 
-        WHERE IsActive = true AND (Name LIKE '%Case%')
+        WHERE IsActive = true AND (folder.Name  =  'Case reply with file templates')
         LIMIT 50
     ];
         
@@ -125,13 +125,12 @@ public with sharing class EmailComposerController {
                 Messaging.SingleEmailMessage rendered = Messaging.renderStoredEmailTemplate(
                     et.Id,
                 c.ContactId,
-                c.Id  
+                c.Id
                     );
                 
                 TemplateDTO t = new TemplateDTO();
                 t.id = et.Id;
                 t.label = et.Name;
-                t.subject = rendered.getSubject();
                 
                 String htmlBody = rendered.getHtmlBody();
                 String plainTextBody = rendered.getPlainTextBody();
@@ -147,7 +146,7 @@ public with sharing class EmailComposerController {
         return out;
     }
     
-   
+    
     @AuraEnabled
     public static void sendEmail(
         Id caseId,
@@ -162,19 +161,21 @@ public with sharing class EmailComposerController {
         if(String.isBlank(htmlBody)) throw new AuraHandledException('Body is required');
         
         Case relatedCase = [
-            SELECT Id, CaseNumber,
-                (SELECT Id, MessageIdentifier, Subject FROM Emails ORDER BY CreatedDate ASC LIMIT 1)
+            SELECT Id, CaseNumber, Subject, 
+                (SELECT Id, MessageIdentifier, Subject, ToAddress FROM Emails ORDER BY CreatedDate ASC LIMIT 1)
             FROM Case
             WHERE Id = :caseId
             LIMIT 1
         ];
         
+        String inboundAddress = '';
         String originalMessageId = '';
-        String originalSubject = 'RE: ' + relatedCase.CaseNumber;
+        String originalSubject = 'RE: ' + relatedCase.Subject;
         
         if(!relatedCase.Emails.isEmpty()){
-            originalMessageId = relatedCase.Emails[0].MessageIdentifier;
-            originalSubject = 'RE: ' + relatedCase.Emails[0].Subject;
+            EmailMessage firstEmail = relatedCase.Emails[0];
+            inboundAddress = firstEmail.ToAddress;
+            originalMessageId = firstEmail.MessageIdentifier;
         }
         
         String threadingToken = EmailMessages.getFormattedThreadingToken(caseId);
@@ -184,8 +185,16 @@ public with sharing class EmailComposerController {
         mail.setCcAddresses(splitCsv(ccAddressesCsv));
         mail.setBccAddresses(splitCsv(bccAddressesCsv));
         
-        OrgWideEmailAddress[] owea = [SELECT Id FROM OrgWideEmailAddress WHERE Address = 'torchdesigns@kimesengineering.com' LIMIT 1];
-        if(!owea.isEmpty()) mail.setOrgWideEmailAddressId(owea[0].Id);
+        if (!String.isBlank(inboundAddress)) {
+            OrgWideEmailAddress[] owea = [
+            SELECT Id FROM OrgWideEmailAddress 
+            WHERE Address = :inboundAddress 
+            LIMIT 1
+        ];
+            if (!owea.isEmpty()) {
+                mail.setOrgWideEmailAddressId(owea[0].Id);
+            }
+        }
         
         if(originalMessageId != '') {
             mail.setInReplyTo(originalMessageId);
