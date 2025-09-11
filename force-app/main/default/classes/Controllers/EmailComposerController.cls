@@ -160,18 +160,35 @@ public with sharing class EmailComposerController {
         if(String.isBlank(toAddressesCsv)) throw new AuraHandledException('To address is required');
         if(String.isBlank(htmlBody)) throw new AuraHandledException('Body is required');
         
+        try {
+            Messaging.SingleEmailMessage mail = buildEmailMessage(
+                caseId, toAddressesCsv, ccAddressesCsv, bccAddressesCsv, htmlBody, contentDocumentIds
+                );
+            Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
+        } catch(Exception e) {
+            throw new AuraHandledException('Failed to send email: ' + e.getMessage());
+        }
+    }
+    
+    private static Messaging.SingleEmailMessage buildEmailMessage(
+        Id caseId,
+    String toAddressesCsv,
+    String ccAddressesCsv,
+    String bccAddressesCsv,
+    String htmlBody,
+    List<Id> contentDocumentIds
+    ) {
         Case relatedCase = [
-            SELECT Id, CaseNumber, Subject, 
-                (SELECT Id, MessageIdentifier, Subject, ToAddress FROM Emails ORDER BY CreatedDate ASC LIMIT 1)
-            FROM Case
-            WHERE Id = :caseId
-            LIMIT 1
-        ];
+        SELECT Id, CaseNumber, Subject,
+            (SELECT Id, MessageIdentifier, ToAddress 
+             FROM Emails ORDER BY CreatedDate ASC LIMIT 1)
+        FROM Case
+        WHERE Id = :caseId
+        LIMIT 1
+    ];
         
         String inboundAddress = '';
         String originalMessageId = '';
-        String originalSubject = 'RE: ' + relatedCase.Subject;
-        
         if(!relatedCase.Emails.isEmpty()){
             EmailMessage firstEmail = relatedCase.Emails[0];
             inboundAddress = firstEmail.ToAddress;
@@ -187,56 +204,66 @@ public with sharing class EmailComposerController {
         
         if (!String.isBlank(inboundAddress)) {
             OrgWideEmailAddress[] owea = [
-            SELECT Id FROM OrgWideEmailAddress 
-            WHERE Address = :inboundAddress 
-            LIMIT 1
+            SELECT Id FROM OrgWideEmailAddress WHERE Address = :inboundAddress LIMIT 1
         ];
             if (!owea.isEmpty()) {
                 mail.setOrgWideEmailAddressId(owea[0].Id);
             }
         }
         
-        if(originalMessageId != '') {
+        if(!String.isBlank(originalMessageId)) {
             mail.setInReplyTo(originalMessageId);
             mail.setReferences(originalMessageId);
         }
         
-        mail.setSubject(originalSubject);
+        mail.setSubject('RE: ' + relatedCase.Subject);
         mail.setHtmlBody(htmlBody + '<br><br>Ref: ' + relatedCase.CaseNumber + '<br><br>' + threadingToken);
         mail.setWhatId(relatedCase.Id);
         mail.setSaveAsActivity(true);
         
-        if(contentDocumentIds != null && !contentDocumentIds.isEmpty()){
-            Set<Id> addedDocs = new Set<Id>();
-            List<Messaging.EmailFileAttachment> attachments = new List<Messaging.EmailFileAttachment>();
-            
-            for(ContentDocumentLink cdl : [SELECT ContentDocument.LatestPublishedVersionId FROM ContentDocumentLink WHERE ContentDocumentId IN :contentDocumentIds]){
-                if(addedDocs.contains(cdl.ContentDocument.LatestPublishedVersionId)) continue;
-                
-                ContentVersion cv = [SELECT VersionData, Title, FileExtension FROM ContentVersion WHERE Id = :cdl.ContentDocument.LatestPublishedVersionId LIMIT 1];
-                
-                String fileName = cv.Title;
-                if(!fileName.toLowerCase().endsWith('.' + cv.FileExtension.toLowerCase())) {
-                    fileName += '.' + cv.FileExtension;
-                }
-                
-                Messaging.EmailFileAttachment efa = new Messaging.EmailFileAttachment();
-                efa.setFileName(fileName);
-                efa.setBody(cv.VersionData);
-                attachments.add(efa);
-                
-                addedDocs.add(cdl.ContentDocument.LatestPublishedVersionId);
-            }
-            
-            if(!attachments.isEmpty()) mail.setFileAttachments(attachments);
+        List<Messaging.EmailFileAttachment> attachments = buildAttachments(contentDocumentIds);
+        if(!attachments.isEmpty()) {
+            mail.setFileAttachments(attachments);
         }
         
-        try {
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
-        } catch(Exception e) {
-            throw new AuraHandledException('Failed to send email: ' + e.getMessage());
-        }
+        return mail;
     }
+    
+    private static List<Messaging.EmailFileAttachment> buildAttachments(List<Id> contentDocumentIds) {
+        List<Messaging.EmailFileAttachment> attachments = new List<Messaging.EmailFileAttachment>();
+        if(contentDocumentIds == null || contentDocumentIds.isEmpty()) return attachments;
+        
+        Set<Id> addedDocs = new Set<Id>();
+        
+        for(ContentDocumentLink cdl : [
+        SELECT ContentDocument.LatestPublishedVersionId 
+        FROM ContentDocumentLink 
+        WHERE ContentDocumentId IN :contentDocumentIds
+    ]) {
+            if(addedDocs.contains(cdl.ContentDocument.LatestPublishedVersionId)) continue;
+            
+            ContentVersion cv = [
+            SELECT VersionData, Title, FileExtension 
+            FROM ContentVersion 
+            WHERE Id = :cdl.ContentDocument.LatestPublishedVersionId 
+            LIMIT 1
+        ];
+            
+            String fileName = cv.Title;
+            if(!fileName.toLowerCase().endsWith('.' + cv.FileExtension.toLowerCase())) {
+                fileName += '.' + cv.FileExtension;
+            }
+            
+            Messaging.EmailFileAttachment efa = new Messaging.EmailFileAttachment();
+            efa.setFileName(fileName);
+            efa.setBody(cv.VersionData);
+            attachments.add(efa);
+            
+            addedDocs.add(cdl.ContentDocument.LatestPublishedVersionId);
+        }
+        return attachments;
+    }
+    
     
     private static List<String> splitCsv(String csv){
         List<String> out = new List<String>();
