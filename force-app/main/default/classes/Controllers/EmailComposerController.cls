@@ -26,66 +26,108 @@ public with sharing class EmailComposerController {
     
     @AuraEnabled(cacheable=true)
     public static InitialDataDTO getInitialData(Id caseId) {
-        if(caseId == null) throw new AuraHandledException('caseId is required');
+        if (caseId == null) throw new AuraHandledException('caseId is required');
         
-        Case c = [SELECT Id, Subject, SuppliedEmail, Opportunity__c, ContactId, AccountId 
-                  FROM Case WHERE Id = :caseId LIMIT 1];
+        Case c = [SELECT Id, Subject, SuppliedEmail, Opportunity__c, ContactId, AccountId
+              FROM Case WHERE Id = :caseId LIMIT 1];
         
         InitialDataDTO dto = new InitialDataDTO();
         dto.defaultTo = c.SuppliedEmail;
         dto.defaultSubject = 'Re: ' + (String.isBlank(c.Subject) ? 'Case ' + c.Id : c.Subject);
         dto.defaultBody = '<p>Hello,</p><p></p><p>Best regards,</p>';
         
-        dto.workFiles = fetchFilesByParents(getWorkFileIds(c.Opportunity__c));
-        dto.quoteFiles = fetchFilesByParents(getQuoteIds(c.Opportunity__c));
+        Set<Id> workFileIds = new Map<Id, Work_File__c>(
+            [SELECT Id FROM Work_File__c WHERE Opportunity__c = :c.Opportunity__c]
+            ).keySet();
+        
+        Set<Id> quoteIds = new Map<Id, Quote>(
+            [SELECT Id FROM Quote WHERE OpportunityId = :c.Opportunity__c AND Status = 'Approved']
+            ).keySet();
+        
+        dto.workFiles = fetchWorkFileRows(workFileIds);
+        dto.quoteFiles = fetchQuoteFileRows(quoteIds);
+        
         dto.templates = fetchTemplates(c);
         
         return dto;
     }
     
     private static Set<Id> getWorkFileIds(Id oppId) {
-        if(oppId == null) return new Set<Id>();
+        if (oppId == null) return new Set<Id>();
         return new Map<Id, Work_File__c>(
             [SELECT Id FROM Work_File__c WHERE Opportunity__c = :oppId]
             ).keySet();
     }
     
     private static Set<Id> getQuoteIds(Id oppId) {
-        if(oppId == null) return new Set<Id>();
+        if (oppId == null) return new Set<Id>();
         return new Map<Id, Quote>(
-            [SELECT Id FROM Quote WHERE OpportunityId = :oppId]
+            [SELECT Id FROM Quote WHERE OpportunityId = :oppId AND Status = 'Approved']
             ).keySet();
     }
     
-    private static List<FileRowDTO> fetchFilesByParents(Set<Id> parentIds) {
-        if(parentIds.isEmpty()) return new List<FileRowDTO>();
-        
+    private static List<FileRowDTO> fetchWorkFileRows(Set<Id> workFileIds) {
+        if (workFileIds.isEmpty()) return new List<FileRowDTO>();
         List<ContentDocumentLink> links = [
-            SELECT ContentDocumentId
-            FROM ContentDocumentLink
-            WHERE LinkedEntityId IN :parentIds
-        ];
+        SELECT ContentDocumentId, LinkedEntityId 
+        FROM ContentDocumentLink 
+        WHERE LinkedEntityId IN :workFileIds
+    ];
         
+        if (links.isEmpty()) return new List<FileRowDTO>();
         Set<Id> docIds = new Set<Id>();
-        for(ContentDocumentLink l : links) docIds.add(l.ContentDocumentId);
-        if(docIds.isEmpty()) return new List<FileRowDTO>();
+        for (ContentDocumentLink l : links) docIds.add(l.ContentDocumentId);
         
-        Map<Id, ContentVersion> latest = new Map<Id, ContentVersion>();
-        for(ContentVersion cv : [
-            SELECT Id, ContentDocumentId, Title, FileType, ContentSize, LastModifiedDate
-            FROM ContentVersion
-            WHERE ContentDocumentId IN :docIds AND IsLatest = true
-        ]) {
-            latest.put(cv.ContentDocumentId, cv);
+        Map<Id, ContentVersion> latestSignedMap = new Map<Id, ContentVersion>();
+        for (ContentVersion cv : [
+        SELECT Id, ContentDocumentId, Title, FileType, ContentSize, LastModifiedDate, Is_Latest_Signed__c
+        FROM ContentVersion
+        WHERE ContentDocumentId IN :docIds
+        ORDER BY LastModifiedDate DESC
+    ]) {
+            if (cv.Is_Latest_Signed__c && !latestSignedMap.containsKey(cv.ContentDocumentId)) {
+                latestSignedMap.put(cv.ContentDocumentId, cv);
+            }
         }
         
+        return buildFileRowDTOs(links, latestSignedMap);
+    }
+    
+    private static List<FileRowDTO> fetchQuoteFileRows(Set<Id> quoteIds) {
+        if (quoteIds.isEmpty()) return new List<FileRowDTO>();
+        List<ContentDocumentLink> links = [
+        SELECT ContentDocumentId, LinkedEntityId 
+        FROM ContentDocumentLink 
+        WHERE LinkedEntityId IN :quoteIds
+    ];
+        
+        if (links.isEmpty()) return new List<FileRowDTO>();
+        Set<Id> docIds = new Set<Id>();
+        for (ContentDocumentLink l : links) docIds.add(l.ContentDocumentId);
+        
+        Map<Id, ContentVersion> latestMap = new Map<Id, ContentVersion>();
+        for (ContentVersion cv : [
+        SELECT Id, ContentDocumentId, Title, FileType, ContentSize, LastModifiedDate
+        FROM ContentVersion
+        WHERE ContentDocumentId IN :docIds
+        ORDER BY LastModifiedDate DESC
+    ]) {
+            if (!latestMap.containsKey(cv.ContentDocumentId)) {
+                latestMap.put(cv.ContentDocumentId, cv);
+            }
+        }
+        
+        return buildFileRowDTOs(links, latestMap);
+    }
+    
+    private static List<FileRowDTO> buildFileRowDTOs(List<ContentDocumentLink> links, Map<Id, ContentVersion> versionsMap) {
         List<FileRowDTO> rows = new List<FileRowDTO>();
         Set<Id> addedDocs = new Set<Id>();
         
-        for(ContentDocumentLink l : links) {
-            if(addedDocs.contains(l.ContentDocumentId)) continue;
-            ContentVersion v = latest.get(l.ContentDocumentId);
-            if(v == null) continue;
+        for (ContentDocumentLink l : links) {
+            if (addedDocs.contains(l.ContentDocumentId)) continue;
+            ContentVersion v = versionsMap.get(l.ContentDocumentId);
+            if (v == null) continue;
             
             FileRowDTO r = new FileRowDTO();
             r.id = l.ContentDocumentId;
@@ -95,9 +137,8 @@ public with sharing class EmailComposerController {
                 fileName += '.' + v.FileType;
             }
             r.title = fileName;
-            
             r.fileType = v.FileType;
-            r.sizeKB = v.ContentSize != null ? (Decimal.valueOf(v.ContentSize)/1024).setScale(1) : null;
+            r.sizeKB = v.ContentSize != null ? (Decimal.valueOf(v.ContentSize) / 1024).setScale(1) : null;
             r.lastModified = v.LastModifiedDate.formatGMT('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
             
             rows.add(r);
@@ -106,7 +147,6 @@ public with sharing class EmailComposerController {
         
         return rows;
     }
-    
     private static List<TemplateDTO> fetchTemplates(Case c) {
         List<TemplateDTO> out = new List<TemplateDTO>();
         List<EmailTemplate> templates = [
