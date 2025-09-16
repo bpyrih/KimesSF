@@ -304,7 +304,7 @@ public with sharing class EmailComposerController {
         return attachments;
     }
     
-    
+    @TestVisible
     private static List<String> splitCsv(String csv){
         List<String> out = new List<String>();
         if(!String.isBlank(csv)){
