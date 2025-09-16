@@ -1,0 +1,61 @@
+<template>
+        <div class="slds-modal__container"
+             style="width: 800px; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; position: relative;">
+
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Send Email</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium" style="overflow:auto; flex: 1 1 auto;">
+                <lightning-input label="To" value={toInput} disabled class="slds-m-bottom_small"></lightning-input>
+                <lightning-input label="Subject" value={subject} onchange={handleSubjectChange} class="slds-m-bottom_small"></lightning-input>
+
+                <template if:true={templateOptions}>
+                    <lightning-combobox label="Insert Template" value={selectedTemplateId} options={templateOptions}
+                        placeholder="Select template for message body" onchange={handleTemplateSelect}
+                        class="slds-m-bottom_small">
+                    </lightning-combobox>
+                </template>
+
+                <lightning-input-rich-text label="Message" value={body} onchange={handleBodyChange}
+                    class="composer slds-m-bottom_small" formats="bold italic underline strike list link code"
+                    style="min-height:120px;">
+                </lightning-input-rich-text>
+
+                <lightning-accordion allow-multiple-sections-open>
+                    <lightning-accordion-section name="workFiles" label="Work Files">
+                        <template if:true={hasWorkFiles}>
+                            <div style="max-height:200px; overflow:auto; margin-bottom:0.75rem;">
+                                <lightning-datatable key-field="id" data={workFiles} columns={fileColumns}
+                                    selected-rows={selectedWorkFileIds} onrowselection={handleWorkFilesSelect}>
+                                </lightning-datatable>
+                            </div>
+                        </template>
+                        <template if:false={hasWorkFiles}>
+                            <p class="slds-p-around_small slds-text-color_weak">No work files found.</p>
+                        </template>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+
+                <lightning-accordion allow-multiple-sections-open>
+                    <lightning-accordion-section name="quoteFiles" label="Quote Attachments">
+                        <template if:true={hasQuoteFiles}>
+                            <div style="max-height:200px; overflow:auto; margin-bottom:0.75rem;">
+                                <lightning-datatable key-field="id" data={quoteFiles} columns={fileColumns}
+                                    selected-rows={selectedQuoteFileIds} onrowselection={handleQuoteFilesSelect}>
+                                </lightning-datatable>
+                            </div>
+                        </template>
+                        <template if:false={hasQuoteFiles}>
+                            <p class="slds-p-around_small slds-text-color_weak">No quote files found.</p>
+                        </template>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+
+            <footer class="slds-modal__footer" style="flex-shrink:0; display:flex; justify-content:flex-end; align-items:center;">
+                <lightning-button variant="neutral" label="Clear" onclick={handleClear} class="slds-m-right_x-small"></lightning-button>
+                <lightning-button variant="brand" label="Send" onclick={handleSend} disabled={sending}></lightning-button>
+            </footer>
+        </div>
+</template>
