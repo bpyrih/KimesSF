@@ -89,6 +89,7 @@
         <members>downloadWorkFiles</members>
         <members>uploadWorkFiles</members>
         <members>fileVersionDisplay</members>
+        <members>caseEmailComposer</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -117,6 +118,7 @@
         <members>Case.ProjectAddressValid__c</members>
         <members>Case.Priority_Flag__c</members>
         <members>Case.Subdivision__c</members>
+        
 
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
@@ -246,6 +248,7 @@
         <members>Opportunity.Create_Sub_Tasks</members>
         <members>Work_File__c.Custom_Send_Review</members>
         <members>Project_Task__c.Quick_Update</members>
+        <members>Case.Reply_with_files</members>
         <name>QuickAction</name>
     </types>
     <types>
