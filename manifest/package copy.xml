@@ -54,5 +54,17 @@
         <members>Opportunity.Assign_to_User</members>
         <name>QuickAction</name>
     </types>
+        <types>
+        <members>Kimes_Engineering_UtilityBar</members>
+        <members>Kimes_Engineering_Case_Record_Page</members>
+        <members>Kimes_Engineering_Lead_Record_Page</members>
+        <members>Kimes_Engineering_Opportunity_Record_Page</members>
+        <members>Kimes_Engineering_Quote_Record_Page</members>
+        <members>Kimes_Engineering_Work_File_Record_Page</members>
+        <members>Kimes_Engineering_Contact_Record_Page</members>
+        <members>Kimes_Engineering_Document_Sign_Element_Record_Page</members>
+        <members>Kimes_Engineering_Project_Task_Record_Page</members>
+        <name>FlexiPage</name>
+    </types>
     <version>61.0</version>
 </Package>
