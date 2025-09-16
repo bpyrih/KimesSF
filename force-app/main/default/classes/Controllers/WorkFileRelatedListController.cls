@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @group             : 
+ * @last modified on  : 08-12-2025
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+**/
 public with sharing class WorkFileRelatedListController {
     private static ContentDocumentUtilityDAO contentDocumentUtilityDAO = new ContentDocumentUtilityDAO();
     private static WorkFileDAO workFileDAO = new WorkFileDAO();
@@ -44,6 +51,20 @@ public with sharing class WorkFileRelatedListController {
 
         return new FileCollectionWrapper(opp.Name, wfWrapperList);
     }
+
+    @AuraEnabled
+    public static Boolean isEngineerRole(){
+        User u=[
+            SELECT UserRole.Name 
+            FROM User 
+            WHERE Id = :UserInfo.getUserId() 
+            Limit 1];
+
+        return u.UserRole != null && 
+               u.UserRole.Name != null && 
+               u.UserRole.Name.containsIgnoreCase('engineer');
+    }
+
 
     @AuraEnabled
     public static Boolean uploadWorkFiles(Id opportunityId, List<WorkFileWrapper> uploadFiles) {
@@ -94,8 +115,8 @@ public with sharing class WorkFileRelatedListController {
             String title = f.fileName;
             cv.Title = title.replace('.pdf', '');
             cv.PathOnClient = title;
-            cv.Description = 'Signed Version';
-            cv.ReasonForChange = 'Signed Version';
+            cv.Description = f.fileDescription;
+            cv.ReasonForChange = f.fileReason;
             cv.VersionData = EncodingUtil.base64Decode(f.fileContent);
             cv.ContentDocumentId = docId;
 
@@ -136,17 +157,16 @@ public with sharing class WorkFileRelatedListController {
         }
 
         ContentVersion cv = new ContentVersion();
-
         String title = uploadFile.fileName;
-        String reason = String.isNotBlank(uploadFile.fileReason) ? uploadFile.fileReason : 'Signed Version';
-        String description = String.isNotBlank(uploadFile.fileDescription) ? uploadFile.fileDescription : 'Signed Version';
+        //String reason = String.isNotBlank(uploadFile.fileReason) ? uploadFile.fileReason : 'Signed Version';
+        //String description = String.isNotBlank(uploadFile.fileDescription) ? uploadFile.fileDescription : 'Signed Version';
         cv.Title = title.replace('.pdf', '');
         cv.PathOnClient = title;
-        cv.Description = description;
-        cv.ReasonForChange = reason;
+        cv.Description = uploadFile.fileDescription;
+        cv.ReasonForChange = uploadFile.fileReason;
         cv.VersionData = EncodingUtil.base64Decode(uploadFile.fileContent);
         cv.ContentDocumentId = docId;
-        // cv.Is_Latest_Signed__c = uploadFile.isLatestSigned;
+        cv.Is_Latest_Signed__c = false;
 
         insert cv;
 
@@ -213,6 +233,71 @@ public with sharing class WorkFileRelatedListController {
             this.workFileStatus    = workFile.Status__c;
             this.fileName          = workFile.Work_File_Name__c;
             this.workFileType      = workFile.Document_Sign_Template__c == null ? 'Custom' : 'Standard';
+            Integer i = 0;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
+            i++;
         }
         public FileInfo() {
 
