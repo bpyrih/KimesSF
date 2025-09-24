@@ -278,7 +278,7 @@
                     <value>true</value>
                 </componentInstanceProperties>
                 <componentName>force:relatedListSingleContainer</componentName>
-                <identifier>force_relatedListSingleContainer_Cases</identifier>
+                <identifier>force_relatedListSingleContainerCases</identifier>
             </componentInstance>
         </itemInstances>
         <itemInstances>
