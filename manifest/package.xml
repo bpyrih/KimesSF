@@ -144,11 +144,7 @@
         <members>Opportunity.Project_Name__c</members>
         <members>Opportunity.Project_Description__c</members>
         <members>Opportunity.Property_Owner__c</members>
-        <members>Opportunity.Estimated_Timeframe__c</members>
-        <members>Opportunity.Payment_schedule_field__c</members>
         <members>Opportunity.Building_Department__c</members>
-        <members>Opportunity.Pre_Proposal_Quote__c</members>
-        <members>Opportunity.Pre_Proposal_Required__c</members>
         <members>Opportunity.PPP__c</members>
         <members>Opportunity.Hard_Copy_Number__c</members>
         <members>Opportunity.Project_Address1__c</members>
@@ -158,7 +154,6 @@
         
         <members>Quote.Estimated_Timeframe__c</members>
         <members>Quote.Proposed_Services__c</members>
-        <members>Quote.Timeframe_Text__c</members>
         <members>Quote.Project_Name__c</members>    
         <members>Quote.Project_Description__c</members>
         <members>Quote.IsPaid__c</members>
