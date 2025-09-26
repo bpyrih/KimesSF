@@ -107,33 +107,6 @@
     <layoutSections>
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Pre Proposal Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Pre_Proposal_Required__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Pre_Proposal_Quote__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Payment_schedule_field__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Estimated_Timeframe__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
         <editHeading>false</editHeading>
         <label>Custom Links</label>
         <layoutColumns/>
@@ -178,11 +151,6 @@
             <actionType>QuickAction</actionType>
             <sortOrder>6</sortOrder>
         </platformActionListItems>
-        <platformActionListItems>
-            <actionName>SendEmail</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>7</sortOrder>
-        </platformActionListItems>
     </platformActionList>
     <relatedContent>
         <relatedContentItems>
@@ -205,6 +173,13 @@
         <fields>UnitPrice</fields>
         <fields>ListPrice</fields>
         <relatedList>RelatedLineItemList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>CASES.SUBJECT</fields>
+        <fields>CASES.CREATED_DATE</fields>
+        <fields>CASES.PRIORITY</fields>
+        <relatedList>Case.Opportunity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>QUOTE.QUOTENUMBER</fields>

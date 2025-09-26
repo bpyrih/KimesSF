@@ -63,7 +63,6 @@
     <types>
         <members>Contact_Account_Auto_Set</members>
         <members>New_Contractor_Set</members>
-        <members>Opportunity_Pre_Proposal</members>
         <members>Converted_Opportunity_Project_Address_Update</members>
         <members>Create_Tasks</members>
         <members>Lead_Search_Address_Update</members>
@@ -74,6 +73,7 @@
         <members>Opportunity_Product_Project_Task_Assign</members>
         <members>Email_Message_Notification</members>
         <members>Opportunity_Product_Count</members>
+        <members>Quote_Pre_Proposal</members>
         <name>Flow</name>
     </types>
     <types>
