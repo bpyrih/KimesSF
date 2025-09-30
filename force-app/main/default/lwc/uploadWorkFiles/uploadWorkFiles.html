@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 08-12-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
 <template>
     <lightning-modal-header label="Upload Work Files Modal"></lightning-modal-header>
 
@@ -12,6 +19,7 @@
               onchange={handleFiles}>
             </lightning-input>
         </div>
+        <template if:true={roleChecked}>
         <div class="filesSection slds-m-left_large slds-p-vertical_medium">
             <div>Files ready for Upload:</div>
             <template for:each={files} for:item="file" for:index="ind">
@@ -31,7 +39,7 @@
                             type="text"
                             label="Change Reason"
                             value={file.reason}
-                            required
+                            required={isNotEngineer}
                             class="reason-input"
                             onchange={handleChange}
                             disabled={uploadStarted}>
@@ -41,6 +49,7 @@
                         <lightning-textarea data-key={file.name}
                             label="Description"
                             value={file.description}
+                            required={isNotEngineer}
                             class="description-input"
                             onchange={handleChange}
                             disabled={uploadStarted}>
@@ -59,6 +68,7 @@
                 </div>
             </template>
         </div>
+        </template>
     </div> 
     
     <!-- <lightning-modal-body> Content: {content} </lightning-modal-body> -->
