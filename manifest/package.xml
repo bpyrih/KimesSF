@@ -85,6 +85,7 @@
         <members>Opportunity_Product_Project_Task_Assign</members>
         <members>Email_Message_Notification</members>
         <members>Opportunity_Product_Count</members>
+        <members>Change_owner_on_case</members>
         <name>Flow</name>
     </types>
     <types>
