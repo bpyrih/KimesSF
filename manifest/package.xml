@@ -26,6 +26,11 @@
         <members>PDFRestHelper</members>
         <members>PDFRestService</members>
         <members>FileVersionsController</members>
+        <members>AssignOpportunityQueueController</members>
+        <members>AssignOpportunityUserController</members>
+        <members>FileVersionsController</members>
+        <members>EmailComposerController</members>
+
         <members>CaseDAOTest</members>
         <members>ContactDAOTest</members>
         <members>ContentDocumentUtilityDAOTest</members>
@@ -40,6 +45,12 @@
         <members>HTTP_Mock</members>
         <members>EmailMessageTriggerHandlerTest</members>
         <members>ContentDocumentFlowServiceTest</members>
+        <members>AssignOpportunityQueueControllerTest</members>
+        <members>AssignOpportunityUserControllerTest</members>
+        <members>WorkFileRelatedListControllerTest</members>
+        <members>PDFRestServiceTest</members>
+        <members>FileVersionsControllerTest</members>
+        <members>EmailComposerControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -74,6 +85,7 @@
         <members>Email_Message_Notification</members>
         <members>Opportunity_Product_Count</members>
         <members>Quote_Pre_Proposal</members>
+        <members>Change_owner_on_case</members>
         <name>Flow</name>
     </types>
     <types>
@@ -89,6 +101,9 @@
         <members>downloadWorkFiles</members>
         <members>uploadWorkFiles</members>
         <members>fileVersionDisplay</members>
+        <members>caseEmailComposer</members>
+        <members>assignOpportunityQueue</members>
+        <members>userChange</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -117,6 +132,7 @@
         <members>Case.ProjectAddressValid__c</members>
         <members>Case.Priority_Flag__c</members>
         <members>Case.Subdivision__c</members>
+        
 
         <members>Lead.Request_Type__c</members>
         <members>Lead.Client_Billing_Info__c</members>
@@ -192,6 +208,8 @@
         <members>Product2.Is_Work_File_Required__c</members>
 
         <members>OpportunityLineItem.Same_Product_Count__c</members>
+
+        <members>ContentVersion.Is_Latest_Signed__c </members>
         <name>CustomField</name>
     </types>
     <types>
@@ -213,6 +231,7 @@
         <members>Org_Variable__mdt</members>
         <members>OpportunityLineItem</members>
         <members>Queue__c</members>
+        <members>ContentVersion</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -241,6 +260,9 @@
         <members>Opportunity.Create_Sub_Tasks</members>
         <members>Work_File__c.Custom_Send_Review</members>
         <members>Project_Task__c.Quick_Update</members>
+        <members>Case.Reply_with_files</members>
+        <members>Opportunity.Assign_to_Queue1</members>
+        <members>Opportunity.Assign_to_User</members>
         <name>QuickAction</name>
     </types>
     <types>
@@ -261,6 +283,7 @@
         <members>Project_Task__c</members>
         <members>Document_Sign_Config__c</members>
         <members>Work_File__c</members>
+        <members>Queue__c</members>
         <name>CustomTab</name>
     </types>
     <types>
