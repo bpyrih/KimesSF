@@ -62,6 +62,10 @@
                 <behavior>Required</behavior>
                 <field>Payment_Schedule__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Payment_Schedule_Calculation__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
