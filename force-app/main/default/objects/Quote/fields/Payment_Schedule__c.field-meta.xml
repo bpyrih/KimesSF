@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Payment_Schedule__c</fullName>
-    <externalId>false</externalId>
-    <formula>if( 
-  ISPICKVAL(Opportunity.Payment_schedule_field__c, &quot;100% due prior to delivery&quot;), 
-  &quot;Due prior to delivery:  &quot; &amp; &quot;$&quot; &amp; TEXT(TotalPrice),
-  if( 
-    ISPICKVAL(Opportunity.Payment_schedule_field__c, &quot;100% due at the final draft&quot;),
-  &quot;Due at the final draft: &quot; &amp; &quot;$&quot; &amp; TEXT(TotalPrice),
-    if(
-      ISPICKVAL(Opportunity.Payment_schedule_field__c, &quot;50% due on commencement. 50% due prior to delivery&quot;),
-  &quot;Due on commencement:    &quot; &amp; &quot;$&quot; &amp; TEXT(TotalPrice/2.0) &amp; BR() &amp; 
-  &quot;Due prior to delivery:  &quot; &amp; &quot;$&quot; &amp; TEXT(TotalPrice/2.0),
-      if( 
-        ISPICKVAL(Opportunity.Payment_schedule_field__c, &quot;50% due on the first draft 50% due upon delivery&quot;),
-  &quot;Due on the first draft: &quot; &amp; &quot;$&quot; &amp; TEXT(TotalPrice/2.0) &amp; BR() &amp; 
-  &quot;Due upon delivery:      &quot; &amp; &quot;$&quot; &amp; TEXT(TotalPrice/2.0),
-        &quot;&quot;
-        )
-      )
-    )
-  )</formula>
     <label>Payment Schedule</label>
     <required>false</required>
     <trackHistory>false</trackHistory>
-    <type>Text</type>
-    <unique>false</unique>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>50% due on commencement. 50% due prior to delivery</fullName>
+                <default>false</default>
+                <label>50% due on commencement. 50% due prior to delivery</label>
+            </value>
+            <value>
+                <fullName>100% due prior to delivery</fullName>
+                <default>false</default>
+                <label>100% due prior to delivery</label>
+            </value>
+            <value>
+                <fullName>50% due on the first draft 50% due upon delivery</fullName>
+                <default>false</default>
+                <label>50% due on the first draft 50% due upon delivery</label>
+            </value>
+            <value>
+                <fullName>100% due at the final draft</fullName>
+                <default>false</default>
+                <label>100% due at the final draft</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

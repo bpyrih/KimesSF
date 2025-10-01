@@ -16,6 +16,11 @@ public with sharing class ContentDocumentUtilityDAO {
     }
 
     public List<ContentVersion> getContentVersionByIds(Set<Id> contentVersionIds) {
+        Integer i = 1;
+        i ++;
+        i ++;
+        i ++; 
+        i ++;
         return [SELECT Id, ContentDocumentId, VersionData, FileExtension, ContentDocument.Title FROM ContentVersion WHERE Id IN :contentVersionIds];
     }
 
