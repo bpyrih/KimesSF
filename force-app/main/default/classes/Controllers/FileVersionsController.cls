@@ -11,12 +11,12 @@ public with sharing class FileVersionsController {
         @AuraEnabled public DateTime createdDate;
         @AuraEnabled public Boolean latestSigned;
     }
-
+    
     @AuraEnabled(cacheable=true)
     public static List<ComboboxOption> getFileVersions(String recordId) {
         List<ComboboxOption> options = new List<ComboboxOption>();
         String contentDocId;
-
+        
         // Step 1: Get ContentDocumentId from ContentDocumentLink
         try {
             List<ContentDocumentLink> cdLinks = contentDocumentUtilityDAO.getContentDocumentLinksByLinkedEntityIdsAndExtensions(new List<String>{recordId}, new List<String> {'pdf'});
@@ -28,11 +28,11 @@ public with sharing class FileVersionsController {
             System.debug('No ContentDocumentLink found for recordId: ' + recordId + ' Error: ' + e.getMessage());
             return options; // Return empty list
         }
-
+        
         if (contentDocId!= null) {
             // Step 2: Get all ContentVersion records for that ContentDocumentId
             List<ContentVersion> versions = contentDocumentUtilityDAO.getContentVersionsByContentDocumentIds(new Set<Id>{contentDocId});
-
+            
             for (ContentVersion cv : versions) {
                 ComboboxOption option = new ComboboxOption();
                 option.value = cv.Id;
@@ -50,10 +50,11 @@ public with sharing class FileVersionsController {
         }
         return options;
     }
-
+    
     @AuraEnabled
-    public static Id updateMarkAsSigned(Id contentVersionId) {
+    public static Id updateMarkAsSigned(Id contentVersionId, Id workFileId) {
         update new ContentVersion(Id = contentVersionId, Is_Latest_Signed__c = true);
+        update new Work_File__c(Id = workFileId, Status__c = 'Signed');
         return contentVersionId;
     }
 }

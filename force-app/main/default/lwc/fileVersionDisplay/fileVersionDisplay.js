@@ -1,13 +1,15 @@
 import { LightningElement, api, wire, track } from 'lwc';
+import { getRecord } from 'lightning/uiRecordApi';
+import STATUS_FIELD from '@salesforce/schema/Work_File__c.Status__c';
 import getFileVersions from '@salesforce/apex/FileVersionsController.getFileVersions';
 import updateMarkAsSigned from '@salesforce/apex/FileVersionsController.updateMarkAsSigned';
 import { refreshApex } from '@salesforce/apex';
+const WORKFILE_FIELDS = [STATUS_FIELD];
 
 export default class FileVersionDisplay extends LightningElement {
     pdfHeight;
 
     @api recordId; // Automatically populated with the current record's ID [31, 32]
-
     @track isLoading = true; // Controls spinner visibility [21, 29]
     @track error; // Stores any error messages [16, 17, 33]
 
@@ -20,7 +22,8 @@ export default class FileVersionDisplay extends LightningElement {
     allVersionsData; // Private property to store all fetched version data for client-side lookup
 
     selectedOption;
-
+    @wire(getRecord, { recordId: '$recordId', fields: WORKFILE_FIELDS })
+    wiredWorkFile;
     get versionURL() {
         return this.selectedOption?.versionURL.split('.force.com')[1];
     }
@@ -34,23 +37,24 @@ export default class FileVersionDisplay extends LightningElement {
     }
 
     get isLatestMarked() {
-        return this.allVersionsData?.find(option => option.isLatest).latestSigned;
+        const latest = this.allVersionsData?.find(option => option.isLatest);
+        return latest?.latestSigned || false;
     }
 
     columns = [
         { label: 'File Name', fieldName: 'fileName' },
         { label: 'Version', fieldName: 'label' },
         { label: 'Change Reason', fieldName: 'reason' },
-        { label: 'Description', fieldName: 'description'},
+        { label: 'Description', fieldName: 'description' },
         { label: 'Upload Date', fieldName: 'createdDate', type: 'date',
-            typeAttributes:{
+            typeAttributes: {
                 year: "numeric",
                 month: "long",
                 day: "2-digit",
                 hour: "2-digit",
                 minute: "2-digit"
             }
-         },
+        },
         { label: 'Last Version', fieldName: 'isLatest', type: 'boolean' },
         { label: 'Latest Signed', fieldName: 'latestSigned', type: 'boolean' },
         {
@@ -69,9 +73,9 @@ export default class FileVersionDisplay extends LightningElement {
         this.wiredData = wiredData;
         console.log('HERE');
 
-        const {data, error} = wiredData;
+        const { data, error } = wiredData;
 
-        
+
         this.isLoading = false; // Hide spinner once data is received or error occurs
         if (data) {
             this.allVersionsData = data; // Store all data for client-side lookup
@@ -123,7 +127,7 @@ export default class FileVersionDisplay extends LightningElement {
     }
 
     updateScreenSize() {
-        this.pdfHeight = window.innerHeight*0.6;
+        this.pdfHeight = window.innerHeight * 0.6;
     }
 
     handleRowAction(event) {
@@ -141,24 +145,43 @@ export default class FileVersionDisplay extends LightningElement {
                 } else {
                     option.disabled = false;
                 }
-                
+
             });
             this.versionOptions = allVersions;
         }
     }
-
     async handleRefresh() {
         console.log('REFRESH');
-        
+
         await refreshApex(this.wiredData);
     }
-
+    async loadWorkFile(workFileId) {
+        try {
+            const workFiles = await getWorkFilesByIds({ ids: [workFileId] });
+            if (workFiles.length > 0) {
+                this.workFile = workFiles[0];
+                console.log('Updated Work_File:', this.workFile);
+            }
+        } catch (error) {
+            console.error('Failed to load Work_File__c', error);
+        }
+    }
     async handleMarkAsSigned() {
         console.log('handleMarkAsSigned');
-        
-        const contentVersionId = this.allVersionsData.find(option => option.isLatest).value;
-        console.log(contentVersionId);
-        await updateMarkAsSigned({contentVersionId})
+
+        const latestOption = this.allVersionsData.find(option => option.isLatest);
+        if (!latestOption || !latestOption.value) {
+            console.warn('No file selected, cannot mark as signed');
+            return;
+        }
+        const contentVersionId = latestOption.value;
+        const workFileId = this.recordId;
+        console.log('Marking as signed contentVersionId:', contentVersionId, 'workFileId:', workFileId);
+        await updateMarkAsSigned({
+            contentVersionId,
+            workFileId
+        });
         await refreshApex(this.wiredData);
+        await refreshApex(this.wiredWorkFile);
     }
 }

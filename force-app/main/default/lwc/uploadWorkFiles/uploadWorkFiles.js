@@ -1,5 +1,6 @@
 import { api, track } from 'lwc';
 import LightningModal from 'lightning/modal';
+import { getRecordNotifyChange } from 'lightning/uiRecordApi';
 import uploadWorkFiles from '@salesforce/apex/WorkFileRelatedListController.uploadWorkFiles';
 import uploadWorkFile from '@salesforce/apex/WorkFileRelatedListController.uploadWorkFile';
 import isEngineerRole from '@salesforce/apex/WorkFileRelatedListController.isEngineerRole';
@@ -130,8 +131,9 @@ export default class UploadWorkFiles extends LightningModal {
         });
         Promise.all(promises).then((results) => {
             results.forEach((result) => console.log(result));
+            //getRecordNotifyChange([{ recordId: this.opportunityId }]);
             this.handleSuccess('Files Uploaded');
-            this.close('Files Uploaded');
+            this.close({ refresh: true, message: 'Files Uploaded' });
          })
         .catch(error => {
             this.handleError(error);
