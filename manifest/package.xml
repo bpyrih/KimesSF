@@ -74,7 +74,6 @@
     <types>
         <members>Contact_Account_Auto_Set</members>
         <members>New_Contractor_Set</members>
-        <members>Opportunity_Pre_Proposal</members>
         <members>Converted_Opportunity_Project_Address_Update</members>
         <members>Create_Tasks</members>
         <members>Lead_Search_Address_Update</members>
@@ -85,6 +84,7 @@
         <members>Opportunity_Product_Project_Task_Assign</members>
         <members>Email_Message_Notification</members>
         <members>Opportunity_Product_Count</members>
+        <members>Quote_Pre_Proposal</members>
         <members>Change_owner_on_case</members>
         <name>Flow</name>
     </types>
@@ -160,11 +160,7 @@
         <members>Opportunity.Project_Name__c</members>
         <members>Opportunity.Project_Description__c</members>
         <members>Opportunity.Property_Owner__c</members>
-        <members>Opportunity.Estimated_Timeframe__c</members>
-        <members>Opportunity.Payment_schedule_field__c</members>
         <members>Opportunity.Building_Department__c</members>
-        <members>Opportunity.Pre_Proposal_Quote__c</members>
-        <members>Opportunity.Pre_Proposal_Required__c</members>
         <members>Opportunity.PPP__c</members>
         <members>Opportunity.Hard_Copy_Number__c</members>
         <members>Opportunity.Project_Address1__c</members>
@@ -174,11 +170,11 @@
         
         <members>Quote.Estimated_Timeframe__c</members>
         <members>Quote.Proposed_Services__c</members>
-        <members>Quote.Timeframe_Text__c</members>
         <members>Quote.Project_Name__c</members>    
         <members>Quote.Project_Description__c</members>
         <members>Quote.IsPaid__c</members>
         <members>Quote.Payment_Schedule__c</members>
+        <members>Quote.Payment_Schedule_Calculation__c</members>
 
         <members>Work_File__c.Opportunity__c</members>
         <members>Work_File__c.Status__c</members>
