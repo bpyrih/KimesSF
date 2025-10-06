@@ -62,7 +62,7 @@ public with sharing class EmailComposerController {
     private static Set<Id> getQuoteIds(Id oppId) {
         if (oppId == null) return new Set<Id>();
         return new Map<Id, Quote>(
-            [SELECT Id FROM Quote WHERE OpportunityId = :oppId AND Status = 'Approved']
+            [SELECT Id FROM Quote WHERE OpportunityId = :oppId]
             ).keySet();
     }
     
