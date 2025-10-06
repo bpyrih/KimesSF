@@ -41,7 +41,7 @@ public with sharing class EmailComposerController {
             ).keySet();
         
         Set<Id> quoteIds = new Map<Id, Quote>(
-            [SELECT Id FROM Quote WHERE OpportunityId = :c.Opportunity__c AND Status = 'Approved']
+            [SELECT Id FROM Quote WHERE OpportunityId = :c.Opportunity__c]
             ).keySet();
         
         dto.workFiles = fetchWorkFileRows(workFileIds);
