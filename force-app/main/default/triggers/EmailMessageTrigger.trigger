@@ -21,8 +21,6 @@ trigger EmailMessageTrigger on EmailMessage (after insert) {
         if (email.Incoming == true) {
             c.Client_Reply_DateTime__c = System.now();
             if (c.Status == 'Closed') {
-                newStatusValue = 'New';
-            } else if (c.Status != 'New') {
                 newStatusValue = 'Client Replied';
             } else {
 
