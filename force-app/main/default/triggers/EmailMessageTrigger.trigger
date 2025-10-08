@@ -13,8 +13,15 @@ trigger EmailMessageTrigger on EmailMessage (after insert) {
         return;
     }
     
-    List<Case> cases = [SELECT Id, Status FROM Case WHERE Id IN :caseIdsToUpdate];
-    
+    List<Case> cases = [SELECT Id, Status, OwnerId FROM Case WHERE Id IN :caseIdsToUpdate];
+    Group intakeQueue = [
+        SELECT Id 
+        FROM Group 
+        WHERE Name = 'Intake' AND Type = 'Queue' 
+        LIMIT 1
+    ];
+    Id intakeQueueId = intakeQueue.Id;
+
     for (Case c : cases) {
         EmailMessage email = caseIdToEmailMessage.get(c.Id);
         String newStatusValue = null;
@@ -22,6 +29,7 @@ trigger EmailMessageTrigger on EmailMessage (after insert) {
             c.Client_Reply_DateTime__c = System.now();
             if (c.Status == 'Closed') {
                 newStatusValue = 'Client Replied';
+                c.OwnerId= intakeQueueId;
             } else {
 
             }
