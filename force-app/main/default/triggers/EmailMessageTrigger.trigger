@@ -14,14 +14,10 @@ trigger EmailMessageTrigger on EmailMessage (after insert) {
     }
     
     List<Case> cases = [SELECT Id, Status, OwnerId FROM Case WHERE Id IN :caseIdsToUpdate];
-    Group intakeQueue = [
-        SELECT Id 
-        FROM Group 
-        WHERE Name = 'Intake' AND Type = 'Queue' 
-        LIMIT 1
-    ];
+    Group intakeQueue = [SELECT Id FROM Group WHERE Name = 'Intake' AND Type = 'Queue' LIMIT 1];
+    
     Id intakeQueueId = intakeQueue.Id;
-
+    
     for (Case c : cases) {
         EmailMessage email = caseIdToEmailMessage.get(c.Id);
         String newStatusValue = null;
@@ -31,7 +27,7 @@ trigger EmailMessageTrigger on EmailMessage (after insert) {
                 newStatusValue = 'Client Replied';
                 c.OwnerId= intakeQueueId;
             } else {
-
+                
             }
         } else {
             c.Client_Follow_Up_DateTime__c = System.now();
@@ -43,7 +39,7 @@ trigger EmailMessageTrigger on EmailMessage (after insert) {
             caseIdToNewStatus.put(c.Id, newStatusValue);
         }
     }
-
+    
     if (!caseIdToNewStatus.isEmpty()) {
         update cases;
     }
