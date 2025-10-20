@@ -1,0 +1,60 @@
+<template>
+    <lightning-card title="Document e-Signature" icon-name="utility:signature">
+        <!-- Spinner -->
+        <template if:true={isLoading}>
+            <div class="spinner">
+                <lightning-spinner
+                    alternative-text="Preparing document..."
+                    size="large"
+                    variant="brand">
+                </lightning-spinner>
+                <p class="status-text">Preparing your document for signing…</p>
+            </div>
+        </template>
+
+        <!-- Form -->
+        <template if:false={isLoading}>
+            <div class="form">
+                <lightning-input
+                    label="First Name"
+                    data-field="firstName"
+                    value={firstName}
+                    onchange={handleInputChange}
+                    required>
+                </lightning-input>
+
+                <lightning-input
+                    label="Last Name"
+                    data-field="lastName"
+                    value={lastName}
+                    onchange={handleInputChange}
+                    required>
+                </lightning-input>
+
+                <lightning-input
+                    label="Email"
+                    type="email"
+                    data-field="email"
+                    value={email}
+                    onchange={handleInputChange}
+                    required>
+                </lightning-input>
+
+                <div class="button-group">
+                    <lightning-button
+                        label="Create & Sign"
+                        variant="brand"
+                        onclick={handleUploadAndSign}>
+                    </lightning-button>
+
+                    <lightning-button
+                        label="Sign Existing"
+                        variant="neutral"
+                        class="slds-m-left_small"
+                        onclick={handleSignExisting}>
+                    </lightning-button>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>
