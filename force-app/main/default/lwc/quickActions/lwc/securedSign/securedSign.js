@@ -4,14 +4,13 @@ import uploadAndSignWorkFile from '@salesforce/apex/SecuredSignFacade.uploadAndS
 export default class UploadSign extends LightningElement {
     @api recordId;
     @api documentRef = '';
-    @api signingKey = ''; // Це поле, здається, не використовується у VF, але лишаємо
+    @api signingKey = ''; 
 
     @track email = '';
     @track firstName = '';
     @track lastName = '';
     @track isLoading = false;
 
-    // VF Callback - ЦЕ URL ВАШОЇ VF-СТОРІНКИ
     callbackUrl = 'https://kimes24--qa--c.sandbox.vf.force.com/apex/SecuredSignWeSignHost';
 
     handleInputChange(e) {
@@ -46,7 +45,7 @@ export default class UploadSign extends LightningElement {
                 if (!this.documentRef) throw new Error('DocumentReference порожній після Apex.');
             }
             
-            // Замість _startOAuthRedirect, ми просто відкриваємо VF-сторінку
+
             this._openSigningWindow();
 
         } catch (e) {
@@ -68,15 +67,12 @@ export default class UploadSign extends LightningElement {
             return;
         }
         
-        // Замість _startOAuthRedirect, ми просто відкриваємо VF-сторінку
+
         this._openSigningWindow();
     }
 
-    /**
-     * НОВА ФУНКЦІЯ: Просто відкриває VF-сторінку з параметрами
-     */
+
     _openSigningWindow() {
-        // Ми передаємо дані як звичайні URL-параметри (query string)
         const params = new URLSearchParams({
             docRef: this.documentRef,
             firstName: this.firstName,
