@@ -29,12 +29,13 @@ public with sharing class SecuredSignFacade {
         
         
         if (String.isNotBlank(uploadResponse.getBody())) {
+            
             try {
                 uploadResult = (SecuredSignDTO.DocumentUploadResponse) JSON.deserialize(
                     uploadResponse.getBody(),
                 SecuredSignDTO.DocumentUploadResponse.class
                     );
-                
+                System.debug('UPLOAD RESULT REFERENCE: ' + uploadResponse.getBody());
                 if (uploadResult != null) {
                     documentRef = uploadResult.Reference;
                 }
@@ -65,13 +66,14 @@ public with sharing class SecuredSignFacade {
         
         SecuredSignDTO.ResponseSigner signerDetails;
         try {
-
             List<SecuredSignDTO.FullSmartTagResponse> fullResponseList =
                 (List<SecuredSignDTO.FullSmartTagResponse>) JSON.deserialize(
                 smartTagResponse.getBody(),
             List<SecuredSignDTO.FullSmartTagResponse>.class
+            
                 );
-
+System.debug('SMARTTAG RESPONSE Body: ' + smartTagResponse.getBody());
+            
             if (fullResponseList != null && !fullResponseList.isEmpty()) {
                 SecuredSignDTO.FullSmartTagResponse resultSmartTag = fullResponseList[0];
 
@@ -91,6 +93,9 @@ public with sharing class SecuredSignFacade {
         
         result.put('documentRef', documentRef);
         result.put('signingKey', signerDetails.SigningKey);
+        System.debug('SUCCESS! Document Reference retrieved: ' + documentRef);
+        System.debug('SUCCESS! Document Reference retrieved: ' + signerDetails.SigningKey);
+
         
         return result;
     }

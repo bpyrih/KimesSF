@@ -40,7 +40,7 @@ export default class UploadSign extends LightningElement {
                 });
 
                 this.documentRef = res?.documentRef || '';
-                this.signingKey = res?.signingKey || '';
+                //this.signingKey = res?.signingKey || '';
 
                 if (!this.documentRef) throw new Error('DocumentReference empty');
             }

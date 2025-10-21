@@ -73,7 +73,8 @@ public with sharing class SecuredSignService {
             'LastName' => lastName,
             'Email' => email,
             'ClientReference' => 'Signer1',
-            'Embedded' => true,
+            'Embedded' => false,
+            'NoInvitationEmailTemplate'=> false,
             'ReturnUrl' => returnUrl,
             'InviteeCoordinates' => new List<Object>{
                 new Map<String, Object>{
@@ -89,7 +90,8 @@ public with sharing class SecuredSignService {
         
         return new Map<String, Object>{
             'DocumentReferences' => new List<String>{documentRef},
-            'Embedded' => true,
+            'Embedded' => false,
+            'NoInvitationEmailTemplate'=> false,
             'DueDate' => Datetime.now().addDays(3).formatGMT('yyyy-MM-dd\'T\'HH:mm:ss\'Z\''),
             'ReturnUrl' => returnUrl,
             'Signers' => new List<Object>{signer}
