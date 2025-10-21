@@ -21,7 +21,7 @@ export default class UploadSign extends LightningElement {
     async handleUploadAndSign() {
         this._refreshInputs();
         if (!this._formValid()) {
-            alert('Будь ласка, заповни ім’я, прізвище та email.');
+            alert('Fill in first name, last name and email.');
             return;
         }
 
@@ -29,7 +29,7 @@ export default class UploadSign extends LightningElement {
         try {
             // Цей блок залишається без змін
             if (!this.documentRef) {
-                if (!this.recordId) throw new Error('Не передано recordId.');
+                if (!this.recordId) throw new Error('No recordId.');
 
                 const res = await uploadAndSignWorkFile({
                     workFileId: this.recordId,
@@ -42,7 +42,7 @@ export default class UploadSign extends LightningElement {
                 this.documentRef = res?.documentRef || '';
                 this.signingKey = res?.signingKey || '';
 
-                if (!this.documentRef) throw new Error('DocumentReference порожній після Apex.');
+                if (!this.documentRef) throw new Error('DocumentReference empty');
             }
             
 
@@ -50,7 +50,7 @@ export default class UploadSign extends LightningElement {
 
         } catch (e) {
             console.error('❌ Upload/prepare error:', e);
-            alert('Не вдалося підготувати документ до підпису.');
+            alert('Error during upload/prepare: ' + e.message);
         } finally {
             this.isLoading = false;
         }
@@ -59,11 +59,11 @@ export default class UploadSign extends LightningElement {
     handleSignExisting() {
         this._refreshInputs();
         if (!this._formValid()) {
-            alert('Будь ласка, заповни ім’я, прізвище та email.');
+            alert('Fill in first name, last name and email.');
             return;
         }
         if (!this.documentRef) {
-            alert('Document Reference не передано у компонент.');
+            alert('No document to sign. Please upload a file first.');
             return;
         }
         
@@ -77,7 +77,8 @@ export default class UploadSign extends LightningElement {
             docRef: this.documentRef,
             firstName: this.firstName,
             lastName: this.lastName,
-            email: this.email
+            email: this.email,
+            signingKey: this.signingKey
         });
 
         const authUrl = `${this.callbackUrl}?${params.toString()}`;

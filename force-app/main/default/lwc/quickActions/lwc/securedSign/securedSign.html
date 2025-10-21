@@ -1,6 +1,6 @@
 <template>
     <lightning-card title="Document e-Signature" icon-name="utility:signature">
-        <!-- Spinner -->
+
         <template if:true={isLoading}>
             <div class="spinner">
                 <lightning-spinner
@@ -12,7 +12,7 @@
             </div>
         </template>
 
-        <!-- Form -->
+
         <template if:false={isLoading}>
             <div class="form">
                 <lightning-input
@@ -45,13 +45,6 @@
                         label="Create & Sign"
                         variant="brand"
                         onclick={handleUploadAndSign}>
-                    </lightning-button>
-
-                    <lightning-button
-                        label="Sign Existing"
-                        variant="neutral"
-                        class="slds-m-left_small"
-                        onclick={handleSignExisting}>
                     </lightning-button>
                 </div>
             </div>
