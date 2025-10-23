@@ -73,8 +73,7 @@ public with sharing class SecuredSignService {
             'LastName' => lastName,
             'Email' => email,
             'ClientReference' => 'Signer1',
-            'Embedded' => false,
-            'NoInvitationEmailTemplate'=> false,
+            'Embedded' => true,
             'ReturnUrl' => returnUrl,
             'InviteeCoordinates' => new List<Object>{
                 new Map<String, Object>{
@@ -90,8 +89,7 @@ public with sharing class SecuredSignService {
         
         return new Map<String, Object>{
             'DocumentReferences' => new List<String>{documentRef},
-            'Embedded' => false,
-            'NoInvitationEmailTemplate'=> false,
+            'Embedded' => true,
             'DueDate' => Datetime.now().addDays(3).formatGMT('yyyy-MM-dd\'T\'HH:mm:ss\'Z\''),
             'ReturnUrl' => returnUrl,
             'Signers' => new List<Object>{signer}
@@ -119,7 +117,28 @@ public with sharing class SecuredSignService {
         return EncodingUtil.convertFromHex(hexBody);
     }
     
-    
+    public static String getUIResourceFileUrl(Integer resourceType) {
+        Map<String, String> headers = buildHeaders();
+        headers.put('Content-Type', 'application/json');
+        HttpRequest req = buildHttpRequest(BASE_URL + '/Web/v1.4/UI/Resource2/16', 'GET', headers);
+
+        HttpResponse res = executeRequest(req);
+        if (res.getStatusCode() != 200) {
+            throw new AuraHandledException('UI/Resource2 failed: ' + res.getStatusCode() + ' ' + res.getBody());
+        }
+        System.debug('UI/Resource2 response body: ' + res.getBody());
+        SecuredSignDTO.UIResourceResponse dto;
+        try {
+            dto = (SecuredSignDTO.UIResourceResponse) JSON.deserialize(res.getBody(), SecuredSignDTO.UIResourceResponse.class);
+        } catch (Exception e) {
+            throw new AuraHandledException('UI/Resource2 parse error: ' + e.getMessage() + ' Body: ' + res.getBody());
+        }
+
+        if (dto == null || dto.FileInfo == null || String.isBlank(dto.FileInfo.Url)) {
+            throw new AuraHandledException('UI/Resource2: FileUrl missing. Body: ' + res.getBody());
+        }
+        return dto.FileInfo.Url;
+    }
     
     private static Map<String, String> buildHeaders() {
         Decimal tsDecimal = Datetime.now().getTime() / 1000;
@@ -127,12 +146,12 @@ public with sharing class SecuredSignService {
         
         String nonce = generateNonce(16);
         
-        Secured_Sign_Variables__mdt config = [
-            SELECT ApiKey__c, ApiSecret__c
-            FROM Secured_Sign_Variables__mdt
-            WHERE DeveloperName = 'SecuredSign'
-            LIMIT 1
-        ];
+        // Secured_Sign_Variables__mdt config = [
+        //     SELECT ApiKey__c, ApiSecret__c
+        //     FROM Secured_Sign_Variables__mdt
+        //     WHERE DeveloperName = 'SecuredSign'
+        //     LIMIT 1
+        // ];
         String apiKey = getApiKey();
         String apiSecret = getApiSecret();
         String stringToSign = apiKey + '\n' + timestamp + '\n' + nonce;

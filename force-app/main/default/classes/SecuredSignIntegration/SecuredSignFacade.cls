@@ -89,8 +89,9 @@ System.debug('SMARTTAG RESPONSE Body: ' + smartTagResponse.getBody());
         if (signerDetails == null || String.isBlank(signerDetails.SigningKey)) {
             throw new AuraHandledException('Could not retrieve SigningKey from the API response.');
         }
-        
-        
+        String weSignUrl = SecuredSignService.getUIResourceFileUrl(16); // 16 = WeSign
+        result.put('weSignUrl', weSignUrl);
+        System.debug('WeSign URL: ' + weSignUrl);
         result.put('documentRef', documentRef);
         result.put('signingKey', signerDetails.SigningKey);
         System.debug('SUCCESS! Document Reference retrieved: ' + documentRef);

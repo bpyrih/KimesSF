@@ -37,7 +37,23 @@ public class SecuredSignDTO {
             InviteeCoordinates.add(c);
         }
     }
+    public class UIResourceFileInfo { 
+        public String ClientReference; 
+        public String Name; 
+        public String FileType; 
+        public String Url; 
     
+    }
+
+
+    public class UIResourceResponse { 
+        public UIResourceFileInfo FileInfo; 
+        public String ContentType; 
+        public String StatusCode; 
+        public String StatusDescription; 
+    }
+
+
     public class InviteeCoordinate {
         public Integer PageNumber;
         public Decimal X;
