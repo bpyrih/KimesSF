@@ -8,9 +8,11 @@
     </template>
 
     <template if:false={isLoading}>
-      <div class="frame">
-        <iframe data-id="host" class="host" src={iframeSrc}></iframe>
-      </div>
+      <lightning-quick-action-panel header="Document e-Signature" size="large">
+    <div class="frame">
+      <iframe data-id="host" class="host" src={iframeSrc} title="Secured Signing"></iframe>
+    </div>
+  </lightning-quick-action-panel>
     </template>
   </lightning-card>
 </template>

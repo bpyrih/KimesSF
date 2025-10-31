@@ -43,7 +43,7 @@ export default class SignEmbed extends LightningElement {
 
   async init(){
     try {
-      // 1) Отримати дані з Apex
+
       const r = await uploadAndSignWorkFile({
         workFileId: this.recordId,
         email: EMAIL,
@@ -55,19 +55,18 @@ export default class SignEmbed extends LightningElement {
       const linkUrl    = r?.weSignUrl  || r?.url;
       const docRefRaw  = r?.documentRef || r?.docRef || r?.DocumentReference;
       if (!signingKey || !linkUrl || !docRefRaw) throw new Error('Missing signingKey/url/docRef');
+      console.log('SecuredSign: got data', {signingKey, linkUrl, docRefRaw});
 
-      // 2) Зібрати контейнер і origin
       const base = linkUrl.includes('/Utilities/LinkAccess.aspx')
         ? linkUrl.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx')
         : linkUrl;
       this.originOk = new URL(base).origin;
-
-      // 3) Підготувати payload (docRef рядком)
+      console
       this.payload = {
         requestInfo: {
           SigningKey: signingKey,
           Embedded: true,
-          DocumentReference: String(docRefRaw),
+          DocumentReference: docRefRaw,
           FirstName: FIRST_NAME,
           LastName:  LAST_NAME,
           Email:     EMAIL
