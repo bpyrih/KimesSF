@@ -1,99 +1,106 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
+import { CurrentPageReference } from 'lightning/navigation';
 import uploadAndSignWorkFile from '@salesforce/apex/SecuredSignFacade.uploadAndSignWorkFile';
 
-export default class UploadSign extends LightningElement {
-    @api recordId;
-    @api documentRef = '';
-    @api signingKey = ''; 
+const FIRST_NAME = 'Colby';
+const LAST_NAME  = 'Edell';
+const EMAIL      = 'colby@torchdesigns.com';
 
-    @track email = '';
-    @track firstName = '';
-    @track lastName = '';
-    @track isLoading = false;
+export default class SignEmbed extends LightningElement {
+  @api recordId;
+  isLoading = true;
 
-    callbackUrl = 'https://kimes24--qa--c.sandbox.vf.force.com/apex/SecuredSignWeSignHost';
+  iframeSrc;
+  originOk;
+  payload;
+  _started = false;
+  _onMsg = null;
 
-    handleInputChange(e) {
-        const field = e.target.dataset.field;
-        if (field) this[field] = e.target.value?.trim();
+  @wire(CurrentPageReference)
+  setPageRef(pr){
+    if (!this.recordId) {
+      this.recordId = pr?.state?.recordId || pr?.attributes?.recordId;
     }
+    this._maybeStart();
+  }
 
-    async handleUploadAndSign() {
-        this._refreshInputs();
-        if (!this._formValid()) {
-            alert('Fill in first name, last name and email.');
-            return;
+  renderedCallback(){
+    this._maybeStart();
+  }
+
+  disconnectedCallback(){
+    if (this._onMsg) {
+      window.removeEventListener('message', this._onMsg);
+      this._onMsg = null;
+    }
+  }
+
+  _maybeStart(){
+    if (this._started || !this.recordId) return;
+    this._started = true;
+    this.init();
+  }
+
+  async init(){
+    try {
+      // 1) Отримати дані з Apex
+      const r = await uploadAndSignWorkFile({
+        workFileId: this.recordId,
+        email: EMAIL,
+        firstName: FIRST_NAME,
+        lastName: LAST_NAME
+      });
+
+      const signingKey = r?.signingKey || r?.SigningKey;
+      const linkUrl    = r?.weSignUrl  || r?.url;
+      const docRefRaw  = r?.documentRef || r?.docRef || r?.DocumentReference;
+      if (!signingKey || !linkUrl || !docRefRaw) throw new Error('Missing signingKey/url/docRef');
+
+      // 2) Зібрати контейнер і origin
+      const base = linkUrl.includes('/Utilities/LinkAccess.aspx')
+        ? linkUrl.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx')
+        : linkUrl;
+      this.originOk = new URL(base).origin;
+
+      // 3) Підготувати payload (docRef рядком)
+      this.payload = {
+        requestInfo: {
+          SigningKey: signingKey,
+          Embedded: true,
+          DocumentReference: String(docRefRaw),
+          FirstName: FIRST_NAME,
+          LastName:  LAST_NAME,
+          Email:     EMAIL
         }
+      };
 
-        this.isLoading = true;
-        try {
-            // Цей блок залишається без змін
-            if (!this.documentRef) {
-                if (!this.recordId) throw new Error('No recordId.');
+      const parentUrl = encodeURIComponent(window.location.href);
+      this.iframeSrc = `${base}#${parentUrl}`;
 
-                const res = await uploadAndSignWorkFile({
-                    workFileId: this.recordId,
-                    email: this.email,
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    x: 100, y: 100, width: 200, height: 50
-                });
-
-                this.documentRef = res?.documentRef || '';
-                this.signingKey = res?.signingKey || '';
-
-                if (!this.documentRef) throw new Error('DocumentReference empty');
-            }
-            
-
-            this._openSigningWindow();
-
-        } catch (e) {
-            console.error('❌ Upload/prepare error:', e);
-            alert('Error during upload/prepare: ' + e.message);
-        } finally {
-            this.isLoading = false;
+      this._onMsg = (e) => {
+        if (e.origin !== this.originOk) return;
+        const msg = e.data || {};
+        if (msg.status === 'initialised') {
+          this._post();
         }
+      };
+      window.addEventListener('message', this._onMsg);
+
+      setTimeout(() => this._post(), 1500);
+
+    } catch (e) {
+      alert(e?.body?.message || e.message || 'Upload/prepare error');
+    } finally {
+      this.isLoading = false;
     }
+  }
 
-    handleSignExisting() {
-        this._refreshInputs();
-        if (!this._formValid()) {
-            alert('Fill in first name, last name and email.');
-            return;
-        }
-        if (!this.documentRef) {
-            alert('No document to sign. Please upload a file first.');
-            return;
-        }
-        
-
-        this._openSigningWindow();
+  _post(){
+    try {
+      const frame = this.template.querySelector('iframe[data-id="host"]');
+      if (!frame) return;
+      frame.contentWindow.postMessage(this.payload, this.originOk);
+    } catch (e) {
     }
-
-
-    _openSigningWindow() {
-        const params = new URLSearchParams({
-            docRef: this.documentRef,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            email: this.email,
-            signingKey: this.signingKey
-        });
-
-        const authUrl = `${this.callbackUrl}?${params.toString()}`;
-
-        console.log('🔗 Opening VF page:', authUrl);
-        window.open(authUrl, '_blank');
-    }
-
-    _refreshInputs() {
-        this.firstName = this.template.querySelector('[data-field="firstName"]').value?.trim();
-        this.lastName = this.template.querySelector('[data-field="lastName"]').value?.trim();
-        this.email = this.template.querySelector('[data-field="email"]').value?.trim();
-    }
-
-    _formValid() {
-        return Boolean(this.firstName && this.lastName && this.email);
-    }
+  }
 }

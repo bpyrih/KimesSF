@@ -30,28 +30,25 @@ public class SecuredSignDTO {
         public String ClientReference;
         public Boolean Embedded;
         public String ReturnUrl;
-        public List<InviteeCoordinate> InviteeCoordinates;
         
-        public void addCoordinate(InviteeCoordinate c) {
-            if (InviteeCoordinates == null) InviteeCoordinates = new List<InviteeCoordinate>();
-            InviteeCoordinates.add(c);
-        }
     }
-    public class UIResourceFileInfo { 
-        public String ClientReference; 
-        public String Name; 
-        public String FileType; 
-        public String Url; 
-    
-    }
+    public class UIResourceFileInfo {
+    public String ClientReference;
+    public String Name;
+    public String FileType;
+    public String Url;
+    public String FileUrl;
+}
 
+public class UIResourceResponse {
+    public String Url;
+    public String Name;
+    public UIResourceFileInfo FileInfo;
 
-    public class UIResourceResponse { 
-        public UIResourceFileInfo FileInfo; 
-        public String ContentType; 
-        public String StatusCode; 
-        public String StatusDescription; 
-    }
+    public String ContentType;
+    public String StatusCode;
+    public String StatusDescription;
+}
 
 
     public class InviteeCoordinate {

@@ -5,11 +5,7 @@ public with sharing class SecuredSignFacade {
         Id workFileId,
     String email,
     String firstName,
-    String lastName,
-    Decimal x,
-    Decimal y,
-    Decimal width,
-    Decimal height
+    String lastName
     ) {
         Map<String, String> result = new Map<String, String>();
         
@@ -54,34 +50,36 @@ public with sharing class SecuredSignFacade {
         email,
         firstName,
         lastName,
-        URL.getOrgDomainUrl().toExternalForm(),
-        x,
-        y,
-        width,
-        height
-            );
+        URL.getOrgDomainUrl().toExternalForm());
         if (smartTagResponse.getStatusCode() != 200) {
             throw new AuraHandledException('SmartTag send failed: ' + smartTagResponse.getBody());
         }
-        
+        System.debug('SMARTTAG RESPONSE Body: ' + smartTagResponse.getBody());
         SecuredSignDTO.ResponseSigner signerDetails;
         try {
             List<SecuredSignDTO.FullSmartTagResponse> fullResponseList =
                 (List<SecuredSignDTO.FullSmartTagResponse>) JSON.deserialize(
                 smartTagResponse.getBody(),
             List<SecuredSignDTO.FullSmartTagResponse>.class
+                
+            );
             
-                );
-System.debug('SMARTTAG RESPONSE Body: ' + smartTagResponse.getBody());
-            
+            System.debug('SMARTTAG RESPONSE Body: ' + fullResponseList);
             if (fullResponseList != null && !fullResponseList.isEmpty()) {
                 SecuredSignDTO.FullSmartTagResponse resultSmartTag = fullResponseList[0];
-
+                
                 if (resultSmartTag.Signers != null && !resultSmartTag.Signers.isEmpty()) {
-                    signerDetails = resultSmartTag.Signers[0];
+                    String target = (email == null) ? null : email.trim().toLowerCase();
+                    for (SecuredSignDTO.ResponseSigner s : resultSmartTag.Signers) {
+                        if (target != null && s.Email != null && s.Email.trim().toLowerCase() == target) {
+                            signerDetails = s;
+                            break;
+                        }
+                    }
+                    if (signerDetails == null) signerDetails = resultSmartTag.Signers[0]; // fallback
                 }
             }
-            
+            System.debug('SMARTTAG RESPONSE Body: ' + signerDetails);
         } catch (Exception e) {
             throw new AuraHandledException('Error parsing SmartTag response: ' + e.getMessage());
         }
@@ -89,15 +87,24 @@ System.debug('SMARTTAG RESPONSE Body: ' + smartTagResponse.getBody());
         if (signerDetails == null || String.isBlank(signerDetails.SigningKey)) {
             throw new AuraHandledException('Could not retrieve SigningKey from the API response.');
         }
+        System.debug('SUCCESS! signingKey retrieved: ' + signerDetails.SigningKey);
         String weSignUrl = SecuredSignService.getUIResourceFileUrl(16); // 16 = WeSign
-        result.put('weSignUrl', weSignUrl);
+        result.put('weSignUrl', toEmbedded(weSignUrl));
         System.debug('WeSign URL: ' + weSignUrl);
         result.put('documentRef', documentRef);
         result.put('signingKey', signerDetails.SigningKey);
         System.debug('SUCCESS! Document Reference retrieved: ' + documentRef);
-        System.debug('SUCCESS! Document Reference retrieved: ' + signerDetails.SigningKey);
-
+        
+        
         
         return result;
     }
+    
+    public static String toEmbedded(String linkAccessUrl){
+        if (String.isBlank(linkAccessUrl)) return null;
+        if (!linkAccessUrl.contains('/Utilities/LinkAccess.aspx')) return linkAccessUrl;
+        return linkAccessUrl.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx');
+    }
+    
+    
 }

@@ -28,21 +28,17 @@ public with sharing class SecuredSignService {
     String email,
     String firstName,
     String lastName,
-    String returnUrl,
-    Decimal x,
-    Decimal y,
-    Decimal width,
-    Decimal height
+    String returnUrl
     ) {
         Map<String, String> headers = buildHeaders();
         headers.put('Content-Type', 'application/json');
         
         Map<String, Object> payload = buildSmartTagPayload(
-            documentRef, email, firstName, lastName, returnUrl, x, y, width, height
-            );
+            documentRef, email, firstName, lastName, returnUrl );
         
         HttpRequest req = buildHttpRequest(BASE_URL + '/Web/v1.4/SmartTag/Send', 'POST', headers);
         req.setBody(JSON.serialize(payload));
+        System.debug('SMARTTAG REQUEST Body: ' + req.getBody());
         
         return executeRequest(req);
     }
@@ -57,44 +53,27 @@ public with sharing class SecuredSignService {
     }
     
     
-    private static Map<String, Object> buildSmartTagPayload(
-        String documentRef,
-    String email,
-    String firstName,
-    String lastName,
-    String returnUrl,
-    Decimal x,
-    Decimal y,
-    Decimal width,
-    Decimal height
-    ) {
-        Map<String, Object> signer = new Map<String, Object>{
-            'FirstName' => firstName,
-            'LastName' => lastName,
-            'Email' => email,
-            'ClientReference' => 'Signer1',
-            'Embedded' => true,
-            'ReturnUrl' => returnUrl,
-            'InviteeCoordinates' => new List<Object>{
-                new Map<String, Object>{
-                    'PageNumber' => 1,
-                    'X' => x,
-                    'Y' => y,
-                    'Width' => width,
-                    'Height' => height,
-                    'Type' => 'Signature'
-                }
+    private static Map<String,Object> buildSmartTagPayload(
+    String documentRef, String email, String firstName, String lastName, String returnUrl
+){
+    return new Map<String,Object>{
+        'DocumentReferences' => new List<String>{ documentRef },
+        'DisableBroadcast'   => true,
+        'SelectOnly'         => false,
+        'Embedded'           => true,
+        'NoInvitationEmailTemplate' => true,
+        'DueDate'            => Date.today().addDays(3).format(),
+        'NotifyUrl'          => returnUrl,
+        'Signers' => new List<Object>{
+            new Map<String,Object>{
+                'FirstName' => firstName,
+                'LastName'  => lastName,
+                'Email'     => email
             }
-        };
-        
-        return new Map<String, Object>{
-            'DocumentReferences' => new List<String>{documentRef},
-            'Embedded' => true,
-            'DueDate' => Datetime.now().addDays(3).formatGMT('yyyy-MM-dd\'T\'HH:mm:ss\'Z\''),
-            'ReturnUrl' => returnUrl,
-            'Signers' => new List<Object>{signer}
-        };
-    }
+        }
+    };
+}
+    
     
     private static Blob buildMultipartBody(Blob fileBody, String fileName, String boundary) {
         String CRLF = '\r\n';
@@ -121,12 +100,13 @@ public with sharing class SecuredSignService {
         Map<String, String> headers = buildHeaders();
         headers.put('Content-Type', 'application/json');
         HttpRequest req = buildHttpRequest(BASE_URL + '/Web/v1.4/UI/Resource2/16', 'GET', headers);
-
+    System.debug('UI/Resource2 request body: ' + req.getBody());
         HttpResponse res = executeRequest(req);
+        System.debug('UI/Resource2 response body: ' + res.getBody());
         if (res.getStatusCode() != 200) {
             throw new AuraHandledException('UI/Resource2 failed: ' + res.getStatusCode() + ' ' + res.getBody());
         }
-        System.debug('UI/Resource2 response body: ' + res.getBody());
+        
         SecuredSignDTO.UIResourceResponse dto;
         try {
             dto = (SecuredSignDTO.UIResourceResponse) JSON.deserialize(res.getBody(), SecuredSignDTO.UIResourceResponse.class);
@@ -134,10 +114,13 @@ public with sharing class SecuredSignService {
             throw new AuraHandledException('UI/Resource2 parse error: ' + e.getMessage() + ' Body: ' + res.getBody());
         }
 
-        if (dto == null || dto.FileInfo == null || String.isBlank(dto.FileInfo.Url)) {
-            throw new AuraHandledException('UI/Resource2: FileUrl missing. Body: ' + res.getBody());
-        }
-        return dto.FileInfo.Url;
+        if (dto == null) return null;
+    if (!String.isBlank(dto.Url)) return dto.Url;
+    if (dto.FileInfo != null) {
+        if (!String.isBlank(dto.FileInfo.FileUrl)) return dto.FileInfo.FileUrl;
+        if (!String.isBlank(dto.FileInfo.Url))     return dto.FileInfo.Url;
+    }
+    return null;
     }
     
     private static Map<String, String> buildHeaders() {
