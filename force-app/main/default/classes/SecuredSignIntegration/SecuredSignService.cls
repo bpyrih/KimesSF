@@ -12,7 +12,7 @@ public with sharing class SecuredSignService {
         
         HttpRequest req = buildHttpRequest(BASE_URL + '/Web/v1.4/Document/Uploader', 'POST', headers);
         req.setBodyAsBlob(body);
-        
+        req.setTimeout(20000);
         System.debug('=== HttpRequest Debug ===');
         System.debug('Endpoint: ' + req.getEndpoint());
         System.debug('Method: ' + req.getMethod());
