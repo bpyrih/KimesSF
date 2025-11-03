@@ -1,110 +1,109 @@
 public with sharing class SecuredSignFacade {
-    
+
     @AuraEnabled
     public static Map<String, String> uploadAndSignWorkFile(
         Id workFileId,
-    String email,
-    String firstName,
-    String lastName
+        String email,
+        String firstName,
+        String lastName
     ) {
-        Map<String, String> result = new Map<String, String>();
-        
-        
+        try {
+            return doUploadAndSignWorkFile(workFileId, email, firstName, lastName);
+        } catch (AuraHandledException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new AuraHandledException('Secured Signing error: ' + e.getMessage());
+        }
+    }
+
+    private static Map<String, String> doUploadAndSignWorkFile(
+        Id workFileId,
+        String email,
+        String firstName,
+        String lastName
+    ) {
+        if (workFileId == null) {
+            throw new AuraHandledException('Work_File__c Id is required.');
+        }
+
         ContentVersion cv = WorkFileDAO.getLatestVersion(workFileId);
         if (cv == null) {
             throw new AuraHandledException('File not found for Work_File__c Id ' + workFileId);
         }
-        
-        
-        HttpResponse uploadResponse = SecuredSignService.uploadFile(cv.VersionData, cv.Title + '.' + cv.FileExtension);
-        System.debug('UPLOAD RESPONSE STATUS: ' + uploadResponse.getStatusCode());
-        System.debug('UPLOAD RESPONSE BODY: ' + uploadResponse.getBody());
-        
-        SecuredSignDTO.DocumentUploadResponse uploadResult = null;
-        String documentRef = null;
-        
-        
-        if (String.isNotBlank(uploadResponse.getBody())) {
-            
-            try {
-                uploadResult = (SecuredSignDTO.DocumentUploadResponse) JSON.deserialize(
-                    uploadResponse.getBody(),
-                SecuredSignDTO.DocumentUploadResponse.class
-                    );
-                System.debug('UPLOAD RESULT REFERENCE: ' + uploadResponse.getBody());
-                if (uploadResult != null) {
-                    documentRef = uploadResult.Reference;
-                }
-            } catch (Exception e) {
-                System.debug('Could not parse response body. Error: ' + e.getMessage());
-            }
-        }
-        if (String.isBlank(documentRef)) {
-            throw new AuraHandledException('Upload file failed. Could not retrieve DocumentReference. Status: ' + uploadResponse.getStatusCode() + '. Body: ' + uploadResponse.getBody());
-        }
-        
-        System.debug('SUCCESS! Document Reference retrieved: ' + documentRef);
-        
-        HttpResponse smartTagResponse = SecuredSignService.sendSmartTag(
-            documentRef,
-        email,
-        firstName,
-        lastName,
-        URL.getOrgDomainUrl().toExternalForm());
-        if (smartTagResponse.getStatusCode() != 200) {
-            throw new AuraHandledException('SmartTag send failed: ' + smartTagResponse.getBody());
-        }
-        System.debug('SMARTTAG RESPONSE Body: ' + smartTagResponse.getBody());
-        SecuredSignDTO.ResponseSigner signerDetails;
+
+        HttpResponse uploadRes = SecuredSignService.uploadFile(
+            cv.VersionData,
+            cv.Title + '.' + cv.FileExtension
+        );
+
+        SecuredSignDTO.DocumentUploadResponse uploadDto;
         try {
-            List<SecuredSignDTO.FullSmartTagResponse> fullResponseList =
-                (List<SecuredSignDTO.FullSmartTagResponse>) JSON.deserialize(
-                smartTagResponse.getBody(),
-            List<SecuredSignDTO.FullSmartTagResponse>.class
-                
-            );
-            
-            System.debug('SMARTTAG RESPONSE Body: ' + fullResponseList);
-            if (fullResponseList != null && !fullResponseList.isEmpty()) {
-                SecuredSignDTO.FullSmartTagResponse resultSmartTag = fullResponseList[0];
-                
-                if (resultSmartTag.Signers != null && !resultSmartTag.Signers.isEmpty()) {
-                    String target = (email == null) ? null : email.trim().toLowerCase();
-                    for (SecuredSignDTO.ResponseSigner s : resultSmartTag.Signers) {
-                        if (target != null && s.Email != null && s.Email.trim().toLowerCase() == target) {
-                            signerDetails = s;
-                            break;
-                        }
-                    }
-                    if (signerDetails == null) signerDetails = resultSmartTag.Signers[0]; // fallback
+            uploadDto = (SecuredSignDTO.DocumentUploadResponse)
+                JSON.deserialize(uploadRes.getBody(), SecuredSignDTO.DocumentUploadResponse.class);
+        } catch (Exception e) {
+            throw new AuraHandledException('Upload response parse failed: ' + e.getMessage());
+        }
+
+        if (uploadDto == null || String.isBlank(uploadDto.Reference)) {
+            throw new AuraHandledException('Upload succeeded but DocumentReference is missing.');
+        }
+
+        String documentRef = uploadDto.Reference;
+
+        HttpResponse smartRes = SecuredSignService.sendSmartTag(
+            documentRef,
+            email,
+            firstName,
+            lastName,
+            URL.getOrgDomainUrl().toExternalForm()
+        );
+
+        List<SecuredSignDTO.FullSmartTagResponse> smartList;
+        try {
+            smartList = (List<SecuredSignDTO.FullSmartTagResponse>)
+                JSON.deserialize(smartRes.getBody(), List<SecuredSignDTO.FullSmartTagResponse>.class);
+        } catch (Exception e) {
+            throw new AuraHandledException('SmartTag response parse failed: ' + e.getMessage());
+        }
+
+        if (smartList == null || smartList.isEmpty()) {
+            throw new AuraHandledException('SmartTag response is empty.');
+        }
+
+        SecuredSignDTO.ResponseSigner signer = pickSigner(smartList[0].Signers, email);
+        if (signer == null || String.isBlank(signer.SigningKey)) {
+            throw new AuraHandledException('SigningKey not found in SmartTag response.');
+        }
+
+        String weSignUrl = SecuredSignService.getWeSignUrl();
+        String embeddedUrl = toEmbedded(weSignUrl);
+
+        Map<String, String> out = new Map<String, String>();
+        out.put('weSignUrl', embeddedUrl);
+        out.put('documentRef', documentRef);
+        out.put('signingKey', signer.SigningKey);
+        return out;
+    }
+
+    private static SecuredSignDTO.ResponseSigner pickSigner(
+        List<SecuredSignDTO.ResponseSigner> signers,
+        String targetEmail
+    ) {
+        if (signers == null || signers.isEmpty()) return null;
+        String t = targetEmail == null ? null : targetEmail.trim().toLowerCase();
+        if (t != null) {
+            for (SecuredSignDTO.ResponseSigner s : signers) {
+                if (s.Email != null && s.Email.trim().toLowerCase() == t) {
+                    return s;
                 }
             }
-            System.debug('SMARTTAG RESPONSE Body: ' + signerDetails);
-        } catch (Exception e) {
-            throw new AuraHandledException('Error parsing SmartTag response: ' + e.getMessage());
         }
-        
-        if (signerDetails == null || String.isBlank(signerDetails.SigningKey)) {
-            throw new AuraHandledException('Could not retrieve SigningKey from the API response.');
-        }
-        System.debug('SUCCESS! signingKey retrieved: ' + signerDetails.SigningKey);
-        String weSignUrl = SecuredSignService.getUIResourceFileUrl(16); // 16 = WeSign
-        result.put('weSignUrl', toEmbedded(weSignUrl));
-        System.debug('WeSign URL: ' + weSignUrl);
-        result.put('documentRef', documentRef);
-        result.put('signingKey', signerDetails.SigningKey);
-        System.debug('SUCCESS! Document Reference retrieved: ' + documentRef);
-        
-        
-        
-        return result;
+        return signers[0];
     }
-    
-    public static String toEmbedded(String linkAccessUrl){
-        if (String.isBlank(linkAccessUrl)) return null;
-        if (!linkAccessUrl.contains('/Utilities/LinkAccess.aspx')) return linkAccessUrl;
-        return linkAccessUrl.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx');
+
+    private static String toEmbedded(String url) {
+        if (String.isBlank(url)) return null;
+        if (!url.contains('/Utilities/LinkAccess.aspx')) return url;
+        return url.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx');
     }
-    
-    
 }

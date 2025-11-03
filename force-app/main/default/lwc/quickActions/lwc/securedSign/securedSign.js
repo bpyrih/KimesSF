@@ -5,6 +5,7 @@ import uploadAndSignWorkFile from '@salesforce/apex/SecuredSignFacade.uploadAndS
 const FIRST_NAME = 'Colby';
 const LAST_NAME  = 'Edell';
 const EMAIL      = 'colby@torchdesigns.com';
+const VF_BASE    = 'https://kimes24--qa--c.sandbox.vf.force.com/apex/SS_UpdateRecordPage';
 
 export default class SignEmbed extends LightningElement {
   @api recordId;
@@ -49,16 +50,16 @@ export default class SignEmbed extends LightningElement {
         lastName: LAST_NAME
       });
 
-      const signingKey = r?.signingKey || r?.SigningKey;
-      const linkUrl    = r?.weSignUrl  || r?.url;
-      const docRefRaw  = r?.documentRef || r?.docRef || r?.DocumentReference;
-      const vfUrl =
-    'https://kimes24--qa--c.sandbox.vf.force.com/apex/SS_UpdateRecordPage'
-    + '?recordId=' + this.recordId
-    + '&event=done'
-    + '&docRef=' + encodeURIComponent(docRefRaw);
+      const signingKey = r?.signingKey;
+      const linkUrl    = r?.weSignUrl;
+      const docRefRaw  = r?.documentRef;
 
-      if (!signingKey || !linkUrl || !docRefRaw) throw new Error('Missing signingKey/url/docRef');
+      if (!signingKey || !linkUrl || !docRefRaw) {
+        throw new Error('Secured Signing returned incomplete data.');
+      }
+
+      const vfUrl =
+        `${VF_BASE}?recordId=${this.recordId}&event=done&docRef=${encodeURIComponent(docRefRaw)}`;
 
       const base = linkUrl.includes('/Utilities/LinkAccess.aspx')
         ? linkUrl.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx')
@@ -67,12 +68,12 @@ export default class SignEmbed extends LightningElement {
       this.originOk = new URL(base).origin;
       this.payload = {
         requestInfo: {
-          SigningKey: signingKey,
-          Embedded: true,
+          SigningKey:        signingKey,
+          Embedded:          true,
           DocumentReference: docRefRaw,
-          FirstName: FIRST_NAME,
-          LastName:  LAST_NAME,
-          Email:     EMAIL
+          FirstName:         FIRST_NAME,
+          LastName:          LAST_NAME,
+          Email:             EMAIL
         }
       };
 
@@ -90,19 +91,17 @@ export default class SignEmbed extends LightningElement {
         }
       };
       window.addEventListener('message', this._onMsg);
-
     } catch (e) {
-      alert(e?.body?.message || e.message || 'Upload/prepare error');
+      const msg = e?.body?.message || e.message || 'Secured Signing failed.';
+      alert(msg);
     } finally {
       this.isLoading = false;
     }
   }
 
   _post() {
-    try {
-      const frame = this.template.querySelector('iframe[data-id="host"]');
-      if (!frame) return;
-      frame.contentWindow.postMessage(this.payload, this.originOk);
-    } catch (e) {}
+    const frame = this.template.querySelector('iframe[data-id="host"]');
+    if (!frame) return;
+    frame.contentWindow.postMessage(this.payload, this.originOk);
   }
 }
