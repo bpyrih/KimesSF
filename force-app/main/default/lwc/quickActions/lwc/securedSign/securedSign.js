@@ -9,7 +9,6 @@ const EMAIL      = 'colby@torchdesigns.com';
 export default class SignEmbed extends LightningElement {
   @api recordId;
   isLoading = true;
-
   iframeSrc;
   originOk;
   payload;
@@ -17,33 +16,32 @@ export default class SignEmbed extends LightningElement {
   _onMsg = null;
 
   @wire(CurrentPageReference)
-  setPageRef(pr){
+  setPageRef(pr) {
     if (!this.recordId) {
       this.recordId = pr?.state?.recordId || pr?.attributes?.recordId;
     }
     this._maybeStart();
   }
 
-  renderedCallback(){
+  renderedCallback() {
     this._maybeStart();
   }
 
-  disconnectedCallback(){
+  disconnectedCallback() {
     if (this._onMsg) {
       window.removeEventListener('message', this._onMsg);
       this._onMsg = null;
     }
   }
 
-  _maybeStart(){
+  _maybeStart() {
     if (this._started || !this.recordId) return;
     this._started = true;
     this.init();
   }
 
-  async init(){
+  async init() {
     try {
-
       const r = await uploadAndSignWorkFile({
         workFileId: this.recordId,
         email: EMAIL,
@@ -54,14 +52,19 @@ export default class SignEmbed extends LightningElement {
       const signingKey = r?.signingKey || r?.SigningKey;
       const linkUrl    = r?.weSignUrl  || r?.url;
       const docRefRaw  = r?.documentRef || r?.docRef || r?.DocumentReference;
+      const vfUrl =
+    'https://kimes24--qa--c.sandbox.vf.force.com/apex/SS_UpdateRecordPage'
+    + '?recordId=' + this.recordId
+    + '&event=done'
+    + '&docRef=' + encodeURIComponent(docRefRaw);
+
       if (!signingKey || !linkUrl || !docRefRaw) throw new Error('Missing signingKey/url/docRef');
-      console.log('SecuredSign: got data', {signingKey, linkUrl, docRefRaw});
 
       const base = linkUrl.includes('/Utilities/LinkAccess.aspx')
         ? linkUrl.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx')
         : linkUrl;
+
       this.originOk = new URL(base).origin;
-      console
       this.payload = {
         requestInfo: {
           SigningKey: signingKey,
@@ -82,10 +85,11 @@ export default class SignEmbed extends LightningElement {
         if (msg.status === 'initialised') {
           this._post();
         }
+        if (msg.status === 'done') {
+          window.location.href = vfUrl;
+        }
       };
       window.addEventListener('message', this._onMsg);
-
-      setTimeout(() => this._post(), 1500);
 
     } catch (e) {
       alert(e?.body?.message || e.message || 'Upload/prepare error');
@@ -94,12 +98,11 @@ export default class SignEmbed extends LightningElement {
     }
   }
 
-  _post(){
+  _post() {
     try {
       const frame = this.template.querySelector('iframe[data-id="host"]');
       if (!frame) return;
       frame.contentWindow.postMessage(this.payload, this.originOk);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 }

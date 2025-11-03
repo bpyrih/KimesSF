@@ -12,7 +12,7 @@ public with sharing class SecuredSignService {
         
         HttpRequest req = buildHttpRequest(BASE_URL + '/Web/v1.4/Document/Uploader', 'POST', headers);
         req.setBodyAsBlob(body);
-        req.setTimeout(20000);
+        // req.setTimeout(20000);
         System.debug('=== HttpRequest Debug ===');
         System.debug('Endpoint: ' + req.getEndpoint());
         System.debug('Method: ' + req.getMethod());
@@ -54,25 +54,25 @@ public with sharing class SecuredSignService {
     
     
     private static Map<String,Object> buildSmartTagPayload(
-    String documentRef, String email, String firstName, String lastName, String returnUrl
-){
-    return new Map<String,Object>{
-        'DocumentReferences' => new List<String>{ documentRef },
-        'DisableBroadcast'   => true,
-        'SelectOnly'         => false,
-        'Embedded'           => true,
-        'NoInvitationEmailTemplate' => true,
-        'DueDate'            => Date.today().addDays(3).format(),
-        'NotifyUrl'          => returnUrl,
-        'Signers' => new List<Object>{
-            new Map<String,Object>{
-                'FirstName' => firstName,
-                'LastName'  => lastName,
-                'Email'     => email
+        String documentRef, String email, String firstName, String lastName, String returnUrl
+    ){
+        return new Map<String,Object>{
+            'DocumentReferences' => new List<String>{ documentRef },
+            'DisableBroadcast'   => true,
+            'SelectOnly'         => false,
+            'Embedded'           => true,
+            'NoInvitationEmailTemplate' => true,
+            'DueDate'            => Date.today().addDays(3).format(),
+            'NotifyUrl'          => returnUrl,
+            'Signers' => new List<Object>{
+                new Map<String,Object>{
+                    'FirstName' => firstName,
+                    'LastName'  => lastName,
+                    'Email'     => email
+                }
             }
-        }
-    };
-}
+        };
+    }
     
     
     private static Blob buildMultipartBody(Blob fileBody, String fileName, String boundary) {
@@ -100,7 +100,7 @@ public with sharing class SecuredSignService {
         Map<String, String> headers = buildHeaders();
         headers.put('Content-Type', 'application/json');
         HttpRequest req = buildHttpRequest(BASE_URL + '/Web/v1.4/UI/Resource2/16', 'GET', headers);
-    System.debug('UI/Resource2 request body: ' + req.getBody());
+        System.debug('UI/Resource2 request body: ' + req.getBody());
         HttpResponse res = executeRequest(req);
         System.debug('UI/Resource2 response body: ' + res.getBody());
         if (res.getStatusCode() != 200) {
@@ -113,15 +113,42 @@ public with sharing class SecuredSignService {
         } catch (Exception e) {
             throw new AuraHandledException('UI/Resource2 parse error: ' + e.getMessage() + ' Body: ' + res.getBody());
         }
-
+        
         if (dto == null) return null;
-    if (!String.isBlank(dto.Url)) return dto.Url;
-    if (dto.FileInfo != null) {
-        if (!String.isBlank(dto.FileInfo.FileUrl)) return dto.FileInfo.FileUrl;
-        if (!String.isBlank(dto.FileInfo.Url))     return dto.FileInfo.Url;
+        if (!String.isBlank(dto.Url)) return dto.Url;
+        if (dto.FileInfo != null) {
+            if (!String.isBlank(dto.FileInfo.FileUrl)) return dto.FileInfo.FileUrl;
+            if (!String.isBlank(dto.FileInfo.Url))     return dto.FileInfo.Url;
+        }
+        return null;
     }
-    return null;
+    
+    
+    public static Blob getSignedDocumentBlob(String documentRef) {
+        if (String.isBlank(documentRef)) {
+            throw new AuraHandledException('DocumentReference is empty');
+        }
+        
+        Map<String, String> headers = buildHeaders();
+        String url = BASE_URL + '/Web/v1.4/Download/GetDocumentData/' +
+            EncodingUtil.urlEncode(documentRef, 'UTF-8');
+        
+        HttpRequest req = buildHttpRequest(url, 'GET', headers);
+        Http h = new Http();
+        HttpResponse res = h.send(req);
+        
+        if (res.getStatusCode() == 200) {
+            Blob fileBlob = res.getBodyAsBlob();
+            return fileBlob;
+        } else if (res.getStatusCode() == 404) {
+            throw new AuraHandledException('Document not found in Secured Signing (retention).');
+        } else {
+            throw new AuraHandledException(
+                'Secured Signing download failed: ' + res.getStatusCode() + ' ' + res.getBody()
+                );
+        }
     }
+    
     
     private static Map<String, String> buildHeaders() {
         Decimal tsDecimal = Datetime.now().getTime() / 1000;
@@ -182,7 +209,7 @@ public with sharing class SecuredSignService {
         return res;
     }
     
-
+    
     private static String createSignature(String data, String secret) {
         Blob mac = Crypto.generateMac('HmacSHA256', Blob.valueOf(data),Blob.valueOf(secret) );
         return EncodingUtil.base64Encode(mac);
