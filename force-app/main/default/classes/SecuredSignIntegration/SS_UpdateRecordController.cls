@@ -88,6 +88,7 @@ public class SS_UpdateRecordController {
         cv.Title        = prefix + ' ' + title;
         cv.VersionData  = dataBlob;
         cv.PathOnClient = prefix + ' ' + title + '.pdf';
+        cv.Is_Latest_Signed__c = true;
         insert cv;
     }
     
@@ -96,7 +97,7 @@ public class SS_UpdateRecordController {
         cv.Title        = prefix + ' ' + title;
         cv.VersionData  = dataBlob;
         cv.PathOnClient = prefix + ' ' + title + '.pdf';
-        cv.Is_Latest_Signed__c = true;
+        //cv.Is_Latest_Signed__c = true;
         insert cv;
         
         return [
