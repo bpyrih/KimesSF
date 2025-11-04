@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+    <types>
+        <members>CallableLogger</members>
+        <members>ComponentLogger</members>
+        <members>FlowCollectionLogEntry</members>
+        <members>FlowLogEntry</members>
+        <members>FlowLogger</members>
+        <members>FlowRecordLogEntry</members>
+        <members>LogBatchPurgeController</members>
+        <members>LogBatchPurgeScheduler</members>
+        <members>LogBatchPurger</members>
+        <members>LogEntryEventBuilder</members>
+        <members>LogEntryEventHandler</members>
+        <members>LogEntryEventStreamController</members>
+        <members>LogEntryFieldSetPicklist</members>
+        <members>LogEntryHandler</members>
+        <members>LogEntryMetadataViewerController</members>
+        <members>LogEntryTagHandler</members>
+        <members>LoggerSObjectHandler</members>
+        <members>LogManagementDataSelector</members>
+        <members>LogMassDeleteExtension</members>
+        <members>LogMessage</members>
+        <members>LogViewerController</members>
+        <members>Logger</members>
+        <members>LoggerBatchableContext</members>
+        <members>LoggerCache</members>
+        <members>LoggerConfigurationSelector</members>
+        <members>LoggerDataStore</members>
+        <members>LoggerEmailSender</members>
+        <members>LoggerEngineDataSelector</members>
+        <members>LoggerFieldMapper</members>
+        <members>LoggerHomeHeaderController</members>
+        <members>LoggerParameter</members>
+        <members>LoggerPlugin</members>
+        <members>LoggerSObjectHandler</members>
+        <members>LoggerSObjectMetadata</members>
+        <members>LoggerSObjectProxy</members>
+        <members>LoggerScenarioHandler</members>
+        <members>LoggerScenarioRule</members>
+        <members>LoggerSettingsController</members>
+        <members>LoggerStackTrace</members>
+        <members>LoggerTagHandler</members>
+        <members>LoggerTriggerableContext</members>
+        
+        <members>CallableLogger_Tests</members>
+        <members>ComponentLogger_Tests</members>
+        <members>FlowCollectionLogEntry_Tests</members>
+        <members>FlowLogEntry_Tests</members>
+        <members>FlowLogger_Tests</members>
+        <members>FlowRecordLogEntry_Tests</members>
+        <members>LogBatchPurgeController_Tests</members>
+        <members>LogBatchPurgeScheduler_Tests</members>
+        <members>LogBatchPurger_Tests</members>
+        <members>LogEntryEventBuilder_Tests</members>
+        <members>LogEntryEventHandler_Tests</members>
+        <members>LogEntryEventStreamController_Tests</members>
+        <members>LogEntryFieldSetPicklist_Tests</members>
+        <members>LogEntryHandler_Tests</members>
+        <members>LogEntryMetadataViewerController_Tests</members>
+        <members>LogEntryTagHandler_Tests</members>
+        <members>LoggerSObjectHandler_Tests</members>
+        <members>LogManagementDataSelector_Tests</members>
+        <members>LogMassDeleteExtension_Tests</members>
+        <members>LogMessage_Tests</members>
+        <members>LogViewerController_Tests</members>
+        <members>Logger_Tests</members>
+        <members>LoggerBatchableContext_Tests</members>
+        <members>LoggerCache_Tests</members>
+        <members>LoggerConfigurationSelector_Tests</members>
+        <members>LoggerDataStore_Tests</members>
+        <members>LoggerEmailSender_Tests</members>
+        <members>LoggerEngineDataSelector_Tests</members>
+        <members>LoggerFieldMapper_Tests</members>
+        <members>LoggerHomeHeaderController_Tests</members>
+        <members>LoggerMockDataCreator</members>
+        <members>LoggerMockDataStore</members>
+        <members>LoggerParameter_Tests</members>
+        <members>LoggerPlugin_Tests</members>
+        <members>LoggerSObjectHandler_Tests</members>
+        <members>LoggerSObjectMetadata_Tests</members>
+        <members>LoggerSObjectProxy_Tests</members>
+        <members>LoggerScenarioHandler_Tests</members>
+        <members>LoggerScenarioRule_Tests</members>
+        <members>LoggerSettingsController_Tests</members>
+        <members>LoggerStackTrace_Tests</members>
+        <members>LoggerTagHandler_Tests</members>
+        <members>LoggerTestConfigurator</members>
+        <members>LoggerTriggerableContext_Tests</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Log</members>
+        <members>LogEntry</members>
+        <members>LogEntryEvent</members>
+        <members>LogEntryTag</members>
+        <members>LoggerScenario</members>
+        <members>LoggerTag</members>
+        <name>ApexTrigger</name>
+    </types>
+
+    <types>
+        <members>Log__c</members>
+        <members>LogEntry__c</members>
+        <members>LogEntryTag__c</members>
+        <members>LoggerTag__c</members>
+        <members>LogEntryEvent__e</members>
+        <members>LoggerScenario__c</members>
+        <members>LogEntryDataMaskRule__mdt</members>
+        <members>LogEntryTagRule__mdt</members>
+        <members>LogStatus__mdt</members>
+        <members>LoggerFieldMapping__mdt</members>
+        <members>LoggerParameter__mdt</members>
+        <members>LoggerPlugin__mdt</members>
+        <members>LoggerSObjectHandler__mdt</members>
+        <members>LoggerScenarioRule__mdt</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Log__c-Log Layout</members>
+        <members>LogEntry__c-Log Entry Layout</members>
+        <members>LogEntryTag__c-Log Entry Tag Layout</members>
+        <members>LoggerScenario__c-Logger Scenario Layout</members>
+        <members>LoggerTag__c-Logger Tag Layout</members>
+
+        <members>LogEntryDataMaskRule__mdt-Log Entry Data Mask Rule Layout</members>
+        <members>LogEntryTagRule__mdt-Logger Tag Rule Layout</members>
+        <members>LogStatus__mdt-Log Status Layout</members>
+        <members>LoggerFieldMapping__mdt-Logger Field Mapping Layout</members>
+        <members>LoggerParameter__mdt-Logger Parameter Layout</members>
+        <members>LoggerPlugin__mdt-Logger Plugin Layout</members>
+        <members>LoggerSObjectHandler__mdt-Logger SObject Handler Layout</members>
+        <members>LoggerScenarioRule__mdt-Logger Scenario Rule Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>LoggerParameter__mdt</members>
+        <members>LogEntryDataMaskRule__mdt</members>
+        <members>LogStatus__mdt</members>
+        <members>LogEntryTagRule__mdt</members>
+        <name>CustomObject</name>
+    </types>
+    
+    <types>
+        <members>LoggerConsole</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>LogBatchPurge</members>
+        <members>LogEntryEventStream</members>
+        <members>LoggerSettings</members>
+
+        <members>Log__c</members>
+        <members>LogEntry__c</members>
+        <members>LogEntryTag__c</members>
+        <members>LoggerScenario__c</members>
+        <members>LoggerTag__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    
+    <types>
+        <members>LoggerAdmin</members>
+        <members>LoggerLogCreator</members>
+        <members>LoggerLogViewer</members>
+        <members>LoggerEndUser</members>
+        <name>PermissionSet</name>
+    </types>
+
+    <version>60.0</version>
+</Package>
