@@ -5,6 +5,7 @@ import { refreshApex } from '@salesforce/apex';
 
 import downloadWorkFilesModal from 'c/downloadWorkFiles';
 import uploadWorkFilesModal from 'c/uploadWorkFiles';
+import securedSignModal from 'c/securedSignModal';
 
 const workFileColumsn = [
   {
@@ -75,8 +76,24 @@ export default class WorkFileRelatedList extends LightningElement {
       await this.createDownloadWorkFilesModal();
     } else if (selectedItemValue == 'item2') {
       await this.createUploadWorkFilesModal();
+    } else if (selectedItemValue === 'item3') {
+      this.createSecuredSignModal();
     }
   }
+
+  async createSecuredSignModal() {
+  const len = this.files.length;
+  if (!len) {
+    this.handleError('No Work Files to sign');
+    return;
+  }
+  const last = this.files[len - 1];
+  await securedSignModal.open({
+    size: 'large',
+    description: 'Send with SecuredSign',
+    workFileId: last.workFileId
+  });
+}
 
   async createDownloadWorkFilesModal() {
     const result = await downloadWorkFilesModal.open({

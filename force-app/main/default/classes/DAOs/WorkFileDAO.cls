@@ -29,30 +29,34 @@ public with sharing class WorkFileDAO {
             throw new AuraHandledException('WorkFile Id is null');
         }
         
-        Id contentDocumentId;
-        List<ContentDocumentLink> linkList = [
+        List<ContentDocumentLink> links = [
         SELECT ContentDocumentId
         FROM ContentDocumentLink
         WHERE LinkedEntityId = :workFileId
-        LIMIT 1
     ];
-        if (!linkList.isEmpty()) {
-            contentDocumentId = linkList[0].ContentDocumentId;
-        } else {
+        if (links.isEmpty()) {
             return null;
         }
         
-        List<ContentVersion> versionList = [
+        Set<Id> docIds = new Set<Id>();
+        for (ContentDocumentLink cdl : links) {
+            docIds.add(cdl.ContentDocumentId);
+        }
+        
+        List<ContentVersion> versions = [
         SELECT Id, Title, FileExtension, ContentDocumentId, VersionNumber,
-               ContentSize, FileType, LastModifiedDate, VersionData
+               ContentSize, FileType, LastModifiedDate, VersionData, Is_Latest_Signed__c
         FROM ContentVersion
-        WHERE ContentDocumentId = :contentDocumentId
-        ORDER BY VersionNumber DESC
+        WHERE ContentDocumentId IN :docIds
+          AND  Is_Latest_Signed__c=false
+        ORDER BY LastModifiedDate DESC
         LIMIT 1
     ];
         
-        return versionList.isEmpty() ? null : versionList[0];
+        return versions.isEmpty() ? null : versions[0];
     }
+    
+    
     
     
     

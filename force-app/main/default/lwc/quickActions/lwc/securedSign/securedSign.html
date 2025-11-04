@@ -8,11 +8,19 @@
     </template>
 
     <template if:false={isLoading}>
-      <lightning-quick-action-panel header="Document e-Signature" size="large">
-    <div class="frame">
-      <iframe data-id="host" class="host" src={iframeSrc} title="Secured Signing"></iframe>
-    </div>
-  </lightning-quick-action-panel>
+      <template if:false={hasStarted}>
+        <div class="slds-p-around_medium slds-align_absolute-center">
+          <lightning-button variant="brand" label="Start signing" onclick={handleStart}></lightning-button>
+        </div>
+      </template>
+
+      <template if:true={hasStarted}>
+        <lightning-quick-action-panel header="Document e-Signature" size="large">
+          <div class="frame">
+            <iframe data-id="host" class="host" src={iframeSrc} title="Secured Signing"></iframe>
+          </div>
+        </lightning-quick-action-panel>
+      </template>
     </template>
   </lightning-card>
 </template>

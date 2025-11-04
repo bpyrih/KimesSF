@@ -1,5 +1,6 @@
 import { LightningElement, api, wire } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
+import { CloseActionScreenEvent } from 'lightning/actions';
 import uploadAndSignWorkFile from '@salesforce/apex/SecuredSignFacade.uploadAndSignWorkFile';
 
 const FIRST_NAME = 'Colby';
@@ -9,11 +10,12 @@ const VF_BASE    = 'https://kimes24--qa--c.sandbox.vf.force.com/apex/SS_UpdateRe
 
 export default class SignEmbed extends LightningElement {
   @api recordId;
-  isLoading = true;
+
+  isLoading = false;  
+  hasStarted = false;
   iframeSrc;
   originOk;
   payload;
-  _started = false;
   _onMsg = null;
 
   @wire(CurrentPageReference)
@@ -21,27 +23,32 @@ export default class SignEmbed extends LightningElement {
     if (!this.recordId) {
       this.recordId = pr?.state?.recordId || pr?.attributes?.recordId;
     }
-    this._maybeStart();
   }
 
-  renderedCallback() {
-    this._maybeStart();
-  }
-
-  disconnectedCallback() {
-    if (this._onMsg) {
-      window.removeEventListener('message', this._onMsg);
-      this._onMsg = null;
+  handleStart() {
+    if (this.hasStarted) {
+      return;
     }
-  }
+    if (this._isBackNavigation()) {
+      this.dispatchEvent(new CloseActionScreenEvent());
+      return;
+    }
 
-  _maybeStart() {
-    if (this._started || !this.recordId) return;
-    this._started = true;
+    this.hasStarted = true;
     this.init();
   }
 
+  _isBackNavigation() {
+    try {
+      const entries = performance.getEntriesByType('navigation');
+      return entries && entries[0] && entries[0].type === 'back_forward';
+    } catch (e) {
+      return false;
+    }
+  }
+
   async init() {
+    this.isLoading = true;
     try {
       const r = await uploadAndSignWorkFile({
         workFileId: this.recordId,
@@ -87,13 +94,14 @@ export default class SignEmbed extends LightningElement {
           this._post();
         }
         if (msg.status === 'done') {
-          window.location.href = vfUrl;
+          window.location.replace(vfUrl);
         }
       };
       window.addEventListener('message', this._onMsg);
     } catch (e) {
       const msg = e?.body?.message || e.message || 'Secured Signing failed.';
       alert(msg);
+      this.dispatchEvent(new CloseActionScreenEvent());
     } finally {
       this.isLoading = false;
     }
@@ -103,5 +111,12 @@ export default class SignEmbed extends LightningElement {
     const frame = this.template.querySelector('iframe[data-id="host"]');
     if (!frame) return;
     frame.contentWindow.postMessage(this.payload, this.originOk);
+  }
+
+  disconnectedCallback() {
+    if (this._onMsg) {
+      window.removeEventListener('message', this._onMsg);
+      this._onMsg = null;
+    }
   }
 }
