@@ -5,34 +5,49 @@ import { refreshApex } from '@salesforce/apex';
 
 import downloadWorkFilesModal from 'c/downloadWorkFiles';
 import uploadWorkFilesModal from 'c/uploadWorkFiles';
+import securedSignModal from 'c/securedSignModal';
 
-const workFileColumsn = [
+
+
+
+
+const ROW_ACTIONS = [
+  { label: 'Sign', name: 'sign', iconName: 'utility:signature' }
+];
+
+const workFileColumns = [
   {
-    label: 'File Name',
+    label: 'File',
     fieldName: 'detailUrl',
     type: 'url',
     typeAttributes: {
       label: { fieldName: 'fileName' },
       target: '_self'
+    },
+    cellAttributes: {
+      iconName: 'doctype:pdf',
+      iconPosition: 'left'
     }
   },
-  { label: 'Work File Status', fieldName: 'workFileStatus', type: 'text' },
-  { label: 'Work File Type', fieldName: 'workFileType', type: 'text' },
-  // { label: 'Size (bytes)',    fieldName: 'fileSize',       type: 'number' },
-  // { label: 'Version',         fieldName: 'versionNumber',  type: 'number' },
-  // {
-  //   label: 'Last Modified',
-  //   fieldName: 'lastModified',
-  //   type: 'date',
-  //   typeAttributes: {
-  //     year: 'numeric',
-  //     month: 'short',
-  //     day: '2-digit',
-  //     hour: '2-digit',
-  //     minute: '2-digit'
-  //   }
-  // }
+  {
+    label: 'Status',
+    fieldName: 'workFileStatus',
+    type: 'text',
+    cellAttributes: { class: 'slds-text-color_success' },
+    initialWidth: 110
+  },
+  {
+    label: 'Type',
+    fieldName: 'workFileType',
+    type: 'text',
+    initialWidth: 110
+  },
+  {
+    type: 'action',
+    typeAttributes: { rowActions: ROW_ACTIONS }
+  }
 ];
+
 
 export default class WorkFileRelatedList extends LightningElement {
   @api recordId;
@@ -43,17 +58,17 @@ export default class WorkFileRelatedList extends LightningElement {
 
   workFileData;
 
-  columns = workFileColumsn;
+  columns = workFileColumns;
 
   connectedCallback() {
- 
- }
+
+  }
 
   @wire(getRelatedWorkFiles, { opportunityId: '$recordId' })
   wiredFiles(wireResult) {
     this.workFilesDataWire = wireResult;
 
-    const {data, error} = wireResult;
+    const { data, error } = wireResult;
 
     if (data) {
       this.error = undefined;
@@ -76,6 +91,27 @@ export default class WorkFileRelatedList extends LightningElement {
     } else if (selectedItemValue == 'item2') {
       await this.createUploadWorkFilesModal();
     }
+  }
+
+  async handleRowAction(event) {
+    const actionName = event.detail.action.name;
+    const row = event.detail.row;
+
+    if (actionName === 'sign') {
+      await this.openSecuredSignFor(row.workFileId);
+    }
+  }
+
+  async openSecuredSignFor(workFileId) {
+    if (!workFileId) {
+      this.handleError('No Work File Id');
+      return;
+    }
+    await securedSignModal.open({
+      size: 'large',
+      description: 'Send with SecuredSign',
+      workFileId: workFileId
+    });
   }
 
   async createDownloadWorkFilesModal() {
