@@ -8,7 +8,6 @@
                 <lightning-button-menu alternative-text="Show menu" variant="border-filled" menu-alignment="auto" onselect={handleMenuSelect}>
                     <lightning-menu-item label="Download Files For Sign" value="item1"></lightning-menu-item>
                     <lightning-menu-item label="Upload Signed Files" value="item2"></lightning-menu-item>
-                    <lightning-menu-item label="Send with SecuredSign" value="item3"></lightning-menu-item>
                     <!-- <lightning-menu-item label="Menu Item Three" value="item3"></lightning-menu-item> -->
                 </lightning-button-menu>
             </lightning-button-group>
@@ -16,6 +15,7 @@
                 key-field="contentDocumentId"
                 data={files}
                 columns={columns}
+                onrowaction={handleRowAction}
                 hide-checkbox-column
                 class="slds-m-around_small">
             </lightning-datatable>

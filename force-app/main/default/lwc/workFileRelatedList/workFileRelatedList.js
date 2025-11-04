@@ -7,6 +7,12 @@ import downloadWorkFilesModal from 'c/downloadWorkFiles';
 import uploadWorkFilesModal from 'c/uploadWorkFiles';
 import securedSignModal from 'c/securedSignModal';
 
+
+
+
+const ROW_ACTIONS = [
+  { label: 'Sign', name: 'sign' }
+];
 const workFileColumsn = [
   {
     label: 'File Name',
@@ -19,6 +25,10 @@ const workFileColumsn = [
   },
   { label: 'Work File Status', fieldName: 'workFileStatus', type: 'text' },
   { label: 'Work File Type', fieldName: 'workFileType', type: 'text' },
+  {
+    type: 'action',
+    typeAttributes: { rowActions: ROW_ACTIONS }
+  }
   // { label: 'Size (bytes)',    fieldName: 'fileSize',       type: 'number' },
   // { label: 'Version',         fieldName: 'versionNumber',  type: 'number' },
   // {
@@ -76,24 +86,29 @@ export default class WorkFileRelatedList extends LightningElement {
       await this.createDownloadWorkFilesModal();
     } else if (selectedItemValue == 'item2') {
       await this.createUploadWorkFilesModal();
-    } else if (selectedItemValue === 'item3') {
-      this.createSecuredSignModal();
     }
   }
 
-  async createSecuredSignModal() {
-  const len = this.files.length;
-  if (!len) {
-    this.handleError('No Work Files to sign');
-    return;
+ async handleRowAction(event) {
+    const actionName = event.detail.action.name;
+    const row = event.detail.row;
+
+    if (actionName === 'sign') {
+      await this.openSecuredSignFor(row.workFileId);
+    }
   }
-  const last = this.files[len - 1];
-  await securedSignModal.open({
-    size: 'large',
-    description: 'Send with SecuredSign',
-    workFileId: last.workFileId
-  });
-}
+
+  async openSecuredSignFor(workFileId) {
+    if (!workFileId) {
+      this.handleError('No Work File Id');
+      return;
+    }
+    await securedSignModal.open({
+      size: 'large',
+      description: 'Send with SecuredSign',
+      workFileId: workFileId
+    });
+  }
 
   async createDownloadWorkFilesModal() {
     const result = await downloadWorkFilesModal.open({
