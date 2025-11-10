@@ -7,6 +7,7 @@ public with sharing class SecuredSignService {
     private static final String PATH_WESIGN    = '/UI/Resource2/16';
     private static final String PATH_DOWNLOAD  = '/Download/GetDocumentData/';
     private static final String DEFAULT_FOLDER = 'InBox';
+    private static final String SITE_BASE = 'https://kimes24--qa.sandbox.my.salesforce-sites.com/SecuredSignQuote';
 
   
 
@@ -120,6 +121,9 @@ public with sharing class SecuredSignService {
     }
 
     // CORE
+    public static String buildQuoteNotifyUrl(Id quoteId) {
+        return SITE_BASE + '/services/apexrest/SecuredSignQuoteCallback?quoteId=' + String.valueOf(quoteId);
+    }
 
     private static HttpResponse sendSmartTagInternal(
         String documentRef,
@@ -152,7 +156,7 @@ public with sharing class SecuredSignService {
             headers
         );
         req.setBody(JSON.serialize(payload));
-
+        System.debug('[SSS] SmartTag request body: ' + req.getBody());
         HttpResponse res = send(req);
         ensure200(res, 'SmartTag send failed');
         return res;
@@ -220,6 +224,7 @@ public with sharing class SecuredSignService {
     }
 
     private static HttpResponse send(HttpRequest req) {
+        req.setTimeout(30000);
         Http h = new Http();
         return h.send(req);
     }

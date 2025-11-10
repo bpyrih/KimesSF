@@ -66,7 +66,7 @@ public with sharing class SecuredSignFacade {
         SecuredSignDTO.DocumentUploadResponse uploadDto = parseUpload(uploadRes.getBody());
         String documentRef = uploadDto.Reference;
         System.debug('[SSF] documentRef=' + documentRef);
-
+        
         HttpResponse smartRes = SecuredSignService.sendSmartTagEmbedded(
             documentRef,
             email,
@@ -152,13 +152,13 @@ public with sharing class SecuredSignFacade {
         SecuredSignDTO.DocumentUploadResponse uploadDto = parseUpload(uploadRes.getBody());
         String documentRef = uploadDto.Reference;
         System.debug('[SSF] Quote documentRef=' + documentRef);
-
+        String notifyUrl = SecuredSignService.buildQuoteNotifyUrl(quoteId);
         HttpResponse smartRes = SecuredSignService.sendSmartTagEmail(
             documentRef,
             email,
             firstName,
             lastName,
-            URL.getOrgDomainUrl().toExternalForm()
+            notifyUrl
         );
         System.debug('[SSF] Quote smartRes status=' + smartRes.getStatusCode() + ', body=' + smartRes.getBody());
 
