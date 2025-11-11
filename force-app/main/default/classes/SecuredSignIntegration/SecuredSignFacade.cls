@@ -21,6 +21,11 @@ public with sharing class SecuredSignFacade {
         }
     }
 
+    @Future(callout=true)
+    public static void uploadAndSignWorkFileFuture() {
+        uploadAndSignWorkFile('a0CU7000047w99mMAA', 'colby@torchdesigns.com', 'Colby', 'Edell');
+    }
+
     @AuraEnabled
     public static Map<String, String> uploadAndSendQuotePdf(Id quoteId) {
         System.debug('[SSF] uploadAndSendQuotePdf IN quoteId=' + quoteId);
