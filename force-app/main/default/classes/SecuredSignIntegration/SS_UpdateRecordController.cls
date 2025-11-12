@@ -97,6 +97,8 @@ public class SS_UpdateRecordController {
         cv.Title        = prefix + ' ' + title;
         cv.VersionData  = dataBlob;
         cv.PathOnClient = prefix + ' ' + title + '.pdf';
+        cv.Description = 'Signed Version';
+        cv.ReasonForChange = 'Signed Version';
         //cv.Is_Latest_Signed__c = true;
         insert cv;
         
