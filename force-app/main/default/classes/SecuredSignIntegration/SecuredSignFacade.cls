@@ -1,26 +1,4 @@
 public with sharing class SecuredSignFacade {
-
-    // @AuraEnabled
-    // public static Map<String, String> uploadAndSignWorkFile(
-    //     Id workFileId,
-    //     String email,
-    //     String firstName,
-    //     String lastName
-    // ) {
-    //     System.debug('[SSF] uploadAndSignWorkFile IN workFileId=' + workFileId + ', email=' + email);
-    //     try {
-    //         Map<String,String> res = doUploadAndSignWorkFile(workFileId, email, firstName, lastName);
-    //         System.debug('[SSF] uploadAndSignWorkFile OUT=' + res);
-    //         return res;
-    //     } catch (AuraHandledException e) {
-    //         System.debug('[SSF] uploadAndSignWorkFile ERROR(Aura)=' + e.getMessage());
-    //         throw e;
-    //     } catch (Exception e) {
-    //         System.debug('[SSF] uploadAndSignWorkFile ERROR=' + e.getMessage());
-    //         throw new AuraHandledException('Secured Signing error: ' + e.getMessage());
-    //     }
-    // }
-
  @AuraEnabled
     public static void startUploadAndSign(Id workFileId, String email, String firstName, String lastName) {
         System.debug('[SSF] startUploadAndSign IN wf=' + workFileId);
