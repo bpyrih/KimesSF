@@ -10,7 +10,7 @@ public with sharing class PDFRestHelper {
     
     public static Id createAnnotatedVersion(PDFRestDTO.PDFWithAddedTextResponse addedTextResponse, Blob documentBase64String) {
         ContentVersion contentVersion = new ContentVersion();
-        contentVersion.Title = 'Annotated '+addedTextResponse.sfFileName;
+        contentVersion.Title = addedTextResponse.sfFileName;
         contentVersion.VersionData = documentBase64String;
         contentVersion.Description = 'Annotated Version';
         contentVersion.ReasonForChange = 'Annotated Version';
