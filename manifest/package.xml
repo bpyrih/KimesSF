@@ -29,6 +29,7 @@
         <members>AssignOpportunityQueueController</members>
         <members>AssignOpportunityUserController</members>
         <members>FileVersionsController</members>
+        <members>EmailComposerController</members>
 
         <members>SecuredSignDTO</members>
         <members>SecuredSignFacade</members>
