@@ -118,6 +118,7 @@
 
         <members>securedSignModal</members>
         <members>securedSign</members>
+        <members>quoteSecuredSignAction</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
