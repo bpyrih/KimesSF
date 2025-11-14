@@ -5,13 +5,6 @@
     <compactLayoutAssignment>Compact_Layout</compactLayoutAssignment>
     <label>Sales Quote</label>
     <picklistValues>
-        <picklist>Estimated_Timeframe__c</picklist>
-        <values>
-            <fullName>Expedited</fullName>
-            <default>false</default>
-        </values>
-    </picklistValues>
-    <picklistValues>
         <picklist>Status</picklist>
         <values>
             <fullName>Accepted</fullName>
