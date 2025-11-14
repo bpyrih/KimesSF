@@ -4,15 +4,16 @@ import { CloseActionScreenEvent } from 'lightning/actions';
 import { getRecord } from 'lightning/uiRecordApi';
 import startUploadAndSign from '@salesforce/apex/SecuredSignFacade.startUploadAndSign';
 import annotateWorkFile from '@salesforce/apex/PDFRestService.annotateWorkFile';
+import getUpdateRecordPageUrl from '@salesforce/apex/SecuredSignService.getUpdateRecordPageUrl';
 import { subscribe, unsubscribe, onError } from 'lightning/empApi';
 
-const CHANNEL     = '/event/Async_Callout_Notification__e';
-const STATUS_FIELD = 'Work_File__c.Status__c';
+import USER_ID from '@salesforce/user/Id';
+import USER_FIRST_NAME_FIELD from '@salesforce/schema/User.FirstName';
+import USER_LAST_NAME_FIELD from '@salesforce/schema/User.LastName';
+import USER_EMAIL_FIELD from '@salesforce/schema/User.Email';
 
-const FIRST_NAME = 'Colby';
-const LAST_NAME  = 'Edell';
-const EMAIL      = 'colby@torchdesigns.com';
-const VF_BASE    = 'https://kimes24--qa--c.sandbox.vf.force.com/apex/SS_UpdateRecordPage';
+const CHANNEL      = '/event/Async_Callout_Notification__e';
+const STATUS_FIELD = 'Work_File__c.Status__c';
 
 export default class SignEmbed extends LightningElement {
   @api recordId;
@@ -22,6 +23,12 @@ export default class SignEmbed extends LightningElement {
   isSigning    = false;
 
   workFileStatus;
+
+  userFirstName;
+  userLastName;
+  userEmail;
+
+  vfBaseUrl;
 
   iframeSrc;
   originOk;
@@ -40,6 +47,33 @@ export default class SignEmbed extends LightningElement {
   wiredWF({ data }) {
     if (data) {
       this.workFileStatus = data.fields.Status__c.value;
+    }
+  }
+
+  @wire(getRecord, {
+    recordId: USER_ID,
+    fields: [USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD, USER_EMAIL_FIELD]
+  })
+  wiredUser({ data, error }) {
+    if (data) {
+      this.userFirstName = data.fields.FirstName.value;
+      this.userLastName  = data.fields.LastName.value;
+      this.userEmail     = data.fields.Email.value;
+    } else if (error) {
+      console.error('Error loading current user', error);
+      this.userFirstName = 'User';
+      this.userLastName  = '';
+      this.userEmail     = '';
+    }
+  }
+
+  @wire(getUpdateRecordPageUrl)
+  wiredVfBase({ data, error }) {
+    if (data) {
+      this.vfBaseUrl = data;
+    } else if (error) {
+      console.error('Error loading VF base URL', error);
+      this.vfBaseUrl = window.location.origin + '/apex/SS_UpdateRecordPage';
     }
   }
 
@@ -88,6 +122,11 @@ export default class SignEmbed extends LightningElement {
 
   handleStart() {
     if (this.hasStarted) return;
+    if (!this.userEmail || !this.vfBaseUrl) {
+      alert('Please wait a moment and try again.');
+      return;
+    }
+
     if (this._isBackNavigation()) {
       this.dispatchEvent(new CloseActionScreenEvent());
       return;
@@ -119,9 +158,9 @@ export default class SignEmbed extends LightningElement {
       this.isSigning = true;
       await startUploadAndSign({
         workFileId: this.recordId,
-        email: EMAIL,
-        firstName: FIRST_NAME,
-        lastName: LAST_NAME
+        email: this.userEmail,
+        firstName: this.userFirstName,
+        lastName: this.userLastName
       });
     } catch (e) {
       this.isAnnotating = false;
@@ -144,7 +183,7 @@ export default class SignEmbed extends LightningElement {
     }
 
     const vfUrl =
-      `${VF_BASE}?recordId=${this.recordId}&event=done&docRef=${encodeURIComponent(docRefRaw)}`;
+      `${this.vfBaseUrl}?recordId=${this.recordId}&event=done&docRef=${encodeURIComponent(docRefRaw)}`;
 
     const base = linkUrl.includes('/Utilities/LinkAccess.aspx')
       ? linkUrl.replace('/Utilities/LinkAccess.aspx', '/Embedded/Sign.aspx')
@@ -156,9 +195,9 @@ export default class SignEmbed extends LightningElement {
         SigningKey:        signingKey,
         Embedded:          true,
         DocumentReference: docRefRaw,
-        FirstName:         FIRST_NAME,
-        LastName:          LAST_NAME,
-        Email:             EMAIL
+        FirstName:         this.userFirstName,
+        LastName:          this.userLastName,
+        Email:             this.userEmail
       }
     };
 
