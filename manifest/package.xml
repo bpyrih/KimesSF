@@ -29,6 +29,7 @@
         <members>AssignOpportunityQueueController</members>
         <members>AssignOpportunityUserController</members>
         <members>FileVersionsController</members>
+
         <members>SecuredSignDTO</members>
         <members>SecuredSignFacade</members>
         <members>SecuredSignQuoteCallback</members>
@@ -108,6 +109,7 @@
         <members>caseEmailComposer</members>
         <members>assignOpportunityQueue</members>
         <members>userChange</members>
+
         <members>securedSignModal</members>
         <members>securedSign</members>
         <name>LightningComponentBundle</name>
@@ -236,7 +238,9 @@
         <members>Document_Sign_Config__c</members>
         <members>Document_Sign_Element__c</members>
         <members>Org_Variable__mdt</members>
+
         <members>Secured_Sign_Variables__mdt</members>
+        
         <members>OpportunityLineItem</members>
         <members>Queue__c</members>
         <members>ContentVersion</members>
