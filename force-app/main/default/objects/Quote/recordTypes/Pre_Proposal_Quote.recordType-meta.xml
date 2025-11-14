@@ -5,6 +5,33 @@
     <compactLayoutAssignment>Compact_Layout</compactLayoutAssignment>
     <label>Pre Proposal Quote</label>
     <picklistValues>
+        <picklist>Estimated_Timeframe__c</picklist>
+        <values>
+            <fullName>2 to 4 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3 to 5 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4 to 6 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6 to 8 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8 to 10 weeks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Expedited</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Status</picklist>
         <values>
             <fullName>Accepted</fullName>
