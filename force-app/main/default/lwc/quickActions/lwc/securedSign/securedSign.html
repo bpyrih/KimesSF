@@ -1,20 +1,27 @@
 <template>
   <lightning-card title="Document e-Signature" icon-name="utility:signature">
-    <template if:true={isLoading}>
+    <template if:true={isAnnotating}>
       <div class="center">
-        <lightning-spinner alternative-text="Preparing..." size="large" variant="brand"></lightning-spinner>
-        <p class="muted">Preparing your document…</p>
+        <lightning-spinner alternative-text="Annotating..." size="large" variant="brand"></lightning-spinner>
+        <p class="muted">Adding annotations…</p>
       </div>
     </template>
 
-    <template if:false={isLoading}>
-      <template if:false={hasStarted}>
-        <div class="slds-p-around_medium slds-align_absolute-center">
-          <lightning-button variant="brand" label="Start signing" onclick={handleStart}></lightning-button>
-        </div>
-      </template>
+    <template if:true={isSigning}>
+      <div class="center">
+        <lightning-spinner alternative-text="Sending to Secured Signing..." size="large" variant="brand"></lightning-spinner>
+        <p class="muted">Sending for signing…</p>
+      </div>
+    </template>
 
-      <template if:true={hasStarted}>
+    <template if:false={hasStarted}>
+      <div class="slds-p-around_medium slds-align_absolute-center">
+        <lightning-button variant="brand" label="Start signing" onclick={handleStart}></lightning-button>
+      </div>
+    </template>
+
+    <template if:true={hasStarted}>
+      <template if:true={iframeSrc}>
         <lightning-quick-action-panel header="Document e-Signature" size="large">
           <div class="frame">
             <iframe data-id="host" class="host" src={iframeSrc} title="Secured Signing"></iframe>

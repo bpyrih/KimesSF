@@ -1,30 +1,36 @@
 public with sharing class SecuredSignFacade {
+ @AuraEnabled
+    public static void startUploadAndSign(Id workFileId, String email, String firstName, String lastName) {
+        System.debug('[SSF] startUploadAndSign IN wf=' + workFileId);
+        uploadAndSignWorkFileFuture(workFileId, email, firstName, lastName);
+    }
 
-    @AuraEnabled
-    public static Map<String, String> uploadAndSignWorkFile(
+@Future(callout=true)
+    public static void uploadAndSignWorkFileFuture(
         Id workFileId,
         String email,
         String firstName,
         String lastName
     ) {
-        System.debug('[SSF] uploadAndSignWorkFile IN workFileId=' + workFileId + ', email=' + email);
+        System.debug('[SSF] FUTURE start wf=' + workFileId);
         try {
             Map<String,String> res = doUploadAndSignWorkFile(workFileId, email, firstName, lastName);
-            System.debug('[SSF] uploadAndSignWorkFile OUT=' + res);
-            return res;
-        } catch (AuraHandledException e) {
-            System.debug('[SSF] uploadAndSignWorkFile ERROR(Aura)=' + e.getMessage());
-            throw e;
+            Async_Callout_Notification__e evt = new Async_Callout_Notification__e(
+                Status__c  = 'SUCCESS',
+                Context__c = (String)workFileId,
+                Message__c = JSON.serialize(res)
+            );
+            EventBus.publish(evt);
         } catch (Exception e) {
-            System.debug('[SSF] uploadAndSignWorkFile ERROR=' + e.getMessage());
-            throw new AuraHandledException('Secured Signing error: ' + e.getMessage());
+            Async_Callout_Notification__e evt = new Async_Callout_Notification__e(
+                Status__c  = 'ERROR',
+                Context__c = (String)workFileId,
+                Message__c = e.getMessage()
+            );
+            EventBus.publish(evt);
         }
     }
 
-    @Future(callout=true)
-    public static void uploadAndSignWorkFileFuture() {
-        uploadAndSignWorkFile('a0CU7000047w99mMAA', 'colby@torchdesigns.com', 'Colby', 'Edell');
-    }
 
     @AuraEnabled
     public static Map<String, String> uploadAndSendQuotePdf(Id quoteId) {
@@ -66,7 +72,7 @@ public with sharing class SecuredSignFacade {
             cv.VersionData,
             cv.Title + '.' + cv.FileExtension
         );
-        System.debug('[SSF] uploadRes status=' + uploadRes.getStatusCode() + ', body=' + uploadRes.getBody());
+        System.debug('[SSF] uploadRes status=' + uploadRes.getStatusCode());
 
         SecuredSignDTO.DocumentUploadResponse uploadDto = parseUpload(uploadRes.getBody());
         String documentRef = uploadDto.Reference;
@@ -79,25 +85,20 @@ public with sharing class SecuredSignFacade {
             lastName,
             URL.getOrgDomainUrl().toExternalForm()
         );
-        System.debug('[SSF] smartRes status=' + smartRes.getStatusCode() + ', body=' + smartRes.getBody());
+        System.debug('[SSF] smartRes status=' + smartRes.getStatusCode());
 
         List<SecuredSignDTO.FullSmartTagResponse> smartList = parseSmartTag(smartRes.getBody());
-        Integer cnt = (smartList == null) ? 0 : smartList.size();
-        System.debug('[SSF] smartList size=' + cnt);
-
-        if (cnt == 0 || smartList[0].Signers == null || smartList[0].Signers.isEmpty()) {
+        if (smartList == null || smartList.isEmpty() || smartList[0].Signers == null || smartList[0].Signers.isEmpty()) {
             throw new AuraHandledException('SmartTag response is empty.');
         }
 
         SecuredSignDTO.ResponseSigner signer = pickSigner(smartList[0].Signers, email);
-        System.debug('[SSF] picked signer=' + signer);
         if (signer == null || String.isBlank(signer.SigningKey)) {
             throw new AuraHandledException('SigningKey not found in SmartTag response.');
         }
 
         String weSignUrl   = SecuredSignService.getWeSignUrl();
         String embeddedUrl = toEmbedded(weSignUrl);
-        System.debug('[SSF] weSignUrl=' + weSignUrl + ', embeddedUrl=' + embeddedUrl);
 
         Map<String, String> out = new Map<String, String>();
         out.put('weSignUrl',   embeddedUrl);

@@ -28,7 +28,7 @@ public with sharing class SecuredSignService {
             headers
         );
         req.setBodyAsBlob(body);
-
+        req.setTimeout(120000); // 2 minutes
         HttpResponse res = send(req);
         ensure2xx(res, 'Upload file failed');
         return res;
