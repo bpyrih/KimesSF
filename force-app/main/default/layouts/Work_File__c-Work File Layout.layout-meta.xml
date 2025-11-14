@@ -82,7 +82,7 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>Work_File__c.SignWithSecuredSign</actionName>
+            <actionName>SignWithSecuredSign</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
         </platformActionListItems>
