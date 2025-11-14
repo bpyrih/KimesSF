@@ -4,6 +4,6 @@
     <protected>false</protected>
     <values>
         <field>Value__c</field>
-        <value xsi:type="xsd:string">https://kimes24--devint--c.sandbox.vf.force.com</value>
+        <value xsi:type="xsd:string">https://kimes24--qa--c.sandbox.vf.force.com</value>
     </values>
 </CustomMetadata>

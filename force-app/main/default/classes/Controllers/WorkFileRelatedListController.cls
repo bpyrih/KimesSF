@@ -182,8 +182,8 @@ public with sharing class WorkFileRelatedListController {
             insert cdl;
         }
 
-        if (workFileForSign.Status__c != 'Signed' ) {
-            workFileForSign.Status__c = 'Signed';
+        if (workFileForSign.Status__c != 'Draft' ) {
+            workFileForSign.Status__c = 'Draft';
             update workFileForSign;
         }
 
