@@ -70,9 +70,13 @@ public class SS_UpdateRecordController {
             }
             
             update wf;
-            
-            String base = URL.getOrgDomainUrl().toExternalForm();
-            PageReference pr = new PageReference(base + '/' + recordId);
+            Id oppId = wf.Opportunity__c;
+            PageReference pr;
+            if (oppId != null) {
+                pr = new PageReference('/lightning/r/Opportunity/' + oppId + '/view');
+            } else {
+                pr = new PageReference('/' + recordId);
+            }
             pr.setRedirect(true);
             return pr;
             
