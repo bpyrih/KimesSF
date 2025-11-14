@@ -118,6 +118,7 @@
 
         <members>securedSignModal</members>
         <members>securedSign</members>
+        <members>quoteSecuredSignAction</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -246,6 +247,7 @@
         <members>Org_Variable__mdt</members>
 
         <members>Secured_Sign_Variables__mdt</members>
+        <members>Async_Callout_Notification__e</members>
 
         <members>OpportunityLineItem</members>
         <members>Queue__c</members>
