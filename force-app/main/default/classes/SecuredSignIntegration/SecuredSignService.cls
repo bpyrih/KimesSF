@@ -273,6 +273,15 @@ public with sharing class SecuredSignService {
         return cfg.ApiSecret__c;
     }
 
+    @AuraEnabled(cacheable=true)
+    public static String getUpdateRecordPageUrl() {
+        String base = ConstantUtils.VISUAL_FORCE_URL;
+        if (String.isBlank(base)) {
+            base = URL.getOrgDomainUrl().toExternalForm();
+        }
+        return base + '/apex/SS_UpdateRecordPage';
+    }
+
     // UTILS
 
     private static String generateNonce(Integer length) {
