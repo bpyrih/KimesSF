@@ -56,6 +56,12 @@
         <members>PDFRestServiceTest</members>
         <members>FileVersionsControllerTest</members>
         <members>EmailComposerControllerTest</members>
+
+        <members>SecuredSignFacadeTest</members>
+        <members>SecuredSignHttpMock</members>
+        <members>SS_UpdateRecordControllerTest</members>
+        <members>SecuredSignQuoteCallbackTest</members>
+        
         <name>ApexClass</name>
     </types>
     <types>
@@ -240,7 +246,7 @@
         <members>Org_Variable__mdt</members>
 
         <members>Secured_Sign_Variables__mdt</members>
-        
+
         <members>OpportunityLineItem</members>
         <members>Queue__c</members>
         <members>ContentVersion</members>
