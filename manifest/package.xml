@@ -281,7 +281,7 @@
         <members>Opportunity.Create_Sub_Tasks</members>
         <members>Work_File__c.Custom_Send_Review</members>
         <members>Project_Task__c.Quick_Update</members>
-        <members>Case.Reply_with_files</members>
+        <members>Case.Reply_with_file</members>
         <members>Opportunity.Assign_to_Queue1</members>
         <members>Opportunity.Assign_to_User</members>
         <members>Quote.Send_with_SecuredSign</members>
