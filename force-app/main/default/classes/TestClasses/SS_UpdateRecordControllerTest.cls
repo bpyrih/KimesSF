@@ -1,4 +1,4 @@
-@IsTest(seeAllData=true)
+@IsTest
 private class SS_UpdateRecordControllerTest {
 
     private static Work_File__c createWorkFileWithContent() {

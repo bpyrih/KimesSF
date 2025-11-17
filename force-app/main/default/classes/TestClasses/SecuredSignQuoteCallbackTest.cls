@@ -1,4 +1,4 @@
-@IsTest(seeAllData=true)
+@IsTest
 private class SecuredSignQuoteCallbackTest {
 
     private static Quote createQuoteOnly() {
