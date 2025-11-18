@@ -127,11 +127,6 @@ export default class SignEmbed extends LightningElement {
       return;
     }
 
-    if (this._isBackNavigation()) {
-      this.dispatchEvent(new CloseActionScreenEvent());
-      return;
-    }
-
     this.hasStarted = true;
     this.init();
   }
