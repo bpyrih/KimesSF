@@ -7,7 +7,7 @@ public with sharing class SecuredSignService {
     private static final String PATH_WESIGN    = '/UI/Resource2/16';
     private static final String PATH_DOWNLOAD  = '/Download/GetDocumentData/';
     private static final String DEFAULT_FOLDER = 'InBox';
-    private static final String SITE_BASE = 'https://kimes24--qa.sandbox.my.salesforce-sites.com/SecuredSignQuote';
+  
 
   
 
@@ -122,8 +122,15 @@ public with sharing class SecuredSignService {
 
     // CORE
     public static String buildQuoteNotifyUrl(Id quoteId) {
-        return SITE_BASE + '/services/apexrest/SecuredSignQuoteCallback?quoteId=' + String.valueOf(quoteId);
+    String base = getSiteBaseUrl();
+    if (String.isBlank(base)) {
+        throw new AuraHandledException('Secured Signing SiteBaseUrl__c is not configured.');
     }
+    if (base.endsWith('/')) {
+        base = base.left(base.length() - 1);
+    }
+    return base + '/services/apexrest/SecuredSignQuoteCallback?quoteId=' + String.valueOf(quoteId);
+}
 
     private static HttpResponse sendSmartTagInternal(
         String documentRef,
@@ -250,6 +257,15 @@ public with sharing class SecuredSignService {
     }
 
     // CONFIG
+private static String getSiteBaseUrl() {
+    Secured_Sign_Variables__mdt cfg = [
+        SELECT 	SiteBaseUrl__c
+        FROM Secured_Sign_Variables__mdt
+        WHERE DeveloperName = 'SecuredSign'
+        LIMIT 1
+    ];
+    return cfg.SiteBaseUrl__c;
+}
 
     @AuraEnabled(cacheable=true)
     public static String getApiKey() {
@@ -283,6 +299,8 @@ public with sharing class SecuredSignService {
     }
 
     // UTILS
+
+
 
     private static String generateNonce(Integer length) {
         final String chars = '0123456789abcdef';
