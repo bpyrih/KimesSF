@@ -80,9 +80,9 @@ public with sharing class SecuredSignFacade {
         
         HttpResponse smartRes = SecuredSignService.sendSmartTagEmbedded(
             documentRef,
-            email,
-            firstName,
-            lastName,
+            'kent@kimesengineering.com',
+            'James',
+            'Kimes',
             URL.getOrgDomainUrl().toExternalForm()
         );
         System.debug('[SSF] smartRes status=' + smartRes.getStatusCode());
