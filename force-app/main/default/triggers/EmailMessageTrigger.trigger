@@ -27,7 +27,7 @@ trigger EmailMessageTrigger on EmailMessage (after insert) {
                 newStatusValue = 'Client Replied';
                 c.OwnerId= intakeQueueId;
             } else {
-                
+                newStatusValue = 'Client Replied';
             }
         } else {
             c.Client_Follow_Up_DateTime__c = System.now();
