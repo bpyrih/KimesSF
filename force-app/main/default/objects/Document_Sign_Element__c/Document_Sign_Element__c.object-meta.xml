@@ -153,13 +153,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
-    <label>Document Sign Element</label>
+    <label>Annotation Element</label>
     <nameField>
         <displayFormat>DSE-{000000}</displayFormat>
-        <label>Document Sign Element Name</label>
+        <label>Annotation Element Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Document Sign Elements</pluralLabel>
+    <pluralLabel>Annotation Elements</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
