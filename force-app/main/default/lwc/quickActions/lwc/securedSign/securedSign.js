@@ -143,7 +143,11 @@ export default class SignEmbed extends LightningElement {
   async init() {
     try {
       const status = (this.workFileStatus || '').toLowerCase();
-      if (status==='signed') return;
+      if (status==='signed') {
+        alert('This document has already been signed.');
+        this.dispatchEvent(new CloseActionScreenEvent());
+        return;
+      }
       if (status === 'draft') {
         this.isAnnotating = true;
         await annotateWorkFile({ workFileId: this.recordId });
