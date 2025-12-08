@@ -143,7 +143,7 @@ export default class SignEmbed extends LightningElement {
   async init() {
     try {
       const status = (this.workFileStatus || '').toLowerCase();
-      if (status!=='signed') return;
+      if (status==='signed') return;
       if (status === 'draft') {
         this.isAnnotating = true;
         await annotateWorkFile({ workFileId: this.recordId });
