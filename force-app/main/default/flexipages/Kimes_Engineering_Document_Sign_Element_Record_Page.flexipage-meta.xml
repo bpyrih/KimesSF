@@ -208,29 +208,6 @@
                 </visibilityRule>
             </fieldInstance>
         </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.scaleValue__c</fieldItem>
-                <identifier>RecordscaleValue_cField</identifier>
-                <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
-                    <criteria>
-                        <leftValue>{!Record.Element_Type__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Sign</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Element_Type__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Stamp</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </fieldInstance>
-        </itemInstances>
         <name>Facet-9a87b0d5-8847-4b93-be3d-833ba7bd204e</name>
         <type>Facet</type>
     </flexiPageRegions>
