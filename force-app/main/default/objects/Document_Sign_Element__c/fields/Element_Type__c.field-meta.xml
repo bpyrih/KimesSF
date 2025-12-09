@@ -17,19 +17,16 @@
             <value>
                 <fullName>Seal</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
                 <label>Seal</label>
             </value>
             <value>
                 <fullName>Sign</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
                 <label>Sign</label>
             </value>
             <value>
                 <fullName>Stamp</fullName>
                 <default>false</default>
-                <isActive>false</isActive>
                 <label>Stamp</label>
             </value>
         </valueSetDefinition>
