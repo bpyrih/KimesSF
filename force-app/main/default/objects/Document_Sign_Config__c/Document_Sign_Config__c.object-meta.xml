@@ -153,13 +153,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Document Sign Config</label>
+    <label>Annotation Config</label>
     <nameField>
         <displayFormat>DSC-{00000}</displayFormat>
-        <label>Document Sign Config Name</label>
+        <label>Annotation Config Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Document Sign Configs</pluralLabel>
+    <pluralLabel>Annotation Configs</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

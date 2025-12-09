@@ -2,7 +2,7 @@ public with sharing class PDFRestDTO {
     public class PDFWithAddedTextFieldData {
         public String font = 'Times New Roman';
         public String opacity = '1';
-        public String rotation = '0';
+        
         public String text_color_rgb = '0,0,0';
         public String text_size = '16';
 
@@ -11,6 +11,7 @@ public with sharing class PDFRestDTO {
         public String page;
         public String x;
         public String y;
+        public String rotation;
     }
 
     public class PDFWithAddedTextResponse {

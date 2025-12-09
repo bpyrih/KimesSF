@@ -54,6 +54,7 @@ public with sharing class PDFRestHelper {
             }
             pdfWithAddedTextFieldData.x = String.valueOf(dse.xPosition__c);
             pdfWithAddedTextFieldData.y = String.valueOf(dse.yPosition__c);
+            pdfWithAddedTextFieldData.rotation = String.valueOf(dse.Rotation__c);
             pdfWithAddedTextFieldData.page = String.valueOf(dse.Page_Number__c);
             pdfFields.add(pdfWithAddedTextFieldData);
         }
