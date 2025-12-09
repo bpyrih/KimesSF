@@ -10,23 +10,26 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Sign</fullName>
-                <default>false</default>
-                <label>Sign</label>
+                <fullName>Text</fullName>
+                <default>true</default>
+                <label>Text</label>
             </value>
             <value>
                 <fullName>Seal</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Seal</label>
             </value>
             <value>
-                <fullName>Text</fullName>
+                <fullName>Sign</fullName>
                 <default>false</default>
-                <label>Text</label>
+                <isActive>false</isActive>
+                <label>Sign</label>
             </value>
             <value>
                 <fullName>Stamp</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Stamp</label>
             </value>
         </valueSetDefinition>

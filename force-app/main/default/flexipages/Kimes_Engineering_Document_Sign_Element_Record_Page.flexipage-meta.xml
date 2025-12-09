@@ -153,6 +153,16 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
+                <fieldItem>Record.Rotation__c</fieldItem>
+                <identifier>RecordRotation__cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.height__c</fieldItem>
                 <identifier>Recordheight_cField</identifier>
                 <visibilityRule>
