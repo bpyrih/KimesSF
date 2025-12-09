@@ -98,6 +98,7 @@
         <members>Opportunity_Product_Count</members>
         <members>Quote_Pre_Proposal</members>
         <members>Change_owner_on_case</members>
+        <members>CreateTaskOnAcceeptedQuote</members>
         <name>Flow</name>
     </types>
     <types>
