@@ -135,23 +135,22 @@ public with sharing class SecuredSignFacade {
         if (String.isBlank(email)) {
             throw new AuraHandledException('Contact on Quote has no Email.');
         }
-
-        QuoteDocument qd = [
+        List<QuoteDocument> qdList =[
             SELECT Id, Document, Name, CreatedDate
             FROM QuoteDocument
             WHERE QuoteId = :quoteId
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
-        System.debug('[SSF] latest QuoteDocument: ' + qd);
+        System.debug('[SSF] latest QuoteDocument: ' + qdList);
 
-        if (qd == null) {
-            throw new AuraHandledException('No PDF found in Quote PDFs.');
+        if (qdList.isEmpty() || qdList[0]==null) {
+            throw new AuraHandledException('No PDF found in Quote PDFs. Please generate the Quote PDF first.');
         }
-
+        
         HttpResponse uploadRes = SecuredSignService.uploadFile(
-            qd.Document,
-            qd.Name != null ? qd.Name : (q.Name + '.pdf')
+            qdList[0].Document,
+            qdList[0].Name != null ? qdList[0].Name : (q.Name + '.pdf')
         );
         System.debug('[SSF] Quote uploadRes status=' + uploadRes.getStatusCode() + ', body=' + uploadRes.getBody());
 
