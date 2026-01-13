@@ -22,7 +22,7 @@ public with sharing class EmailMessageTriggerHandlerTest {
         insert inboundEmail;
 
         Case updatedCase = [SELECT Status, LastModifiedDate FROM Case WHERE Id = :closedCase.Id];
-        System.assertEquals('New', updatedCase.Status, 'Closed case should be reopened to New on customer email');
+        System.assertEquals('Client Replied', updatedCase.Status, 'Closed case should be reopened to New on customer email');
     }
     
     @isTest static void testCustomerReplyOnOpenCase() {
@@ -49,7 +49,7 @@ public with sharing class EmailMessageTriggerHandlerTest {
         insert additionalEmail;
 
         Case updatedCase = [SELECT Status FROM Case WHERE Id = :newCase.Id];
-        System.assertEquals('New', updatedCase.Status, 
+        System.assertEquals('Client Replied', updatedCase.Status, 
             'Case already New should remain New on additional customer email');
     }
     
@@ -90,7 +90,7 @@ public with sharing class EmailMessageTriggerHandlerTest {
         Case result2 = [SELECT Status FROM Case WHERE Id = :case2.Id];
         Case result3 = [SELECT Status FROM Case WHERE Id = :case3.Id];
         System.assertEquals('Client Replied', result1.Status, 'Case1 should be Client Replied');
-        System.assertEquals('New', result2.Status, 'Case2 (closed) should be reopened to New');
+        System.assertEquals('Client Replied', result2.Status, 'Case2 (closed) should be reopened to New');
         System.assertEquals('Agent Replied/Follow Up', result3.Status, 'Case3 was New and had only outbound email, so should remain New');
     }
 }

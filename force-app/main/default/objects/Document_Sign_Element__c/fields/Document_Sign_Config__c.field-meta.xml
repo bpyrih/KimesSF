@@ -3,7 +3,6 @@
     <fullName>Document_Sign_Config__c</fullName>
     <label>Document Sign Config</label>
     <referenceTo>Document_Sign_Config__c</referenceTo>
-    <relationshipLabel>Document Sign Elements</relationshipLabel>
     <relationshipName>Document_Sign_Elements</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
