@@ -31,6 +31,12 @@
         <members>FileVersionsController</members>
         <members>EmailComposerController</members>
 
+        <members>SecuredSignDTO</members>
+        <members>SecuredSignFacade</members>
+        <members>SecuredSignQuoteCallback</members>
+        <members>SecuredSignService</members>
+        <members>SS_UpdateRecordController</members>
+
         <members>CaseDAOTest</members>
         <members>ContactDAOTest</members>
         <members>ContentDocumentUtilityDAOTest</members>
@@ -51,6 +57,12 @@
         <members>PDFRestServiceTest</members>
         <members>FileVersionsControllerTest</members>
         <members>EmailComposerControllerTest</members>
+
+        <members>SecuredSignFacadeTest</members>
+        <members>SecuredSignHttpMock</members>
+        <members>SS_UpdateRecordControllerTest</members>
+        <members>SecuredSignQuoteCallbackTest</members>
+        
         <name>ApexClass</name>
     </types>
     <types>
@@ -86,6 +98,7 @@
         <members>Opportunity_Product_Count</members>
         <members>Quote_Pre_Proposal</members>
         <members>Change_owner_on_case</members>
+        <members>CreateTaskOnAcceeptedQuote</members>
         <name>Flow</name>
     </types>
     <types>
@@ -104,6 +117,10 @@
         <members>caseEmailComposer</members>
         <members>assignOpportunityQueue</members>
         <members>userChange</members>
+
+        <members>securedSignModal</members>
+        <members>securedSign</members>
+        <members>quoteSecuredSignAction</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -230,6 +247,10 @@
         <members>Document_Sign_Config__c</members>
         <members>Document_Sign_Element__c</members>
         <members>Org_Variable__mdt</members>
+
+        <members>Secured_Sign_Variables__mdt</members>
+        <members>Async_Callout_Notification__e</members>
+
         <members>OpportunityLineItem</members>
         <members>Queue__c</members>
         <members>ContentVersion</members>
@@ -264,6 +285,8 @@
         <members>Case.Reply_with_file</members>
         <members>Opportunity.Assign_to_Queue1</members>
         <members>Opportunity.Assign_to_User</members>
+        <members>Quote.Send_with_SecuredSign</members>
+        <members>Work_File__c.SignWithSecuredSign</members>
         <name>QuickAction</name>
     </types>
     <types>

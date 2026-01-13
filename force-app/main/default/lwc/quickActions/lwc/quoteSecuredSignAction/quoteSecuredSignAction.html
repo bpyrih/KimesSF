@@ -1,0 +1,23 @@
+<template>
+  <lightning-card title="Quote e-Signature" icon-name="utility:signature">
+    <template if:true={isLoading}>
+      <div class="spinner-container">
+        <lightning-spinner alternative-text="Sending..." size="large" variant="brand"></lightning-spinner>
+        <p class="muted">Sending quote PDF to recipient…</p>
+      </div>
+    </template>
+
+    <template if:false={isLoading}>
+      <lightning-quick-action-panel header="Quote e-Signature" size="large">
+        <div class="panel-body">
+          <p class={messageClass}>{message}</p>
+          <lightning-button
+            variant="brand"
+            label="Send quote to sign"
+            onclick={handleSend}>
+          </lightning-button>
+        </div>
+      </lightning-quick-action-panel>
+    </template>
+  </lightning-card>
+</template>

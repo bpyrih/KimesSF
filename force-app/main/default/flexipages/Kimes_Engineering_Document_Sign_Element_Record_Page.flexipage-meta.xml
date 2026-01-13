@@ -153,6 +153,16 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
+                <fieldItem>Record.Rotation__c</fieldItem>
+                <identifier>RecordRotation__cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
                 <fieldItem>Record.height__c</fieldItem>
                 <identifier>Recordheight_cField</identifier>
                 <visibilityRule>
@@ -194,29 +204,6 @@
                         <leftValue>{!Record.Element_Type__c}</leftValue>
                         <operator>EQUAL</operator>
                         <rightValue>Text</rightValue>
-                    </criteria>
-                </visibilityRule>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.scaleValue__c</fieldItem>
-                <identifier>RecordscaleValue_cField</identifier>
-                <visibilityRule>
-                    <booleanFilter>1 OR 2</booleanFilter>
-                    <criteria>
-                        <leftValue>{!Record.Element_Type__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Sign</rightValue>
-                    </criteria>
-                    <criteria>
-                        <leftValue>{!Record.Element_Type__c}</leftValue>
-                        <operator>EQUAL</operator>
-                        <rightValue>Stamp</rightValue>
                     </criteria>
                 </visibilityRule>
             </fieldInstance>

@@ -10,9 +10,9 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Sign</fullName>
-                <default>false</default>
-                <label>Sign</label>
+                <fullName>Text</fullName>
+                <default>true</default>
+                <label>Text</label>
             </value>
             <value>
                 <fullName>Seal</fullName>
@@ -20,9 +20,9 @@
                 <label>Seal</label>
             </value>
             <value>
-                <fullName>Text</fullName>
+                <fullName>Sign</fullName>
                 <default>false</default>
-                <label>Text</label>
+                <label>Sign</label>
             </value>
             <value>
                 <fullName>Stamp</fullName>

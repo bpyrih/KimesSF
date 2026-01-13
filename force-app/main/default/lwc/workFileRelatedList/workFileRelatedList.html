@@ -11,13 +11,11 @@
                     <!-- <lightning-menu-item label="Menu Item Three" value="item3"></lightning-menu-item> -->
                 </lightning-button-menu>
             </lightning-button-group>
-            <lightning-datatable
-                key-field="contentDocumentId"
-                data={files}
-                columns={columns}
-                hide-checkbox-column
-                class="slds-m-around_small">
-            </lightning-datatable>
+            <div class="table-wrap">
+                <lightning-datatable key-field="workFileId" data={files} columns={columns} hide-checkbox-column
+                    onrowaction={handleRowAction}>
+                </lightning-datatable>
+            </div>
             <template if:true={error}>
                 <div class="slds-text-color_error slds-p-around_small">
                     {error}

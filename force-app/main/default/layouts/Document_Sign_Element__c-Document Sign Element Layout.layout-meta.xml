@@ -45,6 +45,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Rotation__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>height__c</field>
             </layoutItems>
             <layoutItems>
@@ -54,10 +58,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>value__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>scaleValue__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
@@ -97,7 +97,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hcY000000DLRd</masterLabel>
+        <masterLabel>00hUH000001Nedh</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

@@ -18,6 +18,7 @@ public with sharing class PDFRestServiceTest {
             yPosition__c = 200,
             width__c = 150,
             value__c = 'TestValue {Opportunity__r.Project_Name__c}',
+            Rotation__c=90,
             Element_Type__c = 'Text'
         );
         insert element;
