@@ -1,4 +1,12 @@
 public with sharing class SecuredSignFacade {
+    public class SecuredSignFacadeException extends Exception {
+        public String customMessage;
+
+        public String getFormattedError() {
+            return this.customMessage;
+        }
+    }
+
  @AuraEnabled
     public static void startUploadAndSign(Id workFileId, String email, String firstName, String lastName) {
         System.debug('[SSF] startUploadAndSign IN wf=' + workFileId);
@@ -21,7 +29,7 @@ public with sharing class SecuredSignFacade {
                 Message__c = JSON.serialize(res)
             );
             EventBus.publish(evt);
-        } catch (Exception e) {
+        } catch (SecuredSignFacadeException e) {
             Async_Callout_Notification__e evt = new Async_Callout_Notification__e(
                 Status__c  = 'ERROR',
                 Context__c = (String)workFileId,
@@ -39,12 +47,12 @@ public with sharing class SecuredSignFacade {
             Map<String,String> res = doUploadAndSendQuotePdf(quoteId);
             System.debug('[SSF] uploadAndSendQuotePdf OUT=' + res);
             return res;
-        } catch (AuraHandledException e) {
+        } catch (SecuredSignFacadeException e) {
             System.debug('[SSF] uploadAndSendQuotePdf ERROR(Aura)=' + e.getMessage());
             throw e;
         } catch (Exception e) {
             System.debug('[SSF] uploadAndSendQuotePdf ERROR=' + e.getMessage());
-            throw new AuraHandledException('Secured Signing error: ' + e.getMessage());
+            throw new SecuredSignFacadeException('Secured Signing error: ' + e.getMessage());
         }
     }
 
@@ -56,16 +64,16 @@ public with sharing class SecuredSignFacade {
         String lastName
     ) {
         if (workFileId == null) {
-            throw new AuraHandledException('Work_File__c Id is required.');
+            throw new SecuredSignFacadeException('Work_File__c Id is required.');
         }
         if (String.isBlank(email)) {
-            throw new AuraHandledException('Signer email is empty.');
+            throw new SecuredSignFacadeException('Signer email is empty.');
         }
 
         ContentVersion cv = WorkFileDAO.getLatestVersion(workFileId);
         System.debug('[SSF] latest CV for WF: ' + cv);
         if (cv == null) {
-            throw new AuraHandledException('File not found for Work_File__c Id ' + workFileId);
+            throw new SecuredSignFacadeException('File not found for Work_File__c Id ' + workFileId);
         }
 
         HttpResponse uploadRes = SecuredSignService.uploadFile(
@@ -89,12 +97,12 @@ public with sharing class SecuredSignFacade {
 
         List<SecuredSignDTO.FullSmartTagResponse> smartList = parseSmartTag(smartRes.getBody());
         if (smartList == null || smartList.isEmpty() || smartList[0].Signers == null || smartList[0].Signers.isEmpty()) {
-            throw new AuraHandledException('SmartTag response is empty.');
+            throw new SecuredSignFacadeException('SmartTag response is empty.');
         }
 
         SecuredSignDTO.ResponseSigner signer = pickSigner(smartList[0].Signers, email);
         if (signer == null || String.isBlank(signer.SigningKey)) {
-            throw new AuraHandledException('SigningKey not found in SmartTag response.');
+            throw new SecuredSignFacadeException('SigningKey not found in SmartTag response.');
         }
 
         String weSignUrl   = SecuredSignService.getWeSignUrl();
@@ -110,7 +118,7 @@ public with sharing class SecuredSignFacade {
     //Quote (email)
     private static Map<String, String> doUploadAndSendQuotePdf(Id quoteId) {
         if (quoteId == null) {
-            throw new AuraHandledException('Quote Id is required.');
+            throw new SecuredSignFacadeException('Quote Id is required.');
         }
 
         Quote q = [
@@ -125,7 +133,7 @@ public with sharing class SecuredSignFacade {
         System.debug('[SSF] Quote loaded: ' + q);
 
         if (q.ContactId == null) {
-            throw new AuraHandledException('Quote has no Contact.');
+            throw new SecuredSignFacadeException('Quote has no Contact.');
         }
 
         String email     = q.Contact.Email;
@@ -133,7 +141,7 @@ public with sharing class SecuredSignFacade {
         String lastName  = q.Contact.LastName;
 
         if (String.isBlank(email)) {
-            throw new AuraHandledException('Contact on Quote has no Email.');
+            throw new SecuredSignFacadeException('Contact on Quote has no Email.');
         }
         List<QuoteDocument> qdList =[
             SELECT Id, Document, Name, CreatedDate
@@ -145,7 +153,7 @@ public with sharing class SecuredSignFacade {
         System.debug('[SSF] latest QuoteDocument: ' + qdList);
 
         if (qdList.isEmpty() || qdList[0]==null) {
-            throw new AuraHandledException('No PDF found in Quote PDFs. Please generate the Quote PDF first.');
+            throw new SecuredSignFacadeException('No PDF found in Quote PDFs. Please generate the Quote PDF first.');
         }
         
         HttpResponse uploadRes = SecuredSignService.uploadFile(
@@ -171,7 +179,7 @@ public with sharing class SecuredSignFacade {
         Integer cnt = (smartList == null) ? 0 : smartList.size();
         System.debug('[SSF] Quote smartList size=' + cnt);
         if (cnt == 0) {
-            throw new AuraHandledException('SmartTag response is empty.');
+            throw new SecuredSignFacadeException('SmartTag response is empty.');
         }
 
         Map<String, String> out = new Map<String, String>();
@@ -187,9 +195,9 @@ public with sharing class SecuredSignFacade {
         try {
             return (SecuredSignDTO.DocumentUploadResponse)
                 JSON.deserialize(body, SecuredSignDTO.DocumentUploadResponse.class);
-        } catch (Exception e) {
+        } catch (SecuredSignFacadeException e) {
             System.debug('[SSF] parseUpload ERROR=' + e.getMessage());
-            throw new AuraHandledException('Upload response parse failed: ' + e.getMessage());
+            throw new SecuredSignFacadeException('Upload response parse failed: ' + e.getMessage());
         }
     }
 
@@ -198,9 +206,9 @@ public with sharing class SecuredSignFacade {
         try {
             return (List<SecuredSignDTO.FullSmartTagResponse>)
                 JSON.deserialize(body, List<SecuredSignDTO.FullSmartTagResponse>.class);
-        } catch (Exception e) {
+        } catch (SecuredSignFacadeException e) {
             System.debug('[SSF] parseSmartTag ERROR=' + e.getMessage());
-            throw new AuraHandledException('SmartTag response parse failed: ' + e.getMessage());
+            throw new SecuredSignFacadeException('SmartTag response parse failed: ' + e.getMessage());
         }
     }
 

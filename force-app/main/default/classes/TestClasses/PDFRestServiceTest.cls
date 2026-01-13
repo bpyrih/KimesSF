@@ -7,7 +7,8 @@ public with sharing class PDFRestServiceTest {
         Test.setMock(HttpCalloutMock.class, new HTTP_Mock());
         Document_Sign_Config__c config = new Document_Sign_Config__c(
             Document_Sign_Template__c = 'ANSI Engineering',
-            Config_Fields__c = 'Field1,Field2'
+            Config_Fields__c = 'Field1,Field2',
+            Display_Name__c = 'Test Config'
         );
         insert config;
 
